@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OWOW Anti Gravity Dashboard
 
-## Getting Started
+## Overview
+This is a modern, enterprise-grade client dashboard tailored for digital agency OWOW. It communicates project phases, sprints, deadlines, and documentation clearly to clients.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 👥 Team Task Distribution
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To ensure an efficient and well-organized development process, the team divided responsibilities based on individual strengths and project requirements. Each member focused on a specific area of the dashboard to avoid overlap and improve collaboration.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Karim – Front and Backend Lead & Project Structure
+Karim is responsible for the overall structure and integration of the dashboard. He ensures that all components and pages are connected properly and that the application maintains consistency.
+**Responsibilities:**
+- Setting up the Next.js project and folder structure
+- Creating the main layout, including the sidebar and topbar
+- Developing the dashboard overview page
+- Integrating components and pages from other team members
+- Maintaining consistency across the application
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Mirthe – UI/UX Designer
+Mirthe is responsible for the visual design and user experience of the dashboard. She creates the design system and ensures that the interface is clean, modern, and user-friendly.
+**Responsibilities:**
+- Designing the dashboard in Figma
+- Defining color schemes, typography, and spacing
+- Designing key screens such as the login page, dashboard, and project pages
+- Creating a consistent design system
+- Providing design guidelines for the team
 
-## Learn More
+### Maksym – Component Developer
+Maksym focuses on building reusable UI components that are used across the dashboard. His work ensures consistency and efficiency in development.
+**Responsibilities:**
+- Developing reusable components such as cards, buttons, badges, and progress bars
+- Styling components using Tailwind CSS
+- Ensuring consistency with the design system
+- Supporting other team members with UI components
 
-To learn more about Next.js, take a look at the following resources:
+### Maurice – Project Detail and Data Handling
+Maurice is responsible for the logic and structure of the project detail pages. He ensures that all project-related data is displayed clearly and effectively.
+**Responsibilities:**
+- Developing the project detail page
+- Displaying project information such as progress, milestones, deadlines, and budget
+- Structuring and managing mock data
+- Connecting data to the user interface components
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Merlijn – Documents and Demo Pages
+Merlijn focuses on content-related pages, ensuring that project resources and demo environments are accessible and well-organized.
+**Responsibilities:**
+- Developing the documents page
+- Creating the demo environments page
+- Displaying files and links for each project
+- Organizing content in a clear and structured way
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Omar – Authentication and Settings
+Omar is responsible for user-related features, including login functionality and user settings.
+**Responsibilities:**
+- Designing and developing the login page
+- Implementing a basic authentication flow with login and redirect
+- Creating the settings page
+- Adding user profile elements
+- Implementing optional features such as theme switching
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ⚙️ Collaboration Approach
+The team follows a structured workflow to ensure smooth collaboration:
+- The design is created first to guide development.
+- The project structure is set up before feature development.
+- Reusable components are developed early and shared across the team.
+- Each member works on separate features to avoid conflicts.
+- Regular integration ensures all parts function together.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This approach helps maintain clarity, efficiency, and a high-quality final product.
+
+## 📝 Summary
+By dividing tasks based on roles and responsibilities, the team ensures clear ownership of features, minimal overlap in development, efficient collaboration, and a consistent and professional dashboard.
