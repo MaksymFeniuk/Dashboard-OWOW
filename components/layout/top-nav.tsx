@@ -1,33 +1,28 @@
-import { Bell } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Search, Bell } from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
+import { Input } from "@/components/ui/input"
 
 export function TopNav() {
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background px-4 shadow-sm md:px-6">
-      <div className="flex items-center gap-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <h1 className="text-sm font-medium">Project Overview</h1>
-      </div>
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="relative hidden md:flex">
-          <Bell className="h-5 w-5 text-muted-foreground" />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary" />
-          <span className="sr-only">Notifications</span>
-        </Button>
-        <div className="flex items-center gap-3 border-l pl-4">
-          <div className="flex flex-col items-end pr-2 text-sm hidden md:flex">
-            <span className="font-medium text-foreground">Karim Massaoud</span>
-            <span className="text-xs text-muted-foreground">karim@owow.io</span>
-          </div>
-          <Avatar className="h-8 w-8 cursor-pointer border">
-            <AvatarImage src="" alt="Avatar" />
-            <AvatarFallback>KM</AvatarFallback>
-          </Avatar>
+    <header className="flex h-16 w-full items-center px-4 md:px-8 bg-transparent border-b border-white/[0.04]">
+      <div className="flex flex-1 items-center gap-4">
+        <SidebarTrigger className="-ml-1 text-gray-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-colors [&>svg]:w-5 [&>svg]:h-5" />
+
+        <div className="relative w-full max-w-md">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+          <Input
+            type="search"
+            placeholder="Search anything..."
+            className="w-full bg-white/[0.03] border border-white/[0.06] text-white placeholder:text-gray-500 pl-10 h-10 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 text-sm transition-all"
+          />
         </div>
+      </div>
+
+      <div className="flex items-center gap-2 ml-4">
+        <button className="relative p-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+          <Bell className="h-[18px] w-[18px]" />
+          <span className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full ring-2 ring-[#0a0a0f]" />
+        </button>
       </div>
     </header>
   )
