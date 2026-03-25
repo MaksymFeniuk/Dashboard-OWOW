@@ -1,52 +1,50 @@
 import { mockClients } from "@/lib/mock-data"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { MonitorPlay, ExternalLink } from "lucide-react"
 
 export default function GlobalDemosPage() {
-  const client = mockClients[0] // Assuming logged in as Acme Corp
+  const client = mockClients[0]
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-3xl font-bold tracking-tight">Demo Environments</h2>
-        <p className="text-muted-foreground">
+    <div className="space-y-6 animate-fade-in">
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight text-white">Demo Environments</h2>
+        <p className="text-sm text-gray-500 mt-1">
           Access the live staging environments for all your active projects.
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {client.projects.map((project) => (
-          <Card key={project.id} className="bg-secondary/30 flex flex-col">
-            <CardHeader>
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-primary text-primary-foreground rounded-lg">
-                  <MonitorPlay className="h-6 w-6" />
-                </div>
-                <div>
-                  <CardTitle className="text-lg">{project.name}</CardTitle>
-                  <CardDescription className="mt-1">
-                    Staging Build
-                  </CardDescription>
-                </div>
+      <div className="grid gap-5 md:grid-cols-2">
+        {client.projects.map((project, idx) => (
+          <div key={project.id} className={`glass-card p-7 flex flex-col relative overflow-hidden animate-slide-up stagger-${idx + 1}`}>
+            {/* Top gradient accent */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500" />
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl">
+                <MonitorPlay className="h-5 w-5 text-blue-400" />
               </div>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <div className="flex flex-col gap-2 text-sm">
-                <span className="text-muted-foreground">Environment URL:</span>
-                <span className="font-medium text-foreground truncate" title={project.demoUrl}>
-                  {project.demoUrl}
-                </span>
+              <div>
+                <h3 className="text-base font-semibold text-white">{project.name}</h3>
+                <span className="text-xs text-gray-500">Staging Build</span>
               </div>
-            </CardContent>
-            <CardFooter className="border-t pt-4 mt-auto">
-              <Button className="w-full gap-2">
-                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-                  Open Demo <ExternalLink className="h-4 w-4" />
-                </a>
-              </Button>
-            </CardFooter>
-          </Card>
+            </div>
+
+            <div className="flex-1 mb-6">
+              <span className="text-[11px] text-gray-600 uppercase tracking-wider block mb-1">Environment URL</span>
+              <span className="text-sm font-medium text-gray-300 truncate block" title={project.demoUrl}>
+                {project.demoUrl}
+              </span>
+            </div>
+
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2 text-sm"
+            >
+              Open Demo <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </div>
         ))}
       </div>
     </div>

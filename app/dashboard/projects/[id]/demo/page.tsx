@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation"
 import { getProjectById } from "@/lib/mock-data"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { MonitorPlay, ExternalLink } from "lucide-react"
+import { MonitorPlay, ExternalLink, ArrowLeft } from "lucide-react"
+import Link from "next/link"
 
 export default async function DemoPage({ params }: { params: Promise<{ id: string }> }) {
   const p = await params
@@ -13,42 +12,48 @@ export default async function DemoPage({ params }: { params: Promise<{ id: strin
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-3xl font-bold tracking-tight">Demo Environment</h2>
-        <p className="text-muted-foreground">
-          Access the live staging environment for <strong>{project.name}</strong>.
-        </p>
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex items-center gap-4">
+        <Link href={`/dashboard/projects/${p.id}`} className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors">
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight text-white">Demo Environment</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Access the live staging environment for <strong className="text-gray-300">{project.name}</strong>.
+          </p>
+        </div>
       </div>
 
-      <Card className="max-w-2xl bg-secondary/30">
-        <CardHeader>
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-primary text-primary-foreground rounded-lg">
-              <MonitorPlay className="h-8 w-8" />
-            </div>
-            <div>
-              <CardTitle className="text-xl">Staging Build</CardTitle>
-              <CardDescription className="mt-1">
-                This environment reflects the latest updates from the current sprint. It is safe to use for testing.
-              </CardDescription>
-            </div>
+      <div className="glass-card-static p-8 max-w-2xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500" />
+
+        <div className="flex items-center gap-4 mb-6">
+          <div className="p-3 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl">
+            <MonitorPlay className="h-6 w-6 text-blue-400" />
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="font-semibold text-foreground">URL:</span>
-            <span className="text-muted-foreground underline">{project.demoUrl}</span>
+          <div>
+            <h3 className="text-lg font-semibold text-white">Staging Build</h3>
+            <p className="text-sm text-gray-500 mt-1">
+              This environment reflects the latest updates from the current sprint.
+            </p>
           </div>
-        </CardContent>
-        <CardFooter className="border-t pt-4">
-          <Button className="gap-2">
-            <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-              Open Demo <ExternalLink className="h-4 w-4" />
-            </a>
-          </Button>
-        </CardFooter>
-      </Card>
+        </div>
+
+        <div className="mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+          <span className="text-[11px] text-gray-600 uppercase tracking-wider block mb-1">URL</span>
+          <span className="text-sm font-medium text-blue-400">{project.demoUrl}</span>
+        </div>
+
+        <a
+          href={project.demoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 items-center gap-2 text-sm"
+        >
+          Open Demo <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      </div>
     </div>
   )
 }
