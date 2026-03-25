@@ -77,7 +77,7 @@ export default function LoginPage() {
               </div>
 
               <div className="pt-2">
-                <Link href="/dashboard" className="block w-full">
+                <Link href="/dashboard/projects" className="block w-full">
                   <Button type="button" className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2">
                     Sign In
                     <ArrowRight className="h-4 w-4" />

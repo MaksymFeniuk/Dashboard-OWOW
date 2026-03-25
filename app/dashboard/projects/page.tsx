@@ -2,9 +2,9 @@ import { ArrowRight, Calendar, LayoutDashboard } from "lucide-react"
 
 export default function ProjectsPage() {
   const projects = [
-    { title: "Dashboard Redesign", status: "In Progress", statusColor: "text-blue-400", dotColor: "bg-blue-500", borderColor: "from-blue-500", sprint: "Sprint 3", progress: 50 },
-    { title: "Mobile App Beta", status: "On Track", statusColor: "text-emerald-400", dotColor: "bg-emerald-500", borderColor: "from-emerald-500", sprint: "Sprint 5", progress: 80 },
-    { title: "Marketing Site V2", status: "Delayed", statusColor: "text-rose-400", dotColor: "bg-rose-500", borderColor: "from-rose-500", sprint: "Sprint 2", progress: 25 },
+    { title: "Dashboard Redesign", status: "On Track", statusColor: "text-emerald-400", dotColor: "bg-emerald-500", sprint: "Sprint 3", progress: 50 },
+    { title: "Mobile App Beta", status: "On Track", statusColor: "text-emerald-400", dotColor: "bg-emerald-500", sprint: "Sprint 5", progress: 80 },
+    { title: "Marketing Site V2", status: "Delayed", statusColor: "text-rose-400", dotColor: "bg-rose-500", sprint: "Sprint 2", progress: 25 },
   ]
 
   return (
@@ -20,9 +20,6 @@ export default function ProjectsPage() {
             key={idx}
             className={`glass-card p-6 flex flex-col relative overflow-hidden animate-slide-up stagger-${idx + 1}`}
           >
-            {/* Top gradient accent */}
-            <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${project.borderColor} to-transparent`} />
-
             <div className="flex justify-between items-start mb-6">
               <h3 className="text-base font-semibold text-white">{project.title}</h3>
               <div className="flex items-center gap-2">
