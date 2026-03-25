@@ -1,10 +1,7 @@
 import { notFound } from "next/navigation"
 import { getProjectById } from "@/lib/mock-data"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CheckCircle2, Circle, Clock } from "lucide-react"
+import { CheckCircle2, Circle, Clock, ArrowLeft } from "lucide-react"
+import Link from "next/link"
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const p = await params
@@ -14,109 +11,139 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     notFound()
   }
 
+  const statusColors: Record<string, string> = {
+    'On Track': 'text-emerald-400 bg-emerald-500/10',
+    'Delayed': 'text-rose-400 bg-rose-500/10',
+    'At Risk': 'text-amber-400 bg-amber-500/10',
+    'Completed': 'text-blue-400 bg-blue-500/10',
+  }
+
+  const sprintStatusColors: Record<string, string> = {
+    'Done': 'text-emerald-400 bg-emerald-500/10',
+    'In Progress': 'text-blue-400 bg-blue-500/10',
+    'Review': 'text-amber-400 bg-amber-500/10',
+    'To Do': 'text-gray-400 bg-white/[0.06]',
+  }
+
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">{project.name}</h2>
-          <p className="text-muted-foreground mt-1">Project Details and timeline tracking</p>
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard/projects" className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors">
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-white">{project.name}</h2>
+            <p className="text-sm text-gray-500 mt-1">Project details and timeline tracking</p>
+          </div>
         </div>
         <div className="flex gap-2">
-          <Badge variant={project.status === 'On Track' ? 'default' : 'secondary'} className="text-sm px-3 py-1">
+          <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${statusColors[project.status] || 'text-gray-400 bg-white/[0.06]'}`}>
             {project.status}
-          </Badge>
-          <Badge variant="outline" className="text-sm px-3 py-1">
+          </span>
+          <span className="text-xs font-semibold px-3 py-1.5 rounded-full text-gray-400 bg-white/[0.06]">
             {project.currentSprint}
-          </Badge>
+          </span>
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        {/* Core Info */}
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-            <CardDescription>{project.description}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
+      <div className="grid gap-5 md:grid-cols-3">
+        {/* Overview */}
+        <div className="md:col-span-2 glass-card-static p-7">
+          <h3 className="text-base font-semibold text-white mb-2">Overview</h3>
+          <p className="text-sm text-gray-400 mb-6 leading-relaxed">{project.description}</p>
+
+          <div className="space-y-5">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Overall Progress</span>
-                <span className="text-sm text-muted-foreground">{project.overallProgress}%</span>
+                <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">Overall Progress</span>
+                <span className="text-xs text-white font-semibold">{project.overallProgress}%</span>
               </div>
-              <Progress value={project.overallProgress} className="h-2" />
+              <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-1000" style={{ width: `${project.overallProgress}%` }} />
+              </div>
             </div>
             {project.budgetUsed > 0 && (
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium">Budget Consumed</span>
-                  <span className="text-sm text-muted-foreground">{project.budgetUsed}%</span>
+                  <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">Budget Consumed</span>
+                  <span className="text-xs text-white font-semibold">{project.budgetUsed}%</span>
                 </div>
-                <Progress value={project.budgetUsed} className="h-2" />
+                <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full transition-all duration-1000" style={{ width: `${project.budgetUsed}%` }} />
+                </div>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Milestones Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Milestones</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {project.milestones.map((milestone) => (
-                <div key={milestone.id} className="flex gap-4">
-                  <div className="flex flex-col items-center">
-                    {milestone.completed ? (
-                      <CheckCircle2 className="h-5 w-5 text-primary" />
-                    ) : (
-                      <Circle className="h-5 w-5 text-muted-foreground" />
-                    )}
-                    <div className="h-full w-px bg-border my-1"></div>
-                  </div>
-                  <div className="flex flex-col pb-2">
-                    <span className={`text-sm font-medium ${milestone.completed ? '' : 'text-muted-foreground'}`}>
-                      {milestone.title}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(milestone.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'})}
-                    </span>
-                  </div>
+        {/* Milestones */}
+        <div className="glass-card-static p-7">
+          <h3 className="text-base font-semibold text-white mb-6">Milestones</h3>
+          <div className="space-y-5">
+            {project.milestones.map((milestone) => (
+              <div key={milestone.id} className="flex gap-3">
+                <div className="flex flex-col items-center">
+                  {milestone.completed ? (
+                    <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                  ) : (
+                    <Circle className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                  )}
+                  <div className="h-full w-px bg-white/[0.06] my-1" />
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Sprints Section */}
-      <h3 className="text-xl font-bold tracking-tight mt-4">Sprints & Timeline</h3>
-      <div className="grid gap-4">
-        {project.sprints.map((sprint) => (
-          <Card key={sprint.id} className={sprint.status === 'In Progress' ? 'border-primary/50 bg-primary/5' : ''}>
-            <CardHeader className="py-4">
-              <div className="flex justify-between items-center">
-                <div>
-                  <CardTitle className="text-base">{sprint.name}</CardTitle>
-                  <CardDescription className="text-xs mt-1 flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    {new Date(sprint.startDate).toLocaleDateString()} - {new Date(sprint.endDate).toLocaleDateString()}
-                  </CardDescription>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex flex-col items-end hidden sm:flex">
-                    <span className="text-xs text-muted-foreground">{sprint.progress}% Complete</span>
-                    <Progress value={sprint.progress} className="h-2 w-24 mt-1" />
-                  </div>
-                  <Badge variant={sprint.status === 'Done' ? 'secondary' : sprint.status === 'In Progress' ? 'default' : 'outline'}>
-                    {sprint.status}
-                  </Badge>
+                <div className="flex flex-col pb-1">
+                  <span className={`text-sm font-medium ${milestone.completed ? 'text-white' : 'text-gray-500'}`}>
+                    {milestone.title}
+                  </span>
+                  <span className="text-[11px] text-gray-600 mt-0.5">
+                    {new Date(milestone.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'})}
+                  </span>
                 </div>
               </div>
-            </CardHeader>
-          </Card>
-        ))}
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sprints */}
+      <div>
+        <h3 className="text-base font-semibold text-white mb-4">Sprints & Timeline</h3>
+        <div className="grid gap-3">
+          {project.sprints.map((sprint) => (
+            <div
+              key={sprint.id}
+              className={`glass-card-static p-5 relative overflow-hidden ${sprint.status === 'In Progress' ? 'ring-1 ring-blue-500/20' : ''}`}
+            >
+              {sprint.status === 'In Progress' && (
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 to-transparent" />
+              )}
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                <div>
+                  <h4 className="text-sm font-medium text-white">{sprint.name}</h4>
+                  <span className="text-[11px] text-gray-500 flex items-center gap-1 mt-1">
+                    <Clock className="w-3 h-3" />
+                    {new Date(sprint.startDate).toLocaleDateString()} — {new Date(sprint.endDate).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[11px] text-gray-500">{sprint.progress}%</span>
+                    <div className="h-1.5 w-20 bg-white/[0.06] rounded-full overflow-hidden mt-1">
+                      <div
+                        className={`h-full rounded-full transition-all duration-1000 ${sprint.status === 'Done' ? 'bg-emerald-500' : sprint.status === 'In Progress' ? 'bg-blue-500' : 'bg-gray-600'}`}
+                        style={{ width: `${sprint.progress}%` }}
+                      />
+                    </div>
+                  </div>
+                  <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${sprintStatusColors[sprint.status] || 'text-gray-400 bg-white/[0.06]'}`}>
+                    {sprint.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
