@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Home,
   FolderKanban,
@@ -38,6 +38,7 @@ const projectItems = [
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <Sidebar variant="inset" className="bg-[#0d0d14] border-r border-white/[0.04] text-white !border-r-white/[0.04]">
@@ -141,7 +142,10 @@ export function AppSidebar() {
               <span className="font-medium text-sm text-white truncate">Josh Butcher</span>
               <span className="text-[11px] text-gray-500 truncate">Acme Corp</span>
             </div>
-            <button className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors">
+            <button
+              onClick={() => router.push('/login')}
+              className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
+            >
               <LogOut className="h-3.5 w-3.5" />
             </button>
           </div>

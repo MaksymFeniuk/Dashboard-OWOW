@@ -1,9 +1,13 @@
+"use client"
+
+import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { User, Lock, Globe, ArrowRight } from "lucide-react"
+import { User, Lock, Globe, ArrowRight, Check } from "lucide-react"
 
 export default function LoginPage() {
+  const [rememberMe, setRememberMe] = useState(false)
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col relative overflow-hidden">
       {/* Animated background */}
@@ -68,7 +72,16 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-between pt-1">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <div className="w-4 h-4 rounded border border-white/10 bg-white/[0.04]" />
+                  <div
+                    onClick={() => setRememberMe(!rememberMe)}
+                    className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${
+                      rememberMe
+                        ? 'bg-blue-500 border-blue-500'
+                        : 'border-white/10 bg-white/[0.04]'
+                    }`}
+                  >
+                    {rememberMe && <Check className="h-3 w-3 text-white" />}
+                  </div>
                   <span className="text-xs text-gray-400">Remember me</span>
                 </label>
                 <Link href="#" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
@@ -78,7 +91,7 @@ export default function LoginPage() {
 
               <div className="pt-2">
                 <Link href="/dashboard/projects" className="block w-full">
-                  <Button type="button" className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2">
+                  <Button type="button" className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2 cursor-pointer">
                     Sign In
                     <ArrowRight className="h-4 w-4" />
                   </Button>
