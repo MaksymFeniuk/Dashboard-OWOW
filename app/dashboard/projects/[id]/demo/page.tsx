@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { getProjectById } from "@/lib/mock-data"
 import { MonitorPlay, ExternalLink, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { ProjectViewSwitcher } from "@/components/projects/project-view-switcher"
 
 export default async function DemoPage({ params }: { params: Promise<{ id: string }> }) {
   const p = await params
@@ -24,6 +25,8 @@ export default async function DemoPage({ params }: { params: Promise<{ id: strin
           </p>
         </div>
       </div>
+
+      <ProjectViewSwitcher projectId={p.id} current="demo" />
 
       <div className="glass-card-static p-8 max-w-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500" />

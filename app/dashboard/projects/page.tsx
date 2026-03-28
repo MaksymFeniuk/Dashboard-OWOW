@@ -1,28 +1,45 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { type ElementType, useMemo, useState } from "react"
 import Link from "next/link"
 import {
-  ArrowUpRight, Eye, BarChart2, Clock, Calendar,
-  AlertTriangle, CheckCircle2, TrendingUp, TrendingDown,
-  Filter, ChevronDown, Sparkles, Flame, Minus
+  AlertTriangle,
+  ArrowUpRight,
+  BarChart2,
+  Calendar,
+  CheckCircle2,
+  ChevronDown,
+  Clock,
+  Eye,
+  Filter,
+  Flame,
+  Minus,
+  Sparkles,
+  TrendingDown,
+  TrendingUp,
 } from "lucide-react"
 
-const projects = [
-  {
-    id: "ecommerce-redesign",
-    title: "E-commerce Redesign",
-    description: "Full-stack storefront rebuild with new design system and checkout flow.",
-    status: "In Progress",
+import { mockClients, type Status } from "@/lib/mock-data"
+
+type CardMeta = {
+  insight: string
+  insightDetail: string
+  priority: "high" | "medium"
+  trend: "up" | "down" | "flat"
+  progressColor: string
+  accentColor: string
+  insightColor: string
+  insightBg: string
+  insightIcon: ElementType
+  ringColor: string
+}
+
+const CARD_META: Record<string, CardMeta> = {
+  p1: {
     insight: "On track",
-    insightDetail: "All milestones met. Next: API integration sprint.",
-    progress: 65,
+    insightDetail: "Checkout and account work are aligned with the current sprint plan.",
     priority: "high",
-    sprint: "Sprint 3 / 5",
-    deadline: "Jun 15, 2026",
-    daysLeft: 79,
     trend: "up",
-    dotColor: "bg-blue-500",
     progressColor: "from-blue-600 to-blue-400",
     accentColor: "from-blue-500",
     insightColor: "text-emerald-400",
@@ -30,41 +47,23 @@ const projects = [
     insightIcon: CheckCircle2,
     ringColor: "#3b82f6",
   },
-  {
-    id: "mobile-app-beta",
-    title: "Mobile App Beta",
-    description: "iOS & Android client portal app with push notifications and offline mode.",
-    status: "On Track",
-    insight: "Ahead of schedule",
-    insightDetail: "Sprint velocity 20% higher than baseline.",
-    progress: 80,
+  p2: {
+    insight: "Needs attention",
+    insightDetail: "Leave management is moving, but downstream expense work is compressed.",
     priority: "medium",
-    sprint: "Sprint 5 / 6",
-    deadline: "Apr 30, 2026",
-    daysLeft: 33,
-    trend: "up",
-    dotColor: "bg-emerald-500",
-    progressColor: "from-emerald-600 to-emerald-400",
-    accentColor: "from-emerald-500",
-    insightColor: "text-emerald-400",
-    insightBg: "bg-emerald-500/10",
-    insightIcon: TrendingUp,
-    ringColor: "#10b981",
-  },
-  {
-    id: "marketing-site-v2",
-    title: "Marketing Site V2",
-    description: "Redesign and migration to new CMS — content team approval pending.",
-    status: "At Risk",
-    insight: "Delayed — needs review",
-    insightDetail: "CMS migration blocked by content team sign-off. 2-week slip likely.",
-    progress: 25,
-    priority: "high",
-    sprint: "Sprint 2 / 5",
-    deadline: "May 20, 2026",
-    daysLeft: 53,
     trend: "down",
-    dotColor: "bg-rose-500",
+    progressColor: "from-amber-600 to-orange-400",
+    accentColor: "from-amber-500",
+    insightColor: "text-amber-400",
+    insightBg: "bg-amber-500/10",
+    insightIcon: AlertTriangle,
+    ringColor: "#f59e0b",
+  },
+  p3: {
+    insight: "Delayed review",
+    insightDetail: "CMS migration is blocked by stakeholder approval on the publishing flow.",
+    priority: "high",
+    trend: "down",
     progressColor: "from-rose-600 to-rose-400",
     accentColor: "from-rose-500",
     insightColor: "text-rose-400",
@@ -72,22 +71,65 @@ const projects = [
     insightIcon: AlertTriangle,
     ringColor: "#f43f5e",
   },
+}
+
+const SORT_OPTIONS = ["Default", "Progress", "Deadline", "Priority"] as const
+const FILTER_OPTIONS: Array<"All" | Status> = [
+  "All",
+  "On Track",
+  "Delayed",
+  "At Risk",
 ]
 
-const SORT_OPTIONS = ["Default", "Progress", "Deadline", "Priority"]
-const FILTER_OPTIONS = ["All", "In Progress", "On Track", "At Risk"]
+const projects = mockClients[0]?.projects ?? []
 
-function CircularProgress({ progress, color, size = 64 }: { progress: number; color: string; size?: number }) {
+function formatDate(value: string) {
+  return new Date(value).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })
+}
+
+function getDaysLeft(deadline: string) {
+  const today = new Date()
+  const end = new Date(deadline)
+  return Math.max(0, Math.ceil((end.getTime() - today.getTime()) / 86400000))
+}
+
+function CircularProgress({
+  progress,
+  color,
+  size = 64,
+}: {
+  progress: number
+  color: string
+  size?: number
+}) {
   const r = (size - 8) / 2
   const circ = 2 * Math.PI * r
   const offset = circ - (progress / 100) * circ
+
   return (
     <svg width={size} height={size} className="-rotate-90">
-      <circle cx={size / 2} cy={size / 2} r={r} stroke="currentColor" strokeWidth="4" fill="none" className="text-accent/80" />
       <circle
-        cx={size / 2} cy={size / 2} r={r}
-        stroke={color} strokeWidth="4" fill="none"
-        strokeDasharray={circ} strokeDashoffset={offset}
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        stroke="currentColor"
+        strokeWidth="4"
+        fill="none"
+        className="text-accent/80"
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        stroke={color}
+        strokeWidth="4"
+        fill="none"
+        strokeDasharray={circ}
+        strokeDashoffset={offset}
         strokeLinecap="round"
         className="transition-all duration-1000"
       />
@@ -96,68 +138,84 @@ function CircularProgress({ progress, color, size = 64 }: { progress: number; co
 }
 
 export default function ProjectsPage() {
-  const [filter, setFilter] = useState("All")
-  const [sort, setSort] = useState("Default")
+  const [filter, setFilter] = useState<"All" | Status>("All")
+  const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number]>("Default")
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
-    let list = filter === "All" ? projects : projects.filter(p => p.status === filter)
-    if (sort === "Progress") list = [...list].sort((a, b) => b.progress - a.progress)
-    else if (sort === "Deadline") list = [...list].sort((a, b) => a.daysLeft - b.daysLeft)
-    else if (sort === "Priority") list = [...list].sort((a, b) => (a.priority === "high" ? -1 : 1))
+    let list =
+      filter === "All"
+        ? projects
+        : projects.filter((project) => project.status === filter)
+
+    if (sort === "Progress") {
+      list = [...list].sort((a, b) => b.overallProgress - a.overallProgress)
+    } else if (sort === "Deadline") {
+      list = [...list].sort(
+        (a, b) => getDaysLeft(a.deadline) - getDaysLeft(b.deadline)
+      )
+    } else if (sort === "Priority") {
+      list = [...list].sort((a, b) => {
+        const aPriority = CARD_META[a.id]?.priority === "high" ? 0 : 1
+        const bPriority = CARD_META[b.id]?.priority === "high" ? 0 : 1
+        return aPriority - bPriority
+      })
+    }
+
     return list
   }, [filter, sort])
 
   return (
     <div className="space-y-7 animate-fade-in">
-
-      {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">Projects</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {projects.length} active engagements · {projects.filter(p => p.status === "At Risk").length} at risk
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            Projects
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {projects.length} active engagements ·{" "}
+            {projects.filter((project) => project.status === "At Risk").length} at
+            risk
           </p>
         </div>
 
-        {/* Filter + Sort Controls */}
-        <div className="flex items-center gap-2.5 flex-wrap">
-          {/* Filter pills */}
-          <div className="flex items-center gap-1.5 bg-accent/30 border border-border/40 rounded-xl p-1">
-            <Filter className="h-3.5 w-3.5 text-muted-foreground ml-1.5" />
-            {FILTER_OPTIONS.map(opt => (
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex items-center gap-1.5 rounded-xl border border-border/40 bg-accent/30 p-1">
+            <Filter className="ml-1.5 h-3.5 w-3.5 text-muted-foreground" />
+            {FILTER_OPTIONS.map((option) => (
               <button
-                key={opt}
-                onClick={() => setFilter(opt)}
-                className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
-                  filter === opt
-                    ? "bg-background text-foreground shadow-sm border border-border/40"
+                key={option}
+                onClick={() => setFilter(option)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
+                  filter === option
+                    ? "border border-border/40 bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {opt}
+                {option}
               </button>
             ))}
           </div>
 
-          {/* Sort dropdown */}
-          <div className="relative group/sort">
-            <button className="flex items-center gap-2 text-xs px-3.5 py-2 rounded-xl bg-accent/30 border border-border/40 text-muted-foreground hover:text-foreground hover:border-border/60 transition-all duration-200">
-              <span>Sort: <strong className="text-foreground">{sort}</strong></span>
+          <div className="group/sort relative">
+            <button className="flex items-center gap-2 rounded-xl border border-border/40 bg-accent/30 px-3.5 py-2 text-xs text-muted-foreground transition-all duration-200 hover:border-border/60 hover:text-foreground">
+              <span>
+                Sort: <strong className="text-foreground">{sort}</strong>
+              </span>
               <ChevronDown className="h-3 w-3" />
             </button>
-            <div className="absolute right-0 top-full mt-2 w-36 bg-popover border border-border/50 rounded-xl shadow-xl shadow-black/30 z-50 overflow-hidden invisible group-hover/sort:visible opacity-0 group-hover/sort:opacity-100 transition-all duration-200">
-              {SORT_OPTIONS.map(opt => (
+            <div className="invisible absolute top-full right-0 z-50 mt-2 w-36 overflow-hidden rounded-xl border border-border/50 bg-popover opacity-0 shadow-xl shadow-black/30 transition-all duration-200 group-hover/sort:visible group-hover/sort:opacity-100">
+              {SORT_OPTIONS.map((option) => (
                 <button
-                  key={opt}
-                  onClick={() => setSort(opt)}
-                  className={`w-full text-left text-xs px-3.5 py-2.5 transition-colors duration-150 ${
-                    sort === opt
-                      ? "text-blue-400 bg-blue-500/10"
+                  key={option}
+                  onClick={() => setSort(option)}
+                  className={`w-full px-3.5 py-2.5 text-left text-xs transition-colors duration-150 ${
+                    sort === option
+                      ? "bg-blue-500/10 text-blue-400"
                       : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
                   }`}
                 >
-                  {opt}
+                  {option}
                 </button>
               ))}
             </div>
@@ -165,132 +223,156 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      {/* ── Project Cards ── */}
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {filtered.map((project, idx) => {
-          const InsightIcon = project.insightIcon
+          const meta = CARD_META[project.id]
+          const InsightIcon = meta.insightIcon
           const isHovered = hoveredCard === project.id
-          const isPriority = project.priority === "high"
+          const isPriority = meta.priority === "high"
+          const daysLeft = getDaysLeft(project.deadline)
 
           return (
             <div
               key={project.id}
               onMouseEnter={() => setHoveredCard(project.id)}
               onMouseLeave={() => setHoveredCard(null)}
-              className={`glass-card relative flex flex-col overflow-hidden cursor-pointer transition-all duration-300 animate-slide-up
-                hover:shadow-2xl hover:shadow-black/40 hover:-translate-y-1
-                ${isPriority ? "hover:ring-1 hover:ring-primary/30" : "hover:border-border/60"}
-                stagger-${idx + 1}
-              `}
+              className={`glass-card stagger-${idx + 1} relative flex cursor-pointer flex-col overflow-hidden animate-slide-up transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/40 ${
+                isPriority ? "hover:ring-1 hover:ring-primary/30" : "hover:border-border/60"
+              }`}
             >
-              {/* Top gradient accent line */}
-              <div className={`absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r ${project.accentColor} to-transparent`} />
+              <div
+                className={`absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r ${meta.accentColor} to-transparent`}
+              />
 
-              {/* Priority badge */}
               {isPriority && (
-                <div className="absolute top-4 right-4 flex items-center gap-1 text-[9px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-full">
+                <div className="absolute top-4 right-4 flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-1 text-[9px] font-bold text-amber-400">
                   <Flame className="h-2.5 w-2.5" />
                   Priority
                 </div>
               )}
 
-              <div className="p-6 pb-0 flex-1 flex flex-col">
-                {/* Card header */}
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  <div className="flex-1 min-w-0 pr-12">
-                    <h3 className="text-base font-semibold text-foreground leading-snug truncate">{project.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">{project.description}</p>
+              <div className="flex flex-1 flex-col p-6 pb-0">
+                <div className="mb-4 flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1 pr-12">
+                    <h3 className="truncate text-base leading-snug font-semibold text-foreground">
+                      {project.name}
+                    </h3>
+                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                      {project.description}
+                    </p>
                   </div>
                 </div>
 
-                {/* Circular progress + stats */}
-                <div className="flex items-center gap-5 mb-5">
+                <div className="mb-5 flex items-center gap-5">
                   <div className="relative flex-shrink-0">
-                    <CircularProgress progress={project.progress} color={project.ringColor} size={72} />
+                    <CircularProgress
+                      progress={project.overallProgress}
+                      color={meta.ringColor}
+                      size={72}
+                    />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-[13px] font-bold text-foreground">{project.progress}%</span>
+                      <span className="text-[13px] font-bold text-foreground">
+                        {project.overallProgress}%
+                      </span>
                     </div>
                   </div>
                   <div className="flex-1 space-y-3">
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <Sparkles className="h-3 w-3 flex-shrink-0" />
-                      <span>{project.sprint}</span>
+                      <span>{project.currentSprint}</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3 flex-shrink-0" />
-                      <span>{project.deadline}</span>
+                      <span>{formatDate(project.deadline)}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                      <span className={`text-xs font-semibold ${
-                        project.daysLeft < 40 ? "text-rose-400" :
-                        project.daysLeft < 60 ? "text-amber-400" : "text-emerald-400"
-                      }`}>
-                        {project.daysLeft}d remaining
+                      <Clock className="h-3 w-3 flex-shrink-0 text-muted-foreground" />
+                      <span
+                        className={`text-xs font-semibold ${
+                          daysLeft < 40
+                            ? "text-rose-400"
+                            : daysLeft < 60
+                              ? "text-amber-400"
+                              : "text-emerald-400"
+                        }`}
+                      >
+                        {daysLeft}d remaining
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Status Insight */}
-                <div className={`flex items-start gap-2.5 px-3.5 py-2.5 rounded-xl ${project.insightBg} border border-border/20 mb-5`}>
-                  <InsightIcon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${project.insightColor}`} />
+                <div
+                  className={`mb-5 flex items-start gap-2.5 rounded-xl border border-border/20 px-3.5 py-2.5 ${meta.insightBg}`}
+                >
+                  <InsightIcon
+                    className={`mt-0.5 h-3.5 w-3.5 flex-shrink-0 ${meta.insightColor}`}
+                  />
                   <div>
-                    <span className={`text-[11px] font-bold ${project.insightColor}`}>{project.insight}</span>
-                    <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">{project.insightDetail}</p>
+                    <span className={`text-[11px] font-bold ${meta.insightColor}`}>
+                      {meta.insight}
+                    </span>
+                    <p className="mt-0.5 text-[10px] leading-relaxed text-muted-foreground">
+                      {meta.insightDetail}
+                    </p>
                   </div>
                 </div>
 
-                {/* Mini progress bar */}
                 <div className="mb-6">
-                  <div className="h-1.5 w-full bg-accent/80 rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-accent/80">
                     <div
-                      className={`h-full bg-gradient-to-r ${project.progressColor} rounded-full transition-all duration-1000`}
-                      style={{ width: `${project.progress}%` }}
+                      className={`h-full rounded-full bg-gradient-to-r ${meta.progressColor} transition-all duration-1000`}
+                      style={{ width: `${project.overallProgress}%` }}
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Footer: default + hover quick actions */}
-              <div className="relative border-t border-border/40 overflow-hidden">
-                {/* Default footer */}
-                <div className={`flex items-center justify-between px-6 py-3.5 transition-all duration-300 ${
-                  isHovered ? "opacity-0 -translate-y-full" : "opacity-100"
-                }`}>
+              <div className="relative overflow-hidden border-t border-border/40">
+                <div
+                  className={`flex items-center justify-between px-6 py-3.5 transition-all duration-300 ${
+                    isHovered ? "pointer-events-none -translate-y-full opacity-0" : "opacity-100"
+                  }`}
+                >
                   <div className="flex items-center gap-1.5">
-                    {project.trend === "up"
-                      ? <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
-                      : project.trend === "down"
-                      ? <TrendingDown className="h-3.5 w-3.5 text-rose-400" />
-                      : <Minus className="h-3.5 w-3.5 text-muted-foreground" />
-                    }
+                    {meta.trend === "up" ? (
+                      <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+                    ) : meta.trend === "down" ? (
+                      <TrendingDown className="h-3.5 w-3.5 text-rose-400" />
+                    ) : (
+                      <Minus className="h-3.5 w-3.5 text-muted-foreground" />
+                    )}
                     <span className="text-xs text-muted-foreground">
-                      {project.trend === "up" ? "Trending up" : project.trend === "down" ? "Trending down" : "Stable"}
+                      {meta.trend === "up"
+                        ? "Trending up"
+                        : meta.trend === "down"
+                          ? "Trending down"
+                          : "Stable"}
                     </span>
                   </div>
                   <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground/50" />
                 </div>
 
-                {/* Hover quick actions */}
-                <div className={`absolute inset-0 flex items-center gap-2 px-6 transition-all duration-300 bg-background/50 ${
-                  isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full"
-                }`}>
+                <div
+                  className={`absolute inset-0 flex items-center gap-2 bg-background/50 px-6 transition-all duration-300 ${
+                    isHovered ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"
+                  }`}
+                >
                   <Link
                     href={`/dashboard/projects/${project.id}`}
-                    className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all"
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90 active:scale-95"
                   >
                     <Eye className="h-3.5 w-3.5" /> View
                   </Link>
                   <Link
-                    href={`/dashboard/projects/${project.id}/docs`}
-                    className="flex-1 flex items-center justify-center gap-1.5 text-xs font-medium py-1.5 rounded-lg bg-accent/60 text-muted-foreground hover:text-foreground hover:bg-accent active:scale-95 transition-all"
+                    href={`/dashboard/projects/${project.id}/analytics`}
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-accent/60 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground active:scale-95"
                   >
                     <BarChart2 className="h-3.5 w-3.5" /> Analytics
                   </Link>
                   <Link
                     href={`/dashboard/projects/${project.id}/demo`}
-                    className="flex-1 flex items-center justify-center gap-1.5 text-xs font-medium py-1.5 rounded-lg bg-accent/60 text-muted-foreground hover:text-foreground hover:bg-accent active:scale-95 transition-all"
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-accent/60 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:bg-accent hover:text-foreground active:scale-95"
                   >
                     <ArrowUpRight className="h-3.5 w-3.5" /> Demo
                   </Link>
@@ -303,12 +385,19 @@ export default function ProjectsPage() {
 
       {filtered.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="p-4 rounded-2xl bg-accent/30 mb-4">
+          <div className="mb-4 rounded-2xl bg-accent/30 p-4">
             <Filter className="h-6 w-6 text-muted-foreground/50" />
           </div>
-          <p className="text-sm font-medium text-foreground">No projects match this filter</p>
-          <p className="text-xs text-muted-foreground mt-1">Try selecting a different status</p>
-          <button onClick={() => setFilter("All")} className="mt-4 text-xs text-blue-400 hover:underline">
+          <p className="text-sm font-medium text-foreground">
+            No projects match this filter
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Try selecting a different status
+          </p>
+          <button
+            onClick={() => setFilter("All")}
+            className="mt-4 text-xs text-blue-400 hover:underline"
+          >
             Clear filter
           </button>
         </div>

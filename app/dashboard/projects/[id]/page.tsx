@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { getProjectById } from "@/lib/mock-data"
 import { CheckCircle2, Circle, Clock, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { ProjectViewSwitcher } from "@/components/projects/project-view-switcher"
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const p = await params
@@ -47,6 +48,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </span>
         </div>
       </div>
+
+      <ProjectViewSwitcher projectId={p.id} current="view" />
 
       <div className="grid gap-5 md:grid-cols-3">
         {/* Overview */}

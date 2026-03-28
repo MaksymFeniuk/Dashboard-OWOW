@@ -103,6 +103,34 @@ export const mockClients: Client[] = [
         documents: [
           { id: 'd21', title: 'Portal PRD', type: 'PRD', lastUpdated: '2026-02-05', url: '#' },
         ]
+      },
+      {
+        id: 'p3',
+        name: 'Marketing Site V2',
+        description: 'Public website redesign and CMS migration focused on faster publishing, stronger performance, and a cleaner visual system.',
+        status: 'At Risk',
+        currentSprint: 'Sprint 2',
+        deadline: '2026-05-20',
+        overallProgress: 25,
+        budgetUsed: 34,
+        demoUrl: 'https://marketing-v2-preview.acmecorp.dev',
+        sprints: [
+          { id: 's31', name: 'Sprint 1: Content Model & Planning', startDate: '2026-02-08', endDate: '2026-02-21', status: 'Done', progress: 100 },
+          { id: 's32', name: 'Sprint 2: CMS Migration', startDate: '2026-02-22', endDate: '2026-03-07', status: 'In Progress', progress: 45 },
+          { id: 's33', name: 'Sprint 3: Landing Pages', startDate: '2026-03-08', endDate: '2026-03-21', status: 'To Do', progress: 0 },
+          { id: 's34', name: 'Sprint 4: QA & Launch Prep', startDate: '2026-03-22', endDate: '2026-04-04', status: 'To Do', progress: 0 },
+        ],
+        milestones: [
+          { id: 'm31', title: 'Content Audit Approved', dueDate: '2026-02-15', completed: true },
+          { id: 'm32', title: 'CMS Migration Ready', dueDate: '2026-03-18', completed: false },
+          { id: 'm33', title: 'Stakeholder Review', dueDate: '2026-04-10', completed: false },
+          { id: 'm34', title: 'Launch', dueDate: '2026-05-20', completed: false },
+        ],
+        documents: [
+          { id: 'd31', title: 'CMS Migration Brief', type: 'Migration', lastUpdated: '2026-02-18', url: '#' },
+          { id: 'd32', title: 'Landing Page Plan', type: 'Planning', lastUpdated: '2026-03-02', url: '#' },
+          { id: 'd33', title: 'Content Governance Notes', type: 'Other', lastUpdated: '2026-03-09', url: '#' },
+        ]
       }
     ]
   }
