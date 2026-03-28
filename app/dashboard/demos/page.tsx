@@ -7,8 +7,8 @@ export default function GlobalDemosPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-white">Demo Environments</h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">Demo Environments</h2>
+        <p className="text-sm text-muted-foreground mt-1">
           Access the live staging environments for all your active projects.
         </p>
       </div>
@@ -24,13 +24,13 @@ export default function GlobalDemosPage() {
                 <MonitorPlay className="h-5 w-5 text-blue-400" />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-white">{project.name}</h3>
-                <span className="text-xs text-gray-500">Staging Build</span>
+                <h3 className="text-base font-semibold text-foreground">{project.name}</h3>
+                <span className="text-xs text-muted-foreground">Staging Build</span>
               </div>
             </div>
 
             <div className="flex-1 mb-6">
-              <span className="text-[11px] text-gray-600 uppercase tracking-wider block mb-1">Environment URL</span>
+              <span className="text-[11px] text-muted-foreground/80 uppercase tracking-wider block mb-1">Environment URL</span>
               <span className="text-sm font-medium text-gray-300 truncate block" title={project.demoUrl}>
                 {project.demoUrl}
               </span>
@@ -40,7 +40,7 @@ export default function GlobalDemosPage() {
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2 text-sm"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-foreground font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2 text-sm"
             >
               Open Demo <ExternalLink className="h-3.5 w-3.5" />
             </a>
