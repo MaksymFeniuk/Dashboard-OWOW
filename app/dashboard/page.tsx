@@ -1,4 +1,5 @@
 import { Maximize2, ArrowUpRight, MessageSquare, Clock, FileText, TrendingUp } from "lucide-react"
+import Link from "next/link"
 
 export default function DashboardPage() {
   return (
@@ -136,9 +137,9 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <button className="absolute bottom-6 right-6 text-gray-600 hover:text-gray-400 transition-colors">
+          <Link href="/dashboard/updates" className="absolute bottom-6 right-6 text-gray-600 hover:text-gray-400 transition-colors">
             <Maximize2 className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
 
         {/* Documents */}
@@ -150,9 +151,9 @@ export default function DashboardPage() {
               </div>
               <h2 className="text-base font-semibold text-white">Documents</h2>
             </div>
-            <button className="text-xs text-gray-500 hover:text-blue-400 transition-colors flex items-center gap-1">
+            <Link href="/dashboard/documents" className="text-xs text-gray-500 hover:text-blue-400 transition-colors flex items-center gap-1">
               View all <ArrowUpRight className="h-3 w-3" />
-            </button>
+            </Link>
           </div>
 
           <div className="w-full">
@@ -191,9 +192,9 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <button className="absolute bottom-6 right-6 text-gray-600 hover:text-gray-400 transition-colors">
+          <Link href="/dashboard/documents" className="absolute bottom-6 right-6 text-gray-600 hover:text-gray-400 transition-colors">
             <Maximize2 className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

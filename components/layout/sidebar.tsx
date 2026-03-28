@@ -110,9 +110,9 @@ export function AppSidebar() {
               <span className="font-medium text-sm text-white truncate">Josh Butcher</span>
               <span className="text-[11px] text-gray-500 truncate">Acme Corp</span>
             </div>
-            <button className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors">
+            <Link href="/login" className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-gray-300 transition-colors">
               <LogOut className="h-3.5 w-3.5" />
-            </button>
+            </Link>
           </div>
         </div>
       </SidebarFooter>

@@ -1,6 +1,7 @@
 import { Search, Bell } from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Input } from "@/components/ui/input"
+import Link from "next/link"
 
 export function TopNav() {
   return (
@@ -19,11 +20,12 @@ export function TopNav() {
       </div>
 
       <div className="flex items-center gap-2 ml-4">
-        <button className="relative p-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+        <Link href="/dashboard/updates" className="relative p-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/[0.06] transition-colors">
           <Bell className="h-[18px] w-[18px]" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full ring-2 ring-[#0a0a0f]" />
-        </button>
+        </Link>
       </div>
     </header>
   )
 }
+
