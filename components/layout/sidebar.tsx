@@ -39,7 +39,7 @@ export function AppSidebar() {
   const pathname = usePathname()
 
   return (
-    <Sidebar variant="inset" className="bg-sidebar border-r border-sidebar-border text-sidebar-foreground">
+    <Sidebar variant="inset" className="bg-sidebar border-r border-sidebar-border text-sidebar-foreground shadow-[inset_-1px_0_0_rgba(255,255,255,0.02)]">
       <SidebarHeader className="h-24 flex flex-col justify-center px-6">
         <Link href="/dashboard" className="flex items-center gap-3 group">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-extrabold text-lg shadow-lg shadow-primary/20 transition-shadow group-hover:shadow-primary/40">
@@ -68,7 +68,7 @@ export function AppSidebar() {
                   className={`
                     relative py-5 px-3 rounded-xl transition-all duration-200
                     ${isActive
-                      ? 'bg-primary/10 text-primary hover:bg-primary/15'
+                      ? 'bg-primary/12 text-primary hover:bg-primary/18 ring-1 ring-primary/15'
                       : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                     }
                   `}
@@ -102,7 +102,7 @@ export function AppSidebar() {
 
         <div className="border-t border-sidebar-border pt-4 mt-2 mx-2">
           <div className="flex items-center gap-3 px-1">
-            <Avatar className="h-9 w-9 ring-2 ring-border/50">
+            <Avatar className="h-9 w-9 ring-2 ring-border/70">
               <AvatarImage src="https://github.com/shadcn.png" alt="Josh Butcher" />
               <AvatarFallback className="bg-primary/20 text-primary text-xs">JB</AvatarFallback>
             </Avatar>

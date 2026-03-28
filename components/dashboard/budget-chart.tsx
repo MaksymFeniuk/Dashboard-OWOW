@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import {
   AreaChart,
   Area,
@@ -43,9 +44,15 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 }
 
 export function BudgetChart() {
+  const [isAnimated, setIsAnimated] = useState(false)
   const currentSpent = data[data.length - 1].spent
   const percentUsed = ((currentSpent / totalBudget) * 100).toFixed(0)
   const remaining = totalBudget - currentSpent
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setIsAnimated(true))
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
 
   return (
     <div className="flex flex-col h-full">
@@ -70,8 +77,8 @@ export function BudgetChart() {
       {/* Progress bar */}
       <div className="w-full h-1.5 bg-accent/80 rounded-full overflow-hidden mb-5">
         <div
-          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000"
-          style={{ width: `${percentUsed}%` }}
+          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000 ease-out"
+          style={{ width: isAnimated ? `${percentUsed}%` : "0%" }}
         />
       </div>
 
@@ -107,6 +114,9 @@ export function BudgetChart() {
               fill="url(#budgetGrad)"
               dot={false}
               activeDot={{ r: 5, fill: "#10b981", stroke: "var(--background)", strokeWidth: 2 }}
+              isAnimationActive
+              animationDuration={900}
+              animationEasing="ease-out"
             />
           </AreaChart>
         </ResponsiveContainer>

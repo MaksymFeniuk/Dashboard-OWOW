@@ -6,7 +6,7 @@ import { ModeToggle } from "@/components/mode-toggle"
 
 export function TopNav() {
   return (
-    <header className="flex h-16 w-full items-center px-4 md:px-8 bg-transparent border-b border-border/40">
+    <header className="sticky top-0 z-40 flex h-16 w-full shrink-0 items-center border-b border-border/70 bg-[var(--bg-elevated)] px-4 backdrop-blur-xl md:px-8">
       <div className="flex flex-1 items-center gap-4">
         <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors [&>svg]:w-5 [&>svg]:h-5" />
 
@@ -15,7 +15,7 @@ export function TopNav() {
           <Input
             type="search"
             placeholder="Search anything..."
-            className="w-full bg-accent/50 border border-border/50 text-foreground placeholder:text-muted-foreground pl-10 h-10 rounded-xl focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:border-primary/30 text-sm transition-all"
+            className="h-10 w-full rounded-xl border border-border/70 bg-card/95 pl-10 text-sm text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:border-primary/40 transition-all"
           />
         </div>
       </div>

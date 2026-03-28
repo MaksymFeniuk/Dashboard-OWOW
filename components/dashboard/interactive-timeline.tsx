@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { CheckCircle2, Circle, Loader2, Lock } from "lucide-react"
+import { useEffect, useState } from "react"
+import { CheckCircle2, Loader2, Lock } from "lucide-react"
 
 const phases = [
   {
@@ -40,14 +40,20 @@ const phases = [
 
 export function InteractiveTimeline() {
   const [hovered, setHovered] = useState<number | null>(null)
+  const [isAnimated, setIsAnimated] = useState(false)
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setIsAnimated(true))
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
 
   return (
     <div className="relative">
       {/* Track */}
       <div className="absolute top-[18px] left-[18px] right-[18px] h-1.5 bg-accent/80 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400/50 rounded-full transition-all duration-1000"
-          style={{ width: "65%" }}
+          className="h-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400/50 rounded-full transition-all duration-1000 ease-out"
+          style={{ width: isAnimated ? "65%" : "0%" }}
         />
       </div>
 
@@ -58,9 +64,14 @@ export function InteractiveTimeline() {
           return (
             <div
               key={i}
-              className="flex flex-col items-center gap-0 cursor-pointer group"
+              className="group flex cursor-pointer flex-col items-center gap-0 transition-[transform,opacity] duration-300"
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
+              style={{
+                opacity: isAnimated ? 1 : 0,
+                transform: isAnimated ? "translateY(0)" : "translateY(14px)",
+                transitionDelay: `${i * 70}ms`,
+              }}
             >
               {/* Node */}
               <div className="relative z-10 mb-3">
@@ -118,8 +129,8 @@ export function InteractiveTimeline() {
                         </div>
                         <div className="h-1 bg-accent/80 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-blue-500 rounded-full transition-all duration-500"
-                            style={{ width: `${phase.progress}%` }}
+                            className="h-full bg-blue-500 rounded-full transition-all duration-500 ease-out"
+                            style={{ width: isAnimated ? `${phase.progress}%` : "0%" }}
                           />
                         </div>
                       </div>

@@ -178,12 +178,13 @@ export default function DocumentsPage() {
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input
+            suppressHydrationWarning
             type="text" placeholder="Search documents…" value={search}
             onChange={e => setSearch(e.target.value)}
             className="w-full bg-accent/30 border border-border/40 rounded-xl pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/30 transition-all"
           />
           {search && (
-            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+            <button suppressHydrationWarning onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
               <X className="h-3.5 w-3.5" />
             </button>
           )}
@@ -193,7 +194,7 @@ export default function DocumentsPage() {
         <div className="flex items-center gap-1.5 bg-accent/30 border border-border/40 rounded-xl p-1 overflow-x-auto flex-shrink-0">
           <Filter className="h-3.5 w-3.5 text-muted-foreground ml-1.5 flex-shrink-0" />
           {CATEGORIES.map(cat => (
-            <button key={cat} onClick={() => setCategory(cat)}
+            <button suppressHydrationWarning key={cat} onClick={() => setCategory(cat)}
               className={`text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap transition-all duration-200 ${
                 category === cat ? "bg-background text-foreground shadow-sm border border-border/40" : "text-muted-foreground hover:text-foreground"
               }`}
@@ -206,14 +207,14 @@ export default function DocumentsPage() {
       <div className="glass-card-static rounded-2xl overflow-hidden">
         {/* Column headers */}
         <div className="grid grid-cols-12 gap-4 text-[10px] text-muted-foreground font-semibold uppercase tracking-widest px-6 py-4 border-b border-border/30 bg-accent/10">
-          <button onClick={() => toggleSort("name")} className="col-span-5 flex items-center gap-1.5 text-left hover:text-foreground transition-colors">
+          <button suppressHydrationWarning onClick={() => toggleSort("name")} className="col-span-5 flex items-center gap-1.5 text-left hover:text-foreground transition-colors">
             Document <SortIcon k="name" />
           </button>
           <div className="col-span-2">Type</div>
-          <button onClick={() => toggleSort("date")} className="col-span-2 flex items-center gap-1.5 hover:text-foreground transition-colors">
+          <button suppressHydrationWarning onClick={() => toggleSort("date")} className="col-span-2 flex items-center gap-1.5 hover:text-foreground transition-colors">
             Date <SortIcon k="date" />
           </button>
-          <button onClick={() => toggleSort("size")} className="col-span-1 flex items-center gap-1.5 hover:text-foreground transition-colors">
+          <button suppressHydrationWarning onClick={() => toggleSort("size")} className="col-span-1 flex items-center gap-1.5 hover:text-foreground transition-colors">
             Size <SortIcon k="size" />
           </button>
           <div className="col-span-2 text-right">Actions</div>
