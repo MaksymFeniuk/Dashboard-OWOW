@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-[#0a0a0f] text-white">
+      <div className="flex min-h-screen w-full bg-background text-foreground transition-colors duration-300">
         <AppSidebar />
         <div className="flex w-full flex-col relative">
           {/* Subtle ambient gradient */}

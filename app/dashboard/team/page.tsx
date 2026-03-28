@@ -20,8 +20,8 @@ export default function TeamPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-white">Team</h2>
-        <p className="text-sm text-gray-500 mt-1">The core OWOW team members dedicated to your project.</p>
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">Team</h2>
+        <p className="text-sm text-muted-foreground mt-1">The core OWOW team members dedicated to your project.</p>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -40,16 +40,16 @@ export default function TeamPage() {
               <div className="w-16 h-16 rounded-full border-[3px] border-[#0a0a0f] overflow-hidden -mt-8 mb-3 bg-[#1a1a2e] ring-2 ring-white/10">
                 <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-sm font-semibold text-white">{member.name}</h3>
-              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full mt-2 ${roleColors[member.role] || 'text-gray-400 bg-white/5'}`}>
+              <h3 className="text-sm font-semibold text-foreground">{member.name}</h3>
+              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full mt-2 ${roleColors[member.role] || 'text-muted-foreground bg-accent/50'}`}>
                 {member.role}
               </span>
             </div>
 
             {/* Action */}
-            <div className="border-t border-white/[0.04] p-3 mt-auto">
+            <div className="border-t border-border/40 p-3 mt-auto">
               <button
-                className="flex w-full items-center justify-center gap-2 text-xs font-medium text-gray-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.06] py-2.5 rounded-xl transition-all"
+                className="flex w-full items-center justify-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground bg-accent/40 hover:bg-accent/80 py-2.5 rounded-xl transition-all"
                 aria-label={`Email ${member.name}`}
               >
                 <Mail className="h-3.5 w-3.5" /> Email

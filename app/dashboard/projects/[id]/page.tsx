@@ -22,7 +22,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     'Done': 'text-emerald-400 bg-emerald-500/10',
     'In Progress': 'text-blue-400 bg-blue-500/10',
     'Review': 'text-amber-400 bg-amber-500/10',
-    'To Do': 'text-gray-400 bg-white/[0.06]',
+    'To Do': 'text-muted-foreground bg-accent/80',
   }
 
   return (
@@ -30,19 +30,19 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard/projects" className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors">
+          <Link href="/dashboard/projects" className="p-2 rounded-lg hover:bg-accent/80 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">{project.name}</h2>
-            <p className="text-sm text-gray-500 mt-1">Project details and timeline tracking</p>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">{project.name}</h2>
+            <p className="text-sm text-muted-foreground mt-1">Project details and timeline tracking</p>
           </div>
         </div>
         <div className="flex gap-2">
-          <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${statusColors[project.status] || 'text-gray-400 bg-white/[0.06]'}`}>
+          <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${statusColors[project.status] || 'text-muted-foreground bg-accent/80'}`}>
             {project.status}
           </span>
-          <span className="text-xs font-semibold px-3 py-1.5 rounded-full text-gray-400 bg-white/[0.06]">
+          <span className="text-xs font-semibold px-3 py-1.5 rounded-full text-muted-foreground bg-accent/80">
             {project.currentSprint}
           </span>
         </div>
@@ -51,26 +51,26 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       <div className="grid gap-5 md:grid-cols-3">
         {/* Overview */}
         <div className="md:col-span-2 glass-card-static p-7">
-          <h3 className="text-base font-semibold text-white mb-2">Overview</h3>
-          <p className="text-sm text-gray-400 mb-6 leading-relaxed">{project.description}</p>
+          <h3 className="text-base font-semibold text-foreground mb-2">Overview</h3>
+          <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{project.description}</p>
 
           <div className="space-y-5">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">Overall Progress</span>
-                <span className="text-xs text-white font-semibold">{project.overallProgress}%</span>
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Overall Progress</span>
+                <span className="text-xs text-foreground font-semibold">{project.overallProgress}%</span>
               </div>
-              <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
+              <div className="h-2 bg-accent/80 rounded-full overflow-hidden">
                 <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-1000" style={{ width: `${project.overallProgress}%` }} />
               </div>
             </div>
             {project.budgetUsed > 0 && (
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">Budget Consumed</span>
-                  <span className="text-xs text-white font-semibold">{project.budgetUsed}%</span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Budget Consumed</span>
+                  <span className="text-xs text-foreground font-semibold">{project.budgetUsed}%</span>
                 </div>
-                <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
+                <div className="h-2 bg-accent/80 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full transition-all duration-1000" style={{ width: `${project.budgetUsed}%` }} />
                 </div>
               </div>
@@ -80,7 +80,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
         {/* Milestones */}
         <div className="glass-card-static p-7">
-          <h3 className="text-base font-semibold text-white mb-6">Milestones</h3>
+          <h3 className="text-base font-semibold text-foreground mb-6">Milestones</h3>
           <div className="space-y-5">
             {project.milestones.map((milestone) => (
               <div key={milestone.id} className="flex gap-3">
@@ -88,15 +88,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   {milestone.completed ? (
                     <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
                   ) : (
-                    <Circle className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                    <Circle className="h-4 w-4 text-muted-foreground/80 flex-shrink-0" />
                   )}
-                  <div className="h-full w-px bg-white/[0.06] my-1" />
+                  <div className="h-full w-px bg-accent/80 my-1" />
                 </div>
                 <div className="flex flex-col pb-1">
-                  <span className={`text-sm font-medium ${milestone.completed ? 'text-white' : 'text-gray-500'}`}>
+                  <span className={`text-sm font-medium ${milestone.completed ? 'text-foreground' : 'text-muted-foreground'}`}>
                     {milestone.title}
                   </span>
-                  <span className="text-[11px] text-gray-600 mt-0.5">
+                  <span className="text-[11px] text-muted-foreground/80 mt-0.5">
                     {new Date(milestone.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'})}
                   </span>
                 </div>
@@ -108,7 +108,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
       {/* Sprints */}
       <div>
-        <h3 className="text-base font-semibold text-white mb-4">Sprints & Timeline</h3>
+        <h3 className="text-base font-semibold text-foreground mb-4">Sprints & Timeline</h3>
         <div className="grid gap-3">
           {project.sprints.map((sprint) => (
             <div
@@ -120,23 +120,23 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               )}
               <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                 <div>
-                  <h4 className="text-sm font-medium text-white">{sprint.name}</h4>
-                  <span className="text-[11px] text-gray-500 flex items-center gap-1 mt-1">
+                  <h4 className="text-sm font-medium text-foreground">{sprint.name}</h4>
+                  <span className="text-[11px] text-muted-foreground flex items-center gap-1 mt-1">
                     <Clock className="w-3 h-3" />
                     {new Date(sprint.startDate).toLocaleDateString()} — {new Date(sprint.endDate).toLocaleDateString()}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex flex-col items-end">
-                    <span className="text-[11px] text-gray-500">{sprint.progress}%</span>
-                    <div className="h-1.5 w-20 bg-white/[0.06] rounded-full overflow-hidden mt-1">
+                    <span className="text-[11px] text-muted-foreground">{sprint.progress}%</span>
+                    <div className="h-1.5 w-20 bg-accent/80 rounded-full overflow-hidden mt-1">
                       <div
                         className={`h-full rounded-full transition-all duration-1000 ${sprint.status === 'Done' ? 'bg-emerald-500' : sprint.status === 'In Progress' ? 'bg-blue-500' : 'bg-gray-600'}`}
                         style={{ width: `${sprint.progress}%` }}
                       />
                     </div>
                   </div>
-                  <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${sprintStatusColors[sprint.status] || 'text-gray-400 bg-white/[0.06]'}`}>
+                  <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${sprintStatusColors[sprint.status] || 'text-muted-foreground bg-accent/80'}`}>
                     {sprint.status}
                   </span>
                 </div>

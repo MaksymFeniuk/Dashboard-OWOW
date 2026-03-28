@@ -15,18 +15,18 @@ export default async function DocumentationPage({ params }: { params: Promise<{ 
     PRD: { bg: "bg-blue-500/10", text: "text-blue-400" },
     Planning: { bg: "bg-emerald-500/10", text: "text-emerald-400" },
     Migration: { bg: "bg-amber-500/10", text: "text-amber-400" },
-    Other: { bg: "bg-gray-500/10", text: "text-gray-400" },
+    Other: { bg: "bg-gray-500/10", text: "text-muted-foreground" },
   }
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center gap-4">
-        <Link href={`/dashboard/projects/${p.id}`} className="p-2 rounded-lg hover:bg-white/[0.06] text-gray-500 hover:text-white transition-colors">
+        <Link href={`/dashboard/projects/${p.id}`} className="p-2 rounded-lg hover:bg-accent/80 text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white">Documentation</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Documentation</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Important documents for <strong className="text-gray-300">{project.name}</strong>.
           </p>
         </div>
@@ -42,18 +42,18 @@ export default async function DocumentationPage({ params }: { params: Promise<{ 
                   <FileText className={`h-5 w-5 ${config.text}`} />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-sm font-semibold text-white leading-snug">{doc.title}</h3>
+                  <h3 className="text-sm font-semibold text-foreground leading-snug">{doc.title}</h3>
                   <span className={`text-[10px] font-bold uppercase tracking-wider mt-1 block ${config.text}`}>{doc.type}</span>
                 </div>
               </div>
 
-              <div className="flex-1 text-xs text-gray-500 mb-5">
+              <div className="flex-1 text-xs text-muted-foreground mb-5">
                 Last updated: {new Date(doc.lastUpdated).toLocaleDateString()}
               </div>
 
               <Link
                 href={doc.url}
-                className="w-full flex items-center justify-center gap-2 text-xs font-medium text-gray-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.06] py-2.5 rounded-xl transition-all border border-white/[0.04] hover:border-white/[0.08]"
+                className="w-full flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground bg-accent/40 hover:bg-accent/80 py-2.5 rounded-xl transition-all border border-border/40 hover:border-border/80"
               >
                 <Download className="h-3.5 w-3.5" /> Download
               </Link>

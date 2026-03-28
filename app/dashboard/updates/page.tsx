@@ -9,8 +9,8 @@ export default function UpdatesPage() {
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-white">Project Updates</h2>
-        <p className="text-sm text-gray-500 mt-1">A comprehensive timeline of major events, milestones, and releases.</p>
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">Project Updates</h2>
+        <p className="text-sm text-muted-foreground mt-1">A comprehensive timeline of major events, milestones, and releases.</p>
       </div>
 
       <div className="glass-card-static p-8 md:p-10">
@@ -26,13 +26,13 @@ export default function UpdatesPage() {
               </div>
 
               {/* Content card */}
-              <div className="flex-1 bg-white/[0.02] rounded-xl p-5 border border-white/[0.04] hover:bg-white/[0.04] hover:border-white/[0.08] transition-all cursor-pointer group-hover:-translate-y-0.5">
+              <div className="flex-1 bg-accent/30 rounded-xl p-5 border border-border/40 hover:bg-accent/50 hover:border-border/80 transition-all cursor-pointer group-hover:-translate-y-0.5">
                 <div className="flex items-center gap-3 mb-2">
                   <div className={`w-2 h-2 rounded-full ${update.color} md:hidden`} />
-                  <span className="text-xs text-gray-500 font-medium">{update.date}</span>
+                  <span className="text-xs text-muted-foreground font-medium">{update.date}</span>
                 </div>
-                <h3 className="text-white font-semibold text-base group-hover:text-blue-400 transition-colors">{update.title}</h3>
-                <p className="text-sm text-gray-400 mt-2 leading-relaxed">{update.desc}</p>
+                <h3 className="text-foreground font-semibold text-base group-hover:text-blue-400 transition-colors">{update.title}</h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{update.desc}</p>
               </div>
             </div>
           ))}
