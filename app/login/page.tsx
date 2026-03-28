@@ -1,106 +1,83 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { User, Lock, Globe, ArrowRight } from "lucide-react"
+import { ShieldCheck } from "lucide-react"
+
+import { LoginForm } from "@/components/auth/login-form"
+
+import styles from "./login.module.css"
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col relative overflow-hidden">
-      {/* Animated background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/[0.07] rounded-full blur-[150px] animate-float" />
-        <div className="absolute bottom-1/4 right-1/3 w-[400px] h-[400px] bg-purple-500/[0.05] rounded-full blur-[120px]" style={{ animationDelay: '3s' }} />
-      </div>
+    <main className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(58,123,213,0.22),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(30,64,175,0.2),transparent_24%),linear-gradient(180deg,#070a14_0%,#04060d_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.08)_1px,transparent_1px)] bg-[size:64px_64px] opacity-20" />
+      <div className="absolute left-1/2 top-[16%] h-80 w-80 -translate-x-1/2 rounded-full bg-blue-500/10 blur-[140px]" />
 
-      {/* Top Left Logo */}
-      <div className="absolute top-8 left-8 flex items-center gap-3 z-20">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white font-extrabold text-lg shadow-lg shadow-blue-500/20">
-          O
-        </div>
-        <div className="flex flex-col leading-none">
-          <span className="text-xl font-bold tracking-tight">OWOW<span className="text-xs align-top font-normal text-gray-500 ml-0.5">®</span></span>
-          <span className="text-[11px] font-medium text-gray-500 tracking-widest uppercase mt-0.5">Dashboard</span>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center w-full px-4 lg:gap-24 max-w-[1400px] mx-auto relative z-10">
-
-        {/* Left Side: Login Form */}
-        <div className="w-full max-w-[440px] animate-fade-in">
-          <div className="glass-card-static p-10 md:p-12">
-            <div className="flex flex-col mb-10">
-              <h1 className="text-4xl font-bold mb-2 tracking-tight">Welcome back</h1>
-              <p className="text-sm text-gray-400">Sign in to access your project dashboard</p>
+      <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#3b82f6_0%,#2563eb_55%,#1d4ed8_100%)] text-xl font-black shadow-[0_18px_50px_rgba(37,99,235,0.35)]">
+            O
+          </div>
+          <div className="leading-none">
+            <div className="flex items-start gap-1">
+              <span className="text-xl font-bold tracking-tight">OWOW</span>
+              <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-blue-200/50">
+                &reg;
+              </span>
             </div>
-
-            <form className="space-y-5">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">Username</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
-                      <User className="h-4 w-4" />
-                    </div>
-                    <Input
-                      type="text"
-                      placeholder="Enter your username"
-                      className="pl-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">Password</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
-                      <Lock className="h-4 w-4" />
-                    </div>
-                    <Input
-                      type="password"
-                      placeholder="Enter your password"
-                      className="pl-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <div className="w-4 h-4 rounded border border-white/10 bg-white/[0.04]" />
-                  <span className="text-xs text-gray-400">Remember me</span>
-                </label>
-                <Link href="#" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-                  Forgot password?
-                </Link>
-              </div>
-
-              <div className="pt-2">
-                <Link href="/dashboard" className="block w-full">
-                  <Button type="button" className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2">
-                    Sign In
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </form>
+            <p className="mt-1 text-[11px] uppercase tracking-[0.34em] text-slate-400">
+              Client Dashboard
+            </p>
           </div>
         </div>
 
-        {/* Right Side: Globe Graphic */}
-        <div className="hidden lg:flex items-center justify-center ml-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <div className="relative flex items-center justify-center">
-            <Globe className="w-[350px] h-[350px] text-blue-500/40 animate-float" strokeWidth={0.3} />
-            <div className="absolute inset-0 bg-blue-500/10 blur-[80px] rounded-full my-auto mx-auto w-[250px] h-[250px]" />
-
-            {/* Orbital rings */}
-            <div className="absolute border border-blue-500/20 w-[380px] h-[100px] rounded-[100%] rotate-12" />
-            <div className="absolute border border-blue-400/15 w-[380px] h-[100px] rounded-[100%] -rotate-12" />
-            <div className="absolute border border-blue-300/10 w-[400px] h-[140px] rounded-[100%] rotate-6" />
-          </div>
+        <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-slate-300 shadow-[0_10px_40px_rgba(2,6,23,0.35)] backdrop-blur md:flex">
+          <ShieldCheck className="h-3.5 w-3.5 text-blue-300" />
+          Secure workspace access
         </div>
+      </header>
 
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-92px)] w-full max-w-7xl items-center px-6 pb-12 lg:px-10 lg:pb-16">
+        <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-16">
+          <section className="order-2 lg:order-1">
+            <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(8,11,20,0.88))] p-6 shadow-[0_24px_90px_rgba(2,6,23,0.55)] backdrop-blur-xl sm:p-8">
+              <LoginForm />
+            </div>
+          </section>
+
+          <section className="order-1 lg:order-2">
+            <div className="mx-auto flex max-w-2xl flex-col gap-8">
+              <div className="lg:hidden">
+                <div className="mx-auto max-w-sm">
+                  <OrbScene />
+                </div>
+              </div>
+
+              <div className="hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,15,30,0.82),rgba(5,8,18,0.58))] p-8 shadow-[0_30px_100px_rgba(2,6,23,0.55)] backdrop-blur xl:block">
+                <div className="rounded-[1.8rem] border border-blue-400/10 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.14),transparent_42%),linear-gradient(180deg,rgba(15,23,42,0.42),rgba(15,23,42,0.08))] p-4">
+                  <OrbScene />
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  )
+}
+
+function OrbScene() {
+  return (
+    <div className={styles.scene} aria-hidden="true">
+      <div className={styles.orbShell}>
+        <div className={styles.glow} />
+        <div className={styles.orb}>
+          <div className={`${styles.line} ${styles.outerSphere}`} />
+          <div className={`${styles.line} ${styles.meridianPrimary}`} />
+          <div className={`${styles.line} ${styles.meridianSecondary}`} />
+          <div className={`${styles.ring} ${styles.ringOne}`} />
+          <div className={`${styles.ring} ${styles.ringTwo}`} />
+          <div className={`${styles.ring} ${styles.ringThree}`} />
+          <div className={styles.core} />
+        </div>
       </div>
     </div>
   )
