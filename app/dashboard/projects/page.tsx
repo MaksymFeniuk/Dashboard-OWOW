@@ -20,7 +20,7 @@ export default function ProjectsPage() {
           <Link
             key={idx}
             href={`/dashboard/projects/${idx}`}
-            className={`glass-card p-6 flex flex-col relative overflow-hidden animate-slide-up stagger-${idx + 1} group hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 cursor-pointer`}
+            className={`glass-card p-6 flex flex-col relative overflow-hidden animate-slide-up stagger-${idx + 1} group hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 cursor-pointer select-none`}
           >
             <div className="flex justify-between items-start mb-6">
               <h3 className="text-base font-semibold text-white">{project.title}</h3>

@@ -4,10 +4,11 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { User, Lock, Globe, ArrowRight, Check } from "lucide-react"
+import { User, Lock, Globe, ArrowRight, Check, Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col relative overflow-hidden">
       {/* Animated background */}
@@ -62,18 +63,24 @@ export default function LoginPage() {
                       <Lock className="h-4 w-4" />
                     </div>
                     <Input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
-                      className="pl-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
+                      className="pl-11 pr-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setRememberMe(!rememberMe)}>
                   <div
-                    onClick={() => setRememberMe(!rememberMe)}
                     className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${
                       rememberMe
                         ? 'bg-blue-500 border-blue-500'
