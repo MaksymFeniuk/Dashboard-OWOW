@@ -120,7 +120,7 @@ export default function DashboardPage() {
               </div>
               <h2 className="text-base font-semibold text-white">Recent Updates</h2>
             </div>
-            <button onClick={() => router.push('/dashboard/updates')} className="text-xs text-gray-500 hover:text-blue-400 transition-colors flex items-center gap-1 cursor-pointer">
+            <button onClick={() => router.push('/dashboard/updates')} className="text-xs text-gray-500 hover:text-blue-400 hover:bg-white/[0.05] hover:border-blue-500/30 transition-all flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg border border-white/[0.06]">
               View all <ArrowUpRight className="h-3 w-3" />
             </button>
           </div>
@@ -153,7 +153,7 @@ export default function DashboardPage() {
               </div>
               <h2 className="text-base font-semibold text-white">Documents</h2>
             </div>
-            <button onClick={() => router.push('/dashboard/documents')} className="text-xs text-gray-500 hover:text-blue-400 transition-colors flex items-center gap-1 cursor-pointer">
+            <button onClick={() => router.push('/dashboard/documents')} className="text-xs text-gray-500 hover:text-blue-400 hover:bg-white/[0.05] hover:border-blue-500/30 transition-all flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg border border-white/[0.06]">
               View all <ArrowUpRight className="h-3 w-3" />
             </button>
           </div>
