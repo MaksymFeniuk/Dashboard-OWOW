@@ -12,7 +12,7 @@ export default function LoginPage() {
       <div className="absolute left-1/2 top-[16%] h-80 w-80 -translate-x-1/2 rounded-full bg-blue-500/10 blur-[140px]" />
 
       <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
-        <div className="flex items-center gap-4">
+        <div className="chrome-enter flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#3b82f6_0%,#2563eb_55%,#1d4ed8_100%)] text-xl font-black shadow-[0_18px_50px_rgba(37,99,235,0.35)]">
             O
           </div>
@@ -29,14 +29,14 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-slate-300 shadow-[0_10px_40px_rgba(2,6,23,0.35)] backdrop-blur md:flex">
+        <div className="chrome-enter hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-slate-300 shadow-[0_10px_40px_rgba(2,6,23,0.35)] backdrop-blur md:flex" style={{ animationDelay: "120ms" }}>
           <ShieldCheck className="h-3.5 w-3.5 text-blue-300" />
           Secure workspace access
         </div>
       </header>
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-92px)] w-full max-w-7xl items-center px-6 pb-12 lg:px-10 lg:pb-16">
-        <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-16">
+        <div className="motion-cascade grid w-full items-center gap-10 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-16">
           <section className="order-2 lg:order-1">
             <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(8,11,20,0.88))] p-6 shadow-[0_24px_90px_rgba(2,6,23,0.55)] backdrop-blur-xl sm:p-8">
               <LoginForm />

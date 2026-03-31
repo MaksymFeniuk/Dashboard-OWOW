@@ -59,6 +59,15 @@
   --motion-medium: 280ms;
   --motion-slow: 420ms;
   --motion-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --bg-shell: #eef4fb;
+  --bg-base: #f7fafe;
+  --bg-elevated: rgba(255, 255, 255, 0.9);
+  --surface-1: #ffffff;
+  --surface-2: #f4f8fd;
+  --surface-3: #e8eef8;
+  --surface-hover: #e2ebf7;
+  --border-subtle: #dbe5f2;
+  --border-strong: #c5d4e7;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -83,14 +92,14 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.965 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar: #eaf2fb;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #2563eb;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-accent: #dce8f6;
+  --sidebar-accent-foreground: #13243d;
+  --sidebar-border: #cedced;
+  --sidebar-ring: #2563eb;
 }
 
 .dark {
@@ -126,13 +135,13 @@
   --chart-3: #f59e0b;
   --chart-4: #8b5cf6;
   --chart-5: #f43f5e;
-  --sidebar: var(--bg-shell);
-  --sidebar-foreground: #f8fafc;
+  --sidebar: #0b1220;
+  --sidebar-foreground: #f5f8ff;
   --sidebar-primary: #3b82f6;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #10141c;
-  --sidebar-accent-foreground: #e2e8f0;
-  --sidebar-border: #161c27;
+  --sidebar-accent: #142033;
+  --sidebar-accent-foreground: #e7eefc;
+  --sidebar-border: #1b2a40;
   --sidebar-ring: #3b82f6;
 }
 
@@ -182,6 +191,109 @@
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
+}
+
+@keyframes timelineFillGrow {
+  from {
+    opacity: 0.5;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes timelinePhaseEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes timelineMarkerPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.78);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes chromeEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes surfaceEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes budgetBarGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes budgetAreaReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes budgetLineDraw {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes budgetPointPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ─── Utility Classes ─── */
@@ -263,6 +375,7 @@
   border: 1px solid var(--border-subtle);
 }
 
+
 .gradient-text {
   background: linear-gradient(135deg, #3b82f6, #60a5fa, #93c5fd);
   -webkit-background-clip: text;
@@ -288,6 +401,85 @@
   animation: gradientShift 8s ease infinite;
 }
 
+.chrome-enter {
+  opacity: 0;
+  animation: chromeEnter 520ms var(--motion-spring) forwards;
+  animation-delay: var(--chrome-delay, 0ms);
+}
+
+.motion-cascade > * {
+  opacity: 0;
+  animation: surfaceEnter 520ms var(--motion-spring) forwards;
+  animation-delay: calc(var(--stagger-index, 0) * 110ms);
+}
+
+.motion-cascade > *:nth-child(1) { --stagger-index: 0; }
+.motion-cascade > *:nth-child(2) { --stagger-index: 1; }
+.motion-cascade > *:nth-child(3) { --stagger-index: 2; }
+.motion-cascade > *:nth-child(4) { --stagger-index: 3; }
+.motion-cascade > *:nth-child(5) { --stagger-index: 4; }
+.motion-cascade > *:nth-child(6) { --stagger-index: 5; }
+
+.budget-progress-fill {
+  width: var(--budget-fill-width);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: budgetBarGrow 900ms var(--motion-spring) forwards;
+  animation-delay: var(--budget-delay, 0ms);
+}
+
+.budget-chart-area {
+  opacity: 0;
+  transform: translateY(8px);
+  transform-origin: center bottom;
+  animation: budgetAreaReveal 720ms var(--motion-spring) forwards;
+  animation-delay: var(--budget-delay, 0ms);
+}
+
+.budget-chart-line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: budgetLineDraw 1100ms var(--motion-spring) forwards;
+  animation-delay: var(--budget-delay, 0ms);
+}
+
+.budget-chart-point {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: budgetPointPop 420ms var(--motion-spring) forwards;
+  animation-delay: var(--budget-delay, 0ms);
+}
+
+.timeline-progress-fill,
+.timeline-phase-meter {
+  width: var(--timeline-fill-width);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: timelineFillGrow 900ms var(--motion-spring) forwards;
+  animation-delay: var(--timeline-delay, 0ms);
+  will-change: transform;
+}
+
+.timeline-phase {
+  opacity: 0;
+  animation: timelinePhaseEnter 560ms var(--motion-spring) forwards;
+  animation-delay: var(--timeline-delay, 0ms);
+}
+
+.timeline-phase-marker {
+  opacity: 0;
+  animation: timelineMarkerPop 520ms var(--motion-spring) forwards;
+  animation-delay: var(--timeline-delay, 0ms);
+}
+
+.timeline-phase-card,
+.timeline-stat {
+  opacity: 0;
+  animation: timelinePhaseEnter 560ms var(--motion-spring) forwards;
+  animation-delay: calc(var(--timeline-delay, 0ms) + 120ms);
+}
+
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
 .stagger-3 { animation-delay: 0.15s; }
@@ -306,8 +498,24 @@
   }
 
   .motion-reveal,
-  .motion-page-enter {
+  .motion-page-enter,
+  .motion-cascade > *,
+  .chrome-enter,
+  .budget-chart-area,
+  .budget-chart-point,
+  .timeline-phase,
+  .timeline-phase-card,
+  .timeline-phase-marker,
+  .timeline-stat {
     opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .timeline-progress-fill,
+  .timeline-phase-meter,
+  .budget-progress-fill,
+  .budget-chart-line {
     transform: none !important;
     animation: none !important;
   }
@@ -321,9 +529,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--foreground) 14%, transparent);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: color-mix(in srgb, var(--foreground) 24%, transparent);
 }

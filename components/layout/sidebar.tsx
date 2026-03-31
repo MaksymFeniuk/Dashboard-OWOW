@@ -24,7 +24,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 const navItems = [
   { title: "Overview", url: "/dashboard", icon: Home },
@@ -41,7 +41,7 @@ export function AppSidebar() {
   return (
     <Sidebar variant="inset" className="bg-sidebar border-r border-sidebar-border text-sidebar-foreground shadow-[inset_-1px_0_0_rgba(255,255,255,0.02)]">
       <SidebarHeader className="h-24 flex flex-col justify-center px-6">
-        <Link href="/dashboard" className="flex items-center gap-3 group">
+        <Link href="/dashboard" prefetch={false} className="flex items-center gap-3 group">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-extrabold text-lg shadow-lg shadow-primary/20 transition-shadow group-hover:shadow-primary/40">
             O
           </div>
@@ -64,7 +64,6 @@ export function AppSidebar() {
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   isActive={isActive}
-                  tooltip={item.title}
                   className={`
                     relative py-5 px-3 rounded-xl transition-all duration-200
                     ${isActive
@@ -76,7 +75,11 @@ export function AppSidebar() {
                   {isActive && (
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-primary rounded-r-full" />
                   )}
-                  <Link href={item.url} className="flex w-full items-center gap-3 text-sm font-medium">
+                  <Link
+                    href={item.url}
+                    prefetch={false}
+                    className="flex w-full items-center gap-3 text-sm font-medium"
+                  >
                     <item.icon className={`h-[18px] w-[18px] ${isActive ? 'text-primary' : ''}`} />
                     <span>{item.title}</span>
                     {isActive && <ChevronRight className="h-3.5 w-3.5 ml-auto opacity-50" />}
@@ -92,7 +95,11 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton className="text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground py-5 px-3 rounded-xl transition-all duration-200">
-              <Link href="/dashboard/settings" className="flex w-full items-center gap-3 text-sm font-medium">
+              <Link
+                href="/dashboard/settings"
+                prefetch={false}
+                className="flex w-full items-center gap-3 text-sm font-medium"
+              >
                 <Settings className="h-[18px] w-[18px]" />
                 <span>Settings</span>
               </Link>
@@ -103,14 +110,17 @@ export function AppSidebar() {
         <div className="border-t border-sidebar-border pt-4 mt-2 mx-2">
           <div className="flex items-center gap-3 px-1">
             <Avatar className="h-9 w-9 ring-2 ring-border/70">
-              <AvatarImage src="https://github.com/shadcn.png" alt="Josh Butcher" />
               <AvatarFallback className="bg-primary/20 text-primary text-xs">JB</AvatarFallback>
             </Avatar>
             <div className="flex flex-col flex-1 min-w-0">
               <span className="font-medium text-sm text-sidebar-foreground truncate">Josh Butcher</span>
               <span className="text-[11px] text-muted-foreground truncate">Acme Corp</span>
             </div>
-            <Link href="/login" className="p-1.5 rounded-lg hover:bg-sidebar-accent text-muted-foreground hover:text-sidebar-accent-foreground transition-colors">
+            <Link
+              href="/login"
+              prefetch={false}
+              className="p-1.5 rounded-lg hover:bg-sidebar-accent text-muted-foreground hover:text-sidebar-accent-foreground transition-colors"
+            >
               <LogOut className="h-3.5 w-3.5" />
             </Link>
           </div>

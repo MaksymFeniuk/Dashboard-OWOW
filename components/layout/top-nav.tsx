@@ -22,7 +22,11 @@ export function TopNav() {
 
       <div className="flex items-center gap-2 ml-4">
         <ModeToggle />
-        <Link href="/dashboard/updates" className="relative p-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+        <Link
+          href="/dashboard/updates"
+          prefetch={false}
+          className="relative p-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+        >
           <Bell className="h-[18px] w-[18px]" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full ring-2 ring-background" />
         </Link>
