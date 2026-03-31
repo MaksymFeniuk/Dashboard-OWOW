@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
   experimental: {
     // Reduce the dev server's initial memory footprint on startup.
     preloadEntriesOnStart: false,
+    // Inline Tailwind-generated CSS to trim first-load render blocking work.
+    inlineCss: true,
   },
 };
 
