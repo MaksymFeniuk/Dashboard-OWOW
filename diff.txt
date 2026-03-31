@@ -1,0 +1,51 @@
+﻿diff --git a/app/layout.tsx b/app/layout.tsx
+index 71bf525..6ff8e89 100644
+--- a/app/layout.tsx
++++ b/app/layout.tsx
+@@ -32,7 +32,7 @@ export default function RootLayout({
+       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+         <ThemeProvider
+           attribute="class"
+-          defaultTheme="system"
++          defaultTheme="dark"
+           enableSystem
+           disableTransitionOnChange
+         >
+diff --git a/next.config.ts b/next.config.ts
+index e9ffa30..8270161 100644
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -1,7 +1,18 @@
++import path from "node:path";
++import { fileURLToPath } from "node:url";
+ import type { NextConfig } from "next";
+ 
++const configDir = path.dirname(fileURLToPath(import.meta.url));
++
+ const nextConfig: NextConfig = {
+-  /* config options here */
++  turbopack: {
++    // Lock Turbopack resolution to the actual project directory.
++    root: configDir,
++  },
++  experimental: {
++    // Reduce the dev server's initial memory footprint on startup.
++    preloadEntriesOnStart: false,
++  },
+ };
+ 
+ export default nextConfig;
+diff --git a/package.json b/package.json
+index eff5661..4c2cdb8 100644
+--- a/package.json
++++ b/package.json
+@@ -3,7 +3,8 @@
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+-    "dev": "next dev",
++    "dev": "node --max-old-space-size=4096 ./node_modules/next/dist/bin/next dev --webpack",
++    "dev:turbopack": "node --max-old-space-size=4096 ./node_modules/next/dist/bin/next dev",
+     "build": "next build",
+     "start": "next start",
+     "lint": "eslint"
