@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ArrowRight, Calendar, LayoutDashboard } from "lucide-react"
 
 export default function ProjectsPage() {
@@ -16,9 +17,10 @@ export default function ProjectsPage() {
 
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, idx) => (
-          <div
+          <Link
             key={idx}
-            className={`glass-card p-6 flex flex-col relative overflow-hidden animate-slide-up stagger-${idx + 1}`}
+            href={`/dashboard/projects/${idx}`}
+            className={`glass-card p-6 flex flex-col relative overflow-hidden animate-slide-up stagger-${idx + 1} group hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 cursor-pointer`}
           >
             <div className="flex justify-between items-start mb-6">
               <h3 className="text-base font-semibold text-white">{project.title}</h3>
@@ -52,11 +54,11 @@ export default function ProjectsPage() {
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-white/[0.06] flex justify-between items-center text-xs font-medium text-gray-500 group-hover:text-white transition-colors">
-              <span className="hover:text-blue-400 transition-colors cursor-pointer">View Project</span>
+            <div className="mt-6 pt-4 border-t border-white/[0.06] flex justify-between items-center text-xs font-medium text-gray-500 group-hover:text-blue-400 transition-colors">
+              <span>View Project</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
