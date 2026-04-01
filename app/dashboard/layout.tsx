@@ -30,13 +30,11 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-[var(--bg-shell)] text-foreground">
       <aside className="hidden w-72 shrink-0 self-start border-r border-sidebar-border bg-[linear-gradient(180deg,var(--sidebar),color-mix(in_srgb,var(--sidebar)_82%,var(--bg-base)_18%))] text-sidebar-foreground shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col">
-        <div className="chrome-enter border-b border-sidebar-border px-6 py-7">
+        <div className="chrome-enter flex h-20 border-b border-sidebar-border px-6 py-4">
+          
           <Link href="/dashboard" prefetch={false} className="flex items-center gap-3">
-            0
-          </Link>
-          <Link href="/" className="absolute top-4 left-8 flex flex-col gap-2">
             <Image
-              src="/logolight.svg"
+              src="/logolight2.svg"
               alt="OWOW logo"
               width={180}
               height={60}
@@ -108,7 +106,7 @@ export default function DashboardLayout({
           <div className="absolute -bottom-[180px] -left-[180px] h-[520px] w-[520px] rounded-full bg-cyan-500/[0.025] blur-[120px]" />
         </div>
 
-        <header className="sticky top-0 z-30 border-b border-sidebar-border/90 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--sidebar)_94%,var(--bg-base)_6%),color-mix(in_srgb,var(--sidebar)_78%,var(--bg-base)_22%))] px-4 py-4 shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] backdrop-blur-xl md:px-6 lg:px-8">
+        <header className="sticky top-0 z-30  h-20 border-b border-sidebar-border/90 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--sidebar)_94%,var(--bg-base)_6%),color-mix(in_srgb,var(--sidebar)_78%,var(--bg-base)_22%))] px-4 py-4 shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] backdrop-blur-xl md:px-6 lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="chrome-enter min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-300/80">
