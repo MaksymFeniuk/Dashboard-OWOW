@@ -34,7 +34,7 @@ export default function DashboardLayout({
           
           <Link href="/dashboard" prefetch={false} className="flex items-center gap-3">
             <Image
-              src="/logolight2.svg"
+              src="/logolight.svg"
               alt="OWOW logo"
               width={180}
               height={60}
