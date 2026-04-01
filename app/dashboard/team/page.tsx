@@ -1,13 +1,28 @@
+"use client"
+
 import { Mail } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+import { useMemo } from "react"
+import { getProjectById } from "@/lib/mock-data"
 
 export default function TeamPage() {
-  const team = [
+  const searchParams = useSearchParams()
+  const projectId = searchParams.get('projectId')
+  
+  const project = useMemo(() => {
+    if (!projectId) return null
+    return getProjectById(projectId)
+  }, [projectId])
+
+  const defaultTeam = [
     { name: "Sarah Jenkins", role: "Project Manager", image: "https://i.pravatar.cc/150?u=sarah", email: "sarah@owow.io", color: "from-blue-500/20 to-purple-500/20" },
     { name: "David Chen", role: "Lead Designer", image: "https://i.pravatar.cc/150?u=david", email: "david@owow.io", color: "from-emerald-500/20 to-teal-500/20" },
     { name: "Maria Garcia", role: "Frontend Developer", image: "https://i.pravatar.cc/150?u=maria", email: "maria@owow.io", color: "from-amber-500/20 to-orange-500/20" },
     { name: "James Wilson", role: "Backend Developer", image: "https://i.pravatar.cc/150?u=james", email: "james@owow.io", color: "from-purple-500/20 to-pink-500/20" },
     { name: "Karim Massaoud", role: "QA Engineer", image: "https://i.pravatar.cc/150?u=karim", email: "karim@owow.io", color: "from-rose-500/20 to-red-500/20" },
   ]
+
+  const team = project ? (project.team || defaultTeam) : defaultTeam
 
   const roleColors: Record<string, string> = {
     "Project Manager": "text-blue-400 bg-blue-500/10",
@@ -21,7 +36,7 @@ export default function TeamPage() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-white">Team</h2>
-        <p className="text-sm text-gray-500 mt-1">The core OWOW team members dedicated to your project.</p>
+        <p className="text-sm text-gray-500 mt-1">{project ? `Team members for ${project.name}` : 'The core OWOW team members dedicated to your project.'}</p>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

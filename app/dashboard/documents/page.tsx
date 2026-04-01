@@ -1,7 +1,29 @@
+"use client"
+
 import { Download, FileText, File } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+import { useMemo } from "react"
+import { getProjectById } from "@/lib/mock-data"
 
 export default function DocumentsPage() {
-  const documents = [
+  const searchParams = useSearchParams()
+  const projectId = searchParams.get('projectId')
+  
+  const project = useMemo(() => {
+    if (!projectId) return null
+    return getProjectById(projectId)
+  }, [projectId])
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  }
+
+  const documents = project ? project.documents.map(doc => ({
+    name: doc.title,
+    type: doc.type,
+    date: formatDate(doc.lastUpdated),
+    size: "N/A"
+  })) : [
     { name: "Master Services Agreement (MSA)", type: "PDF", date: "Jan 10, 2026", size: "2.4 MB" },
     { name: "Statement of Work (SOW) - Q1", type: "PDF", date: "Jan 15, 2026", size: "1.1 MB" },
     { name: "Brand Guidelines v2", type: "PDF", date: "Feb 05, 2026", size: "15.8 MB" },
@@ -14,13 +36,17 @@ export default function DocumentsPage() {
     PDF: { bg: "bg-red-500/10", text: "text-red-400" },
     PPTX: { bg: "bg-amber-500/10", text: "text-amber-400" },
     DOCX: { bg: "bg-blue-500/10", text: "text-blue-400" },
+    PRD: { bg: "bg-red-500/10", text: "text-red-400" },
+    Migration: { bg: "bg-amber-500/10", text: "text-amber-400" },
+    Planning: { bg: "bg-blue-500/10", text: "text-blue-400" },
+    Other: { bg: "bg-gray-500/10", text: "text-gray-400" },
   }
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-white">Project Documents</h2>
-        <p className="text-sm text-gray-500 mt-1">All contracts, specifications, and reports relative to the project.</p>
+        <p className="text-sm text-gray-500 mt-1">{project ? `Documents for ${project.name}` : 'All contracts, specifications, and reports relative to the project.'}</p>
       </div>
 
       <div className="glass-card-static p-7">
@@ -60,7 +86,7 @@ export default function DocumentsPage() {
                 </div>
 
                 <div className="hidden md:flex md:col-span-2 justify-end">
-                  <button className="p-2 text-gray-500 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100">
+                  <button className="p-2 text-gray-500 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer">
                     <Download className="h-3.5 w-3.5" />
                   </button>
                 </div>

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import {
   Home,
   FolderKanban,
@@ -25,25 +25,30 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { mockClients } from "@/lib/mock-data"
 
 const projectsNavItem = { title: "Projects", url: "/dashboard/projects", icon: FolderKanban }
 
-const projectItems = [
-  { title: "Overview", url: "/dashboard", icon: Home },
-  { title: "Updates", url: "/dashboard/updates", icon: Bell },
-  { title: "Budget", url: "/dashboard/budget", icon: DollarSign },
-  { title: "Documents", url: "/dashboard/documents", icon: FileText },
-  { title: "Team", url: "/dashboard/team", icon: Users },
-]
-
 export function AppSidebar() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const router = useRouter()
+  const projectId = searchParams.get('projectId')
+  
+  // Get the current project if one is selected
+  const currentProject = React.useMemo(() => {
+    if (!projectId) return null
+    for (const client of mockClients) {
+      const project = client.projects.find(p => p.id === projectId)
+      if (project) return project
+    }
+    return null
+  }, [projectId])
 
   return (
     <Sidebar variant="inset" className="bg-[#0d0d14] border-r border-white/[0.04] text-white !border-r-white/[0.04]">
       <SidebarHeader className="h-24 flex flex-col justify-center px-6">
-        <Link href="/dashboard" className="flex items-center gap-3 group">
+        <Link href={currentProject ? `/dashboard?projectId=${projectId}` : "/dashboard/projects"} className="flex items-center gap-3 group">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white font-extrabold text-lg shadow-lg shadow-blue-500/20 transition-shadow group-hover:shadow-blue-500/40">
             O
           </div>
@@ -57,7 +62,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarMenu className="px-3 space-y-0.5">
           {(() => {
-            const isActive = pathname === projectsNavItem.url || pathname.startsWith(projectsNavItem.url)
+            const isActive = pathname === projectsNavItem.url
 
             return (
               <SidebarMenuItem key={projectsNavItem.title}>
@@ -85,38 +90,48 @@ export function AppSidebar() {
           })()}
         </SidebarMenu>
 
-        <div className="px-5 mt-2 mb-2">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-600">Dashboard Redesign</span>
-        </div>
-        <SidebarMenu className="px-3 space-y-0.5">
-          {projectItems.map((item) => {
-            const isActive = pathname === item.url || (item.url !== '/dashboard' && pathname.startsWith(item.url))
+        {currentProject && (
+          <>
+            <div className="px-5 mt-4 mb-2">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-600 line-clamp-2">{currentProject.name}</span>
+            </div>
+            <SidebarMenu className="px-3 space-y-0.5">
+              {[
+                { title: "Overview", url: `/dashboard?projectId=${projectId}`, icon: Home },
+                { title: "Updates", url: `/dashboard/updates?projectId=${projectId}`, icon: Bell },
+                { title: "Budget", url: `/dashboard/budget?projectId=${projectId}`, icon: DollarSign },
+                { title: "Documents", url: `/dashboard/documents?projectId=${projectId}`, icon: FileText },
+                { title: "Team", url: `/dashboard/team?projectId=${projectId}`, icon: Users },
+              ].map((item) => {
+                const isActive = pathname === item.url.split('?')[0] && searchParams.get('projectId') === projectId
 
-            return (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  render={<Link href={item.url} />}
-                  isActive={isActive}
-                  tooltip={item.title}
-                  className={`
-                    relative py-5 px-3 rounded-xl transition-all duration-200
-                    ${isActive
-                      ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/15'
-                      : 'text-gray-400 hover:bg-white/[0.04] hover:text-gray-200'
-                    }
-                  `}
-                >
-                  {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-blue-500 rounded-r-full" />
-                  )}
-                  <item.icon className={`h-[18px] w-[18px] ${isActive ? 'text-blue-400' : ''}`} />
-                  <span className="text-sm font-medium">{item.title}</span>
-                  {isActive && <ChevronRight className="h-3.5 w-3.5 ml-auto opacity-50" />}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )
-          })}
-        </SidebarMenu>
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      render={<Link href={item.url} />}
+                      isActive={isActive}
+                      tooltip={item.title}
+                      className={`
+                        relative py-5 px-3 rounded-xl transition-all duration-200
+                        ${isActive
+                          ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/15'
+                          : 'text-gray-400 hover:bg-white/[0.04] hover:text-gray-200'
+                        }
+                      `}
+                    >
+                      {isActive && (
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-blue-500 rounded-r-full" />
+                      )}
+                      <item.icon className={`h-[18px] w-[18px] ${isActive ? 'text-blue-400' : ''}`} />
+                      <span className="text-sm font-medium">{item.title}</span>
+                      {isActive && <ChevronRight className="h-3.5 w-3.5 ml-auto opacity-50" />}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
+            </SidebarMenu>
+          </>
+        )}
       </SidebarContent>
 
       <SidebarFooter className="p-3 space-y-1 mb-2">

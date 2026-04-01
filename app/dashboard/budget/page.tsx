@@ -1,11 +1,30 @@
+"use client"
+
 import { DollarSign, TrendingUp, AlertCircle, BarChart3 } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+import { useMemo } from "react"
+import { getProjectById } from "@/lib/mock-data"
 
 export default function BudgetPage() {
+  const searchParams = useSearchParams()
+  const projectId = searchParams.get('projectId')
+  
+  const project = useMemo(() => {
+    if (!projectId) return null
+    return getProjectById(projectId)
+  }, [projectId])
+
+  // Calculate budget values
+  const totalBudget = 150000
+  const budgetPercentage = project?.budgetUsed || 50
+  const amountSpent = Math.round((totalBudget * budgetPercentage) / 100)
+  const remaining = totalBudget - amountSpent
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-white">Budget Overview</h2>
-        <p className="text-sm text-gray-500 mt-1">Financial transparency and project burn rate.</p>
+        <p className="text-sm text-gray-500 mt-1">{project ? `Financial tracking for ${project.name}` : 'Financial transparency and project burn rate.'}</p>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-3">
@@ -19,7 +38,7 @@ export default function BudgetPage() {
             <span className="text-sm font-medium text-gray-400">Total Budget</span>
           </div>
           <div className="relative">
-            <div className="text-3xl font-bold text-white tracking-tight">$150,000</div>
+            <div className="text-3xl font-bold text-white tracking-tight">${totalBudget.toLocaleString()}</div>
             <div className="text-xs text-gray-500 mt-2">Allocated for Q1 — Q2</div>
           </div>
         </div>
@@ -34,8 +53,8 @@ export default function BudgetPage() {
             <span className="text-sm font-medium text-gray-400">Amount Spent</span>
           </div>
           <div className="relative">
-            <div className="text-3xl font-bold text-white tracking-tight">$75,000</div>
-            <span className="text-xs font-medium text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full mt-2 inline-block">50% Utilized</span>
+            <div className="text-3xl font-bold text-white tracking-tight">${amountSpent.toLocaleString()}</div>
+            <span className="text-xs font-medium text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full mt-2 inline-block">{budgetPercentage}% Utilized</span>
           </div>
         </div>
 

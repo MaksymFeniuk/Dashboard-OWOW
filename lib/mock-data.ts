@@ -103,6 +103,34 @@ export const mockClients: Client[] = [
         documents: [
           { id: 'd21', title: 'Portal PRD', type: 'PRD', lastUpdated: '2026-02-05', url: '#' },
         ]
+      },
+      {
+        id: 'p3',
+        name: 'CMS Migration Project',
+        description: 'Migrating legacy content management system to a modern headless CMS architecture.',
+        status: 'At Risk',
+        currentSprint: 'Sprint 3',
+        deadline: '2026-07-01',
+        overallProgress: 45,
+        budgetUsed: 60,
+        demoUrl: 'https://cms-staging.acmecorp.dev',
+        sprints: [
+          { id: 's31', name: 'Sprint 1: Content Audit', startDate: '2026-02-01', endDate: '2026-02-21', status: 'Done', progress: 100 },
+          { id: 's32', name: 'Sprint 2: API Integration', startDate: '2026-02-22', endDate: '2026-03-14', status: 'Done', progress: 100 },
+          { id: 's33', name: 'Sprint 3: Data Migration', startDate: '2026-03-15', endDate: '2026-04-04', status: 'In Progress', progress: 55 },
+          { id: 's34', name: 'Sprint 4: Testing & Validation', startDate: '2026-04-05', endDate: '2026-04-25', status: 'To Do', progress: 0 },
+        ],
+        milestones: [
+          { id: 'm31', title: 'Content Audit Complete', dueDate: '2026-02-20', completed: true },
+          { id: 'm32', title: 'API Integration Done', dueDate: '2026-03-10', completed: true },
+          { id: 'm33', title: 'Data Migration Milestone', dueDate: '2026-04-01', completed: false },
+          { id: 'm34', title: 'Go Live', dueDate: '2026-07-01', completed: false },
+        ],
+        documents: [
+          { id: 'd31', title: 'Content Audit Report', type: 'PRD', lastUpdated: '2026-02-20', url: '#' },
+          { id: 'd32', title: 'CMS Migration Strategy', type: 'Migration', lastUpdated: '2026-03-01', url: '#' },
+          { id: 'd33', title: 'API Documentation', type: 'Planning', lastUpdated: '2026-03-15', url: '#' },
+        ]
       }
     ]
   }
