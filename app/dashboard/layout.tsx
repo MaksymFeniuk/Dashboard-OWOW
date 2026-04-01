@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
   Bell,
   DollarSign,
@@ -31,17 +32,17 @@ export default function DashboardLayout({
       <aside className="hidden w-72 shrink-0 self-start border-r border-sidebar-border bg-[linear-gradient(180deg,var(--sidebar),color-mix(in_srgb,var(--sidebar)_82%,var(--bg-base)_18%))] text-sidebar-foreground shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col">
         <div className="chrome-enter border-b border-sidebar-border px-6 py-7">
           <Link href="/dashboard" prefetch={false} className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-lg font-extrabold text-primary-foreground shadow-lg shadow-primary/20">
-              O
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-xl font-bold tracking-tight text-sidebar-foreground">
-                OWOW
-              </span>
-              <span className="mt-0.5 text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                Dashboard
-              </span>
-            </div>
+            0
+          </Link>
+          <Link href="/" className="absolute top-4 left-8 flex flex-col gap-2">
+            <Image
+              src="/logolight.svg"
+              alt="OWOW logo"
+              width={180}
+              height={60}
+              priority
+              className="h-auto w-40"
+            />
           </Link>
         </div>
 
