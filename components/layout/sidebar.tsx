@@ -7,7 +7,6 @@ import {
   Home,
   FolderKanban,
   Bell,
-  DollarSign,
   FileText,
   Users,
   Settings,
@@ -99,7 +98,6 @@ export function AppSidebar() {
               {[
                 { title: "Overview", url: `/dashboard?projectId=${projectId}`, icon: Home },
                 { title: "Updates", url: `/dashboard/updates?projectId=${projectId}`, icon: Bell },
-                { title: "Budget", url: `/dashboard/budget?projectId=${projectId}`, icon: DollarSign },
                 { title: "Documents", url: `/dashboard/documents?projectId=${projectId}`, icon: FileText },
                 { title: "Team", url: `/dashboard/team?projectId=${projectId}`, icon: Users },
               ].map((item) => {

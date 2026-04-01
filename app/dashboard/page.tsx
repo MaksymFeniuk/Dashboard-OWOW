@@ -45,7 +45,6 @@ export default function DashboardPage() {
   }, [project])
 
   const progressValue = project ? `${project.overallProgress}%` : '0%'
-  const budgetValue = project ? `${project.budgetUsed}%` : '50%'
   const currentPhase = project ? project.sprints.find(s => s.status === 'In Progress')?.name.split(':')[0].trim() || 'Building' : 'Building'
 
   return (
@@ -138,11 +137,7 @@ export default function DashboardPage() {
               <h2 className="text-base font-semibold text-white">Budget</h2>
             </div>
             <div className="relative">
-              <div className="text-3xl font-bold text-white tracking-tight">{budgetValue}</div>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">{budgetValue} used</span>
-                <span className="text-xs text-gray-500">{project?.status || 'on track'}</span>
-              </div>
+              <div className="text-3xl font-bold text-white tracking-tight">$150,000</div>
             </div>
           </div>
 
