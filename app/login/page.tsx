@@ -2,13 +2,19 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { User, Lock, Globe, ArrowRight, Check, Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
+  const router = useRouter()
   const [rememberMe, setRememberMe] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+
+  const isFormValid = username.trim() !== "" && password.trim() !== ""
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col relative overflow-hidden">
       {/* Animated background */}
@@ -51,6 +57,8 @@ export default function LoginPage() {
                     <Input
                       type="text"
                       placeholder="Enter your username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                       className="pl-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
                     />
                   </div>
@@ -65,6 +73,8 @@ export default function LoginPage() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="pl-11 pr-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
                     />
                     <button
@@ -97,12 +107,19 @@ export default function LoginPage() {
               </div>
 
               <div className="pt-2">
-                <Link href="/dashboard/projects" className="block w-full">
-                  <Button type="button" className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 flex items-center justify-center gap-2 cursor-pointer">
-                    Sign In
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
+                <Button
+                  type="button"
+                  disabled={!isFormValid}
+                  onClick={() => isFormValid && router.push('/dashboard/projects')}
+                  className={`w-full h-12 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+                    isFormValid
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 cursor-pointer'
+                      : 'bg-gray-600/30 text-gray-500 cursor-not-allowed opacity-50'
+                  }`}
+                >
+                  Sign In
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
               </div>
             </form>
           </div>
