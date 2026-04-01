@@ -8,6 +8,7 @@ import {
   LogOut,
   Settings,
   Users,
+  TrendingUp,
 } from "lucide-react"
 import { ModeToggle } from "@/components/mode-toggle"
 import { PageTransition } from "@/components/ui/page-transition"
@@ -16,6 +17,7 @@ const primaryNav = [
   { title: "Overview", href: "/dashboard", icon: Home },
   { title: "Projects", href: "/dashboard/projects", icon: FolderKanban },
   { title: "Updates", href: "/dashboard/updates", icon: Bell },
+  { title: "Progress", href: "/dashboard/progress", icon: TrendingUp },
   { title: "Budget", href: "/dashboard/budget", icon: DollarSign },
   { title: "Documents", href: "/dashboard/documents", icon: FileText },
   { title: "Team", href: "/dashboard/team", icon: Users },

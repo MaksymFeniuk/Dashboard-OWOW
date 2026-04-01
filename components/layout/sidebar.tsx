@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  TrendingUp,
 } from "lucide-react"
 
 import {
@@ -30,10 +31,12 @@ const navItems = [
   { title: "Overview", url: "/dashboard", icon: Home },
   { title: "Projects", url: "/dashboard/projects", icon: FolderKanban },
   { title: "Updates", url: "/dashboard/updates", icon: Bell },
-  { title: "Budget", url: "/dashboard/budget", icon: DollarSign },
-  { title: "Documents", url: "/dashboard/documents", icon: FileText },
+  { title: "Budget", url: "/dashboard/budget", icon: DollarSign },  
   { title: "Team", url: "/dashboard/team", icon: Users },
-]
+  { title: "Documents", url: "/dashboard/documents", icon: FileText },
+  { title: "Progress", url: "/dashboard/progress", icon: TrendingUp },
+
+] as const
 
 export function AppSidebar() {
   const pathname = usePathname()
