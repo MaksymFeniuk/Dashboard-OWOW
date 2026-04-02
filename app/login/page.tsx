@@ -1,10 +1,28 @@
+<<<<<<< HEAD
 import { ShieldCheck } from "lucide-react"
 
 import { LoginForm } from "@/components/auth/login-form"
 
 import styles from "./login.module.css"
+=======
+"use client"
+
+import { useState } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { User, Lock, Globe, ArrowRight, Check, Eye, EyeOff } from "lucide-react"
+>>>>>>> Maksym-component-developer
 
 export default function LoginPage() {
+  const router = useRouter()
+  const [rememberMe, setRememberMe] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+
+  const isFormValid = username.trim() !== "" && password.trim() !== ""
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(58,123,213,0.22),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(30,64,175,0.2),transparent_24%),linear-gradient(180deg,#070a14_0%,#04060d_100%)]" />
@@ -23,9 +41,89 @@ export default function LoginPage() {
                 &reg;
               </span>
             </div>
+<<<<<<< HEAD
             <p className="mt-1 text-[11px] uppercase tracking-[0.34em] text-slate-400">
               Client Dashboard
             </p>
+=======
+
+            <form className="space-y-5">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">Username</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
+                      <User className="h-4 w-4" />
+                    </div>
+                    <Input
+                      type="text"
+                      placeholder="Enter your username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="pl-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">Password</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
+                      <Lock className="h-4 w-4" />
+                    </div>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="pl-11 pr-11 bg-white/[0.04] border border-white/[0.08] text-white h-12 rounded-xl focus-visible:ring-1 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/30 placeholder:text-gray-600 text-sm transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-1">
+                <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setRememberMe(!rememberMe)}>
+                  <div
+                    className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${
+                      rememberMe
+                        ? 'bg-blue-500 border-blue-500'
+                        : 'border-white/10 bg-white/[0.04]'
+                    }`}
+                  >
+                    {rememberMe && <Check className="h-3 w-3 text-white" />}
+                  </div>
+                  <span className="text-xs text-gray-400">Remember me</span>
+                </label>
+                <Link href="#" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                  Forgot password?
+                </Link>
+              </div>
+
+              <div className="pt-2">
+                <Button
+                  type="button"
+                  disabled={!isFormValid}
+                  onClick={() => isFormValid && router.push('/dashboard/projects')}
+                  className={`w-full h-12 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+                    isFormValid
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 cursor-pointer'
+                      : 'bg-gray-600/30 text-gray-500 cursor-not-allowed opacity-50'
+                  }`}
+                >
+                  Sign In
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </form>
+>>>>>>> Maksym-component-developer
           </div>
         </div>
 

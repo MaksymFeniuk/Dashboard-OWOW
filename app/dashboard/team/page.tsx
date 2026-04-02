@@ -1,4 +1,5 @@
 "use client"
+<<<<<<< HEAD
 
 import { useState, type ElementType, type KeyboardEvent } from "react"
 import {
@@ -266,6 +267,39 @@ function TeamAvatar({
         <span className={textClassName}>{getInitials(name)}</span>
       </div>
     )
+=======
+
+import { Mail } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+import { useMemo } from "react"
+import { getProjectById } from "@/lib/mock-data"
+
+export default function TeamPage() {
+  const searchParams = useSearchParams()
+  const projectId = searchParams.get('projectId')
+  
+  const project = useMemo(() => {
+    if (!projectId) return null
+    return getProjectById(projectId)
+  }, [projectId])
+
+  const defaultTeam = [
+    { name: "Sarah Jenkins", role: "Project Manager", image: "https://i.pravatar.cc/150?u=sarah", email: "sarah@owow.io", color: "from-blue-500/20 to-purple-500/20" },
+    { name: "David Chen", role: "Lead Designer", image: "https://i.pravatar.cc/150?u=david", email: "david@owow.io", color: "from-emerald-500/20 to-teal-500/20" },
+    { name: "Maria Garcia", role: "Frontend Developer", image: "https://i.pravatar.cc/150?u=maria", email: "maria@owow.io", color: "from-amber-500/20 to-orange-500/20" },
+    { name: "James Wilson", role: "Backend Developer", image: "https://i.pravatar.cc/150?u=james", email: "james@owow.io", color: "from-purple-500/20 to-pink-500/20" },
+    { name: "Karim Massaoud", role: "QA Engineer", image: "https://i.pravatar.cc/150?u=karim", email: "karim@owow.io", color: "from-rose-500/20 to-red-500/20" },
+  ]
+
+  const team = project ? (project.team || defaultTeam) : defaultTeam
+
+  const roleColors: Record<string, string> = {
+    "Project Manager": "text-blue-400 bg-blue-500/10",
+    "Lead Designer": "text-emerald-400 bg-emerald-500/10",
+    "Frontend Developer": "text-amber-400 bg-amber-500/10",
+    "Backend Developer": "text-purple-400 bg-purple-500/10",
+    "QA Engineer": "text-rose-400 bg-rose-500/10",
+>>>>>>> Maksym-component-developer
   }
 
   return (
@@ -333,6 +367,7 @@ export default function TeamPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
+<<<<<<< HEAD
       <section className="grid gap-5 xl:grid-cols-[1.55fr,1fr]">
         <div className="glass-card relative overflow-hidden p-6 md:p-7">
           <div className="pointer-events-none absolute inset-0">
@@ -340,6 +375,12 @@ export default function TeamPage() {
             <div className="absolute bottom-0 left-0 h-48 w-48 rounded-full bg-violet-500/[0.08] blur-3xl" />
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:28px_28px] opacity-[0.35]" />
           </div>
+=======
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight text-white">Team</h2>
+        <p className="text-sm text-gray-500 mt-1">{project ? `Team members for ${project.name}` : 'The core OWOW team members dedicated to your project.'}</p>
+      </div>
+>>>>>>> Maksym-component-developer
 
           <div className="relative flex h-full flex-col gap-6">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1.5 text-[11px] font-semibold text-blue-300">

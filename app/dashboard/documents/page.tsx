@@ -1,5 +1,6 @@
 "use client"
 
+<<<<<<< HEAD
 import { useState, useMemo, useCallback, useEffect } from "react"
 import {
   Search, Upload, Trash2, Download, Eye, Share2,
@@ -145,6 +146,48 @@ export default function DocumentsPage() {
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortAsc(a => !a)
     else { setSortKey(key); setSortAsc(false) }
+=======
+import { Download, FileText, File } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+import { useMemo } from "react"
+import { getProjectById } from "@/lib/mock-data"
+
+export default function DocumentsPage() {
+  const searchParams = useSearchParams()
+  const projectId = searchParams.get('projectId')
+  
+  const project = useMemo(() => {
+    if (!projectId) return null
+    return getProjectById(projectId)
+  }, [projectId])
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  }
+
+  const documents = project ? project.documents.map(doc => ({
+    name: doc.title,
+    type: doc.type,
+    date: formatDate(doc.lastUpdated),
+    size: "N/A"
+  })) : [
+    { name: "Master Services Agreement (MSA)", type: "PDF", date: "Jan 10, 2026", size: "2.4 MB" },
+    { name: "Statement of Work (SOW) - Q1", type: "PDF", date: "Jan 15, 2026", size: "1.1 MB" },
+    { name: "Brand Guidelines v2", type: "PDF", date: "Feb 05, 2026", size: "15.8 MB" },
+    { name: "Sprint 1 Review Deck", type: "PPTX", date: "Feb 20, 2026", size: "5.2 MB" },
+    { name: "QA Sign-off Report", type: "PDF", date: "Mar 01, 2026", size: "600 KB" },
+    { name: "Beta Release Notes", type: "PDF", date: "Mar 04, 2026", size: "350 KB" },
+  ]
+
+  const typeConfig: Record<string, { bg: string; text: string }> = {
+    PDF: { bg: "bg-red-500/10", text: "text-red-400" },
+    PPTX: { bg: "bg-amber-500/10", text: "text-amber-400" },
+    DOCX: { bg: "bg-blue-500/10", text: "text-blue-400" },
+    PRD: { bg: "bg-red-500/10", text: "text-red-400" },
+    Migration: { bg: "bg-amber-500/10", text: "text-amber-400" },
+    Planning: { bg: "bg-blue-500/10", text: "text-blue-400" },
+    Other: { bg: "bg-gray-500/10", text: "text-gray-400" },
+>>>>>>> Maksym-component-developer
   }
 
   const SortIcon = ({ k }: { k: SortKey }) =>
@@ -154,6 +197,7 @@ export default function DocumentsPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
+<<<<<<< HEAD
 
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -169,6 +213,11 @@ export default function DocumentsPage() {
         >
           <Upload className="h-4 w-4" /> Upload File
         </button>
+=======
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight text-white">Project Documents</h2>
+        <p className="text-sm text-gray-500 mt-1">{project ? `Documents for ${project.name}` : 'All contracts, specifications, and reports relative to the project.'}</p>
+>>>>>>> Maksym-component-developer
       </div>
 
 
@@ -319,6 +368,7 @@ export default function DocumentsPage() {
                 </div>
 
 
+<<<<<<< HEAD
                 {/* Inline Preview Panel */}
                 {isPreview && (
                   <div className="px-6 pb-5 bg-accent/20 border-t border-border/20 animate-fade-in">
@@ -342,6 +392,18 @@ export default function DocumentsPage() {
                     </div>
                   </div>
                 )}
+=======
+                <div className="col-span-3 md:col-span-2 flex flex-col">
+                  <span className="text-xs text-gray-400">{doc.date}</span>
+                  <span className="text-[11px] text-gray-600 hidden md:block">{doc.size}</span>
+                </div>
+
+                <div className="hidden md:flex md:col-span-2 justify-end">
+                  <button className="p-2 text-gray-500 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer">
+                    <Download className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+>>>>>>> Maksym-component-developer
               </div>
             )
           })}
