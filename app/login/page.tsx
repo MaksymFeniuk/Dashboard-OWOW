@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 import { ShieldCheck } from "lucide-react"
 
 import { LoginForm } from "@/components/auth/login-form"
@@ -12,22 +14,16 @@ export default function LoginPage() {
       <div className="absolute left-1/2 top-[16%] h-80 w-80 -translate-x-1/2 rounded-full bg-blue-500/10 blur-[140px]" />
 
       <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
-        <div className="chrome-enter flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#3b82f6_0%,#2563eb_55%,#1d4ed8_100%)] text-xl font-black shadow-[0_18px_50px_rgba(37,99,235,0.35)]">
-            O
+        <div className="flex items-center gap-4">
+          <Image
+            src="/images/owowlogo.png"
+            alt="OWOW Logo"
+            width={50}
+            height={40}
+            className="h-10 w-auto"
+            loading="eager"
+          />
           </div>
-          <div className="leading-none">
-            <div className="flex items-start gap-1">
-              <span className="text-xl font-bold tracking-tight">OWOW</span>
-              <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-blue-200/50">
-                &reg;
-              </span>
-            </div>
-            <p className="mt-1 text-[11px] uppercase tracking-[0.34em] text-slate-400">
-              Client Dashboard
-            </p>
-          </div>
-        </div>
 
         <div className="chrome-enter hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-slate-300 shadow-[0_10px_40px_rgba(2,6,23,0.35)] backdrop-blur md:flex" style={{ animationDelay: "120ms" }}>
           <ShieldCheck className="h-3.5 w-3.5 text-blue-300" />

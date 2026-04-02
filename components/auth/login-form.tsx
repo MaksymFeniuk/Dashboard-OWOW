@@ -122,7 +122,7 @@ export function LoginForm() {
           type="submit"
           size="lg"
           disabled={isDisabled}
-          className="h-14 w-full rounded-2xl bg-[linear-gradient(135deg,#2563eb_0%,#3b82f6_55%,#60a5fa_100%)] text-base font-semibold text-white shadow-[0_20px_50px_rgba(37,99,235,0.35)] transition hover:shadow-[0_24px_60px_rgba(37,99,235,0.42)]"
+          className="h-14 w-full rounded-2xl bg-[linear-gradient(135deg,#2563eb_0%,#3b82f6_55%,#60a5fa_100%)] text-base font-semibold text-white shadow-[0_20px_50px_rgba(37,99,235,0.35)] transition hover:shadow-[0_24px_60px_rgba(37,99,235,0.42)] cursor-pointer"
         >
           {isPending ? "Opening dashboard..." : "Enter dashboard"}
           <ArrowRight className="h-4 w-4" />
