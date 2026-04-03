@@ -4,12 +4,12 @@ import { useRef, useState } from "react"
 import { CheckCircle2, ChevronLeft, ChevronRight, Clock, AlertCircle, Zap, FileText, Sparkles } from "lucide-react"
 import { mockClients } from "@/lib/mock-data"
 
-const STAGE_COLORS = {
+const PHASE_COLORS = {
   Research: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   Design: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
   Development: 'bg-green-500/20 text-green-400 border-green-500/30',
   Testing: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-  Delivery: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+  Delivery: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
 }
 
 const CONTACT_TYPE_COLORS = {
@@ -28,13 +28,41 @@ const CONTACT_TYPE_ICONS = {
   other: Clock,
 }
 
+// Helper to get the primary phase of a sprint
+const getPrimaryPhase = (stages?: string[]) => {
+  if (!stages || stages.length === 0) return 'Development'
+  return stages[0] as keyof typeof PHASE_COLORS
+}
+
 export default function ProgressPage() {
   const project = mockClients[0]?.projects[0]
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const timelineRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
 
   if (!project) return <div>Project not found</div>
+
+  // Calculate phase groups
+  const getPhaseGroups = () => {
+    const groups: Array<{ phase: string; startIndex: number; endIndex: number }> = []
+    let currentPhase = getPrimaryPhase(project.sprints[0]?.stages)
+    let startIndex = 0
+
+    for (let i = 1; i <= project.sprints.length; i++) {
+      const nextPhase = i < project.sprints.length ? getPrimaryPhase(project.sprints[i]?.stages) : null
+      
+      if (nextPhase !== currentPhase) {
+        groups.push({ phase: currentPhase, startIndex, endIndex: i - 1 })
+        currentPhase = nextPhase || currentPhase
+        startIndex = i
+      }
+    }
+
+    return groups
+  }
+
+  const phaseGroups = getPhaseGroups()
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -74,6 +102,12 @@ export default function ProgressPage() {
     return { type: 'scheduled', label: 'Scheduled' }
   }
 
+  // Calculate progress position on timeline
+  const completedSprints = project.sprints.filter(s => s.status === 'Done').length
+  const progressPositionPercent = completedSprints > 0 
+    ? (completedSprints / project.sprints.length) * 100 
+    : 0
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
@@ -88,40 +122,132 @@ export default function ProgressPage() {
           <p className="mt-0.5 text-xs text-muted-foreground">{project.sprints.length} sprints</p>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-4 px-1">
-          <span>{new Date(project.projectStartDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-          <span>{new Date(project.projectEndDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-        </div>
-
         <div className="relative">
           {canScrollLeft && <button onClick={handleScrollLeft} className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 p-1.5 rounded border border-border/40"><ChevronLeft className="h-4 w-4" /></button>}
-          {canScrollRight && <button onClick={handleScrollRight} className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 p-1.5 rounded border border-border/40"><ChevronRight className="h-4 w-4" /></button>}
 
           <div ref={scrollContainerRef} onScroll={handleScroll} className="overflow-x-auto scrollbar-hide">
-            <div className="inline-flex gap-0 px-8 py-4 bg-accent/20 rounded-lg border border-border/40 min-w-full relative">
-              <div className="absolute left-0 right-0 top-4 h-1.5 bg-accent/40 rounded-full">
-                <div className="h-full bg-gradient-to-r from-green-600 to-green-400 rounded-full" style={{ width: `${progressPercentage}%` }} />
+            <div className="inline-block p-8 relative" style={{ minWidth: `${project.sprints.length * 200 + 64}px`, height: '280px' }}>
+              {/* Start date label - below first segment */}
+              <div 
+                className="absolute text-xs text-muted-foreground font-semibold"
+                style={{
+                  left: '0px',
+                  top: '198px',
+                  transform: 'translateX(-50%)',
+                }}
+              >
+                {new Date(project.projectStartDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })}
               </div>
 
-              {project.sprints.map((sprint, i) => {
-                const startDt = new Date(sprint.startDate)
-                const endDt = new Date(sprint.endDate)
-                const totalDays = Math.ceil((new Date(project.projectEndDate).getTime() - new Date(project.projectStartDate).getTime()) / (1000 * 60 * 60 * 24))
-                const sprintDays = Math.ceil((endDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24))
-                const width = (sprintDays / totalDays) * 100
+              {/* End date label - below last segment */}
+              <div 
+                className="absolute text-xs text-muted-foreground font-semibold"
+                style={{
+                  left: `${project.sprints.length * 200}px`,
+                  top: '198px',
+                  transform: 'translateX(-50%)',
+                }}
+              >
+                {new Date(project.projectEndDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+              </div>
 
-                return (
-                  <div key={sprint.id} className="flex-1 relative px-2 pt-8 text-center" style={{ minWidth: '150px', flex: `0 0 ${width}%` }}>
-                    <div className="text-[11px] font-semibold text-foreground truncate mb-2">{sprint.name}</div>
-                    <div className="space-y-1">
-                      {(sprint.stages || []).map(stage => (
-                        <div key={stage} className={`text-[9px] px-1.5 py-0.5 rounded border ${STAGE_COLORS[stage as keyof typeof STAGE_COLORS]}`}>{stage}</div>
-                      ))}
+              {/* Milestones - top section */}
+              <div className="absolute top-8 left-12 right-8 h-24">
+                {sortedMilestones.map((milestone) => {
+                  const milestoneDate = new Date(milestone.dueDate)
+                  const projectStart = new Date(project.projectStartDate)
+                  const projectEnd = new Date(project.projectEndDate)
+                  const totalDays = (projectEnd.getTime() - projectStart.getTime()) / (1000 * 60 * 60 * 24)
+                  const milestoneDays = (milestoneDate.getTime() - projectStart.getTime()) / (1000 * 60 * 60 * 24)
+                  const milestonePercent = (milestoneDays / totalDays) * 100
+
+                  return (
+                    <div
+                      key={milestone.id}
+                      className="absolute flex flex-col items-center"
+                      style={{
+                        left: `${milestonePercent}%`,
+                        transform: 'translateX(-50%)',
+                      }}
+                    >
+                      {/* Yellow vertical line */}
+                      <div className="w-0.5 h-12 bg-yellow-400" />
+                      {/* Yellow badge */}
+                      <div className="bg-yellow-500/20 border border-yellow-500/40 px-2 py-1 rounded text-[10px] font-semibold text-yellow-300 whitespace-nowrap mt-1">
+                        {milestone.title}
+                      </div>
                     </div>
-                    {i < project.sprints.length - 1 && <div className="absolute right-0 top-0 bottom-0 w-px bg-border/40" />}
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
+
+              {/* Main timeline - sprints section */}
+              <div className="absolute top-40 left-8 right-8 h-24">
+                {/* Background white/gray line */}
+                <div className="absolute top-4 left-0 right-0 h-1 bg-slate-400/40" />
+                
+                {/* Green progress line */}
+                <div
+                  className="absolute top-4 left-0 h-1 bg-green-500 transition-all duration-500"
+                  style={{ 
+                    width: `${progressPositionPercent}%`,
+                  }}
+                />
+
+                {/* Start vertical line */}
+                <div className="absolute top-0 left-0 w-0.5 h-8 bg-slate-400/60" />
+
+                {/* Sprint segments with dividers */}
+                {project.sprints.map((sprint, i) => {
+                  const segmentPosition = i * 200
+                  const labelPosition = segmentPosition + 100 // Center of segment
+
+                  return (
+                    <div key={sprint.id}>
+                      {/* Vertical divider line */}
+                      <div
+                        className="absolute top-0 w-0.5 h-8 bg-slate-400/60"
+                        style={{ left: `${segmentPosition}px` }}
+                      />
+                      
+                      {/* Sprint label - centered under middle of segment */}
+                      <div
+                        className="absolute text-[11px] font-semibold text-foreground mt-9"
+                        style={{
+                          left: `${labelPosition}px`,
+                          transform: 'translateX(-50%)',
+                        }}
+                      >
+                        Sprint {i + 1}
+                      </div>
+                    </div>
+                  )
+                })}
+
+                {/* End vertical line */}
+                <div className="absolute top-0 w-0.5 h-8 bg-slate-400/60" style={{ left: `${project.sprints.length * 200}px` }} />
+              </div>
+
+              {/* Phase bars - bottom section */}
+              <div className="absolute left-8 right-8 h-12" style={{ bottom: '0px' }}>
+                {phaseGroups.map((group) => {
+                  const startPos = group.startIndex * 200
+                  const width = (group.endIndex - group.startIndex + 1) * 200
+
+                  return (
+                    <div
+                      key={group.phase}
+                      className={`absolute h-full rounded-sm border text-xs font-semibold flex items-center justify-center ${PHASE_COLORS[group.phase as keyof typeof PHASE_COLORS]}`}
+                      style={{
+                        left: `${startPos}px`,
+                        width: `${width}px`,
+                      }}
+                    >
+                      {group.phase}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
