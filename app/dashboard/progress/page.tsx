@@ -127,25 +127,23 @@ export default function ProgressPage() {
 
           <div ref={scrollContainerRef} onScroll={handleScroll} className="overflow-x-auto scrollbar-hide">
             <div className="inline-block p-8 relative" style={{ minWidth: `${project.sprints.length * 200 + 64}px`, height: '280px' }}>
-              {/* Start date label - below first segment */}
+              {/* Start date label - top left */}
               <div 
                 className="absolute text-xs text-muted-foreground font-semibold"
                 style={{
                   left: '0px',
-                  top: '198px',
-                  transform: 'translateX(-50%)',
+                  top: '0px',
                 }}
               >
                 {new Date(project.projectStartDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })}
               </div>
 
-              {/* End date label - below last segment */}
+              {/* End date label - top right */}
               <div 
                 className="absolute text-xs text-muted-foreground font-semibold"
                 style={{
-                  left: `${project.sprints.length * 200}px`,
-                  top: '198px',
-                  transform: 'translateX(-50%)',
+                  right: '0px',
+                  top: '0px',
                 }}
               >
                 {new Date(project.projectEndDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })}
@@ -161,6 +159,12 @@ export default function ProgressPage() {
                   const milestoneDays = (milestoneDate.getTime() - projectStart.getTime()) / (1000 * 60 * 60 * 24)
                   const milestonePercent = (milestoneDays / totalDays) * 100
 
+                  const isCompleted = milestone.completed
+                  const lineColor = isCompleted ? 'bg-green-500' : 'bg-yellow-400'
+                  const badgeBg = isCompleted ? 'bg-green-500/20' : 'bg-yellow-500/20'
+                  const badgeBorder = isCompleted ? 'border-green-500/40' : 'border-yellow-500/40'
+                  const badgeText = isCompleted ? 'text-green-300' : 'text-yellow-300'
+
                   return (
                     <div
                       key={milestone.id}
@@ -170,12 +174,12 @@ export default function ProgressPage() {
                         transform: 'translateX(-50%)',
                       }}
                     >
-                      {/* Yellow vertical line */}
-                      <div className="w-0.5 h-12 bg-yellow-400" />
-                      {/* Yellow badge */}
-                      <div className="bg-yellow-500/20 border border-yellow-500/40 px-2 py-1 rounded text-[10px] font-semibold text-yellow-300 whitespace-nowrap mt-1">
+                      {/* Badge */}
+                      <div className={`${badgeBg} border ${badgeBorder} px-2 py-1 rounded text-[10px] font-semibold ${badgeText} whitespace-nowrap`}>
                         {milestone.title}
                       </div>
+                      {/* Vertical line going down to timeline */}
+                      <div className={`w-0.5 ${lineColor}`} style={{ height: '128px' }} />
                     </div>
                   )
                 })}
