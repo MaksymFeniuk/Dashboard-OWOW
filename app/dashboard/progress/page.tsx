@@ -1,259 +1,397 @@
-import Link from "next/link"
-import { ArrowUpRight, CheckCircle2, Clock3, Flag, Wallet, Zap } from "lucide-react"
-import type { CSSProperties } from "react"
+"use client"
 
+import { useRef, useState } from "react"
 import {
-  progressHighlights,
-  recentUpdates,
-  timelinePhases,
-  timelineStats,
-  totalBudget,
-} from "@/lib/dashboard-data"
+  AlertCircle,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  FileText,
+  Zap,
+} from "lucide-react"
+import { mockClients } from "@/lib/mock-data"
+
+const PHASE_COLORS = {
+  Research: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  Design: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  Development: "bg-green-500/20 text-green-400 border-green-500/30",
+  Testing: "bg-orange-500/20 text-orange-400 border-orange-500/30",
+  Delivery: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+}
+
+const CONTACT_TYPE_COLORS = {
+  meeting: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  review: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  presentation: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  kickoff: "bg-orange-500/20 text-orange-400 border-orange-500/30",
+  other: "bg-slate-500/20 text-slate-400 border-slate-500/30",
+}
+
+const CONTACT_TYPE_ICONS = {
+  meeting: Clock,
+  review: AlertCircle,
+  presentation: Zap,
+  kickoff: Zap,
+  other: Clock,
+}
+
+const getPrimaryPhase = (stages?: string[]) => {
+  if (!stages || stages.length === 0) return "Development"
+  return stages[0] as keyof typeof PHASE_COLORS
+}
 
 export default function ProgressPage() {
+  const project = mockClients[0]?.projects[0]
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  if (!project) return <div>Project not found</div>
+
+  const getPhaseGroups = () => {
+    const groups: Array<{ phase: string; startIndex: number; endIndex: number }> = []
+    let currentPhase = getPrimaryPhase(project.sprints[0]?.stages)
+    let startIndex = 0
+
+    for (let i = 1; i <= project.sprints.length; i++) {
+      const nextPhase = i < project.sprints.length ? getPrimaryPhase(project.sprints[i]?.stages) : null
+
+      if (nextPhase !== currentPhase) {
+        groups.push({ phase: currentPhase, startIndex, endIndex: i - 1 })
+        currentPhase = nextPhase || currentPhase
+        startIndex = i
+      }
+    }
+
+    return groups
+  }
+
+  const phaseGroups = getPhaseGroups()
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
+      setCanScrollLeft(scrollLeft > 0)
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10)
+    }
+  }
+
+  const handleScrollLeft = () => {
+    scrollContainerRef.current?.scrollBy({ left: -300, behavior: "smooth" })
+  }
+
+  const handleScrollRight = () => {
+    scrollContainerRef.current?.scrollBy({ left: 300, behavior: "smooth" })
+  }
+
+  const sortedMilestones = [...project.milestones].sort(
+    (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+  )
+
+  const sortedContacts = [...project.contactMoments].sort(
+    (a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
+  )
+
+  const now = new Date()
+  const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+
+  const getAlertStatus = (dateTimeStr: string, isUpcoming?: boolean) => {
+    const contactDate = new Date(dateTimeStr)
+    if (contactDate < now) return { type: "past", label: "Past" }
+    if (contactDate >= now && contactDate <= sevenDaysFromNow) {
+      return { type: "coming-soon", label: "Coming Soon" }
+    }
+    if (isUpcoming) return { type: "upcoming", label: "Upcoming" }
+    return { type: "scheduled", label: "Scheduled" }
+  }
+
+  const completedSprints = project.sprints.filter((sprint) => sprint.status === "Done").length
+  const progressPositionPercent =
+    completedSprints > 0 ? (completedSprints / project.sprints.length) * 100 : 0
+
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Progress
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            A focused view of delivery status, milestones, and what comes next.
-          </p>
-        </div>
-        <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-accent/40 px-3.5 py-2 text-xs text-muted-foreground">
-          <Clock3 className="h-3.5 w-3.5" />
-          <span>Prepared for the Tuesday, April 8, 2026 meeting</span>
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {[
-          {
-            label: "Active phase",
-            value: timelineStats[0].value,
-            note: "Engineering is the main focus this sprint.",
-            icon: Zap,
-            tone: "text-blue-400 bg-blue-500/10 ring-blue-500/20",
-          },
-          {
-            label: "Overall progress",
-            value: timelineStats[1].value,
-            note: "Progress reflects the current sprint completion rate.",
-            icon: CheckCircle2,
-            tone: "text-emerald-400 bg-emerald-500/10 ring-emerald-500/20",
-          },
-          {
-            label: "Deadline",
-            value: timelineStats[2].value,
-            note: "Client delivery target for the current scope.",
-            icon: Flag,
-            tone: "text-amber-400 bg-amber-500/10 ring-amber-500/20",
-          },
-          {
-            label: "Total budget",
-            value: `$${totalBudget.toLocaleString()}`,
-            note: "Budget stays visible here without the removed burn-rate view.",
-            icon: Wallet,
-            tone: "text-violet-400 bg-violet-500/10 ring-violet-500/20",
-          },
-        ].map((item) => {
-          const Icon = item.icon
-
-          return (
-            <div key={item.label} className="glass-card p-6">
-              <div className="flex items-center gap-3">
-                <div className={`rounded-xl p-2.5 ring-1 ${item.tone}`}>
-                  <Icon className="h-4 w-4" />
-                </div>
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                    {item.label}
-                  </p>
-                  <p className="mt-1 text-lg font-semibold text-foreground">
-                    {item.value}
-                  </p>
-                </div>
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                {item.note}
-              </p>
-            </div>
-          )
-        })}
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          Project Progress
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Timeline, milestones, and contact moments for {project.name}
+        </p>
       </div>
 
       <div className="glass-card p-7">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-blue-500/10 p-2.5 ring-1 ring-blue-500/20">
-              <Zap className="h-4 w-4 text-blue-400" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-foreground">
-                Delivery timeline
-              </h3>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Shared view with the overview page for consistent reporting.
-              </p>
-            </div>
-          </div>
-
-          <Link
-            href="/dashboard/projects"
-            prefetch={false}
-            className="hidden items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-blue-400 sm:flex"
-          >
-            Open projects <ArrowUpRight className="h-3 w-3" />
-          </Link>
+        <div className="mb-6">
+          <h2 className="text-base font-semibold text-foreground">Sprint Timeline</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">{project.sprints.length} sprints</p>
         </div>
 
         <div className="relative">
-          <div className="absolute left-5 right-5 top-[18px] h-1.5 rounded-full bg-accent/80">
-            <div
-              className="timeline-progress-fill h-full rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400/60"
-              style={
-                {
-                  "--timeline-fill-width": "65%",
-                  "--timeline-delay": "160ms",
-                } as CSSProperties
-              }
-            />
-          </div>
+          {canScrollLeft && (
+            <button
+              onClick={handleScrollLeft}
+              className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded border border-border/40 bg-background/80 p-1.5"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+          )}
+          {canScrollRight && (
+            <button
+              onClick={handleScrollRight}
+              className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded border border-border/40 bg-background/80 p-1.5"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          )}
 
-          <div className="relative grid gap-4 lg:grid-cols-4">
-            {timelinePhases.map((phase, index) => (
+          <div
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="overflow-x-auto scrollbar-hide"
+          >
+            <div
+              className="relative inline-block p-8"
+              style={{ minWidth: `${project.sprints.length * 200 + 64}px`, height: "280px" }}
+            >
               <div
-                key={phase.label}
-                className="timeline-phase pt-0 text-center"
-                style={
-                  {
-                    "--timeline-delay": `${index * 160 + 260}ms`,
-                  } as CSSProperties
-                }
+                className="absolute text-xs font-semibold text-muted-foreground"
+                style={{ left: "0px", top: "0px" }}
               >
-                <div className="timeline-phase-marker mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full ring-4 ring-background">
-                  <div
-                    className={`flex h-9 w-9 items-center justify-center rounded-full ${phase.accent}`}
-                  >
-                    {phase.progress === 100 ? (
-                      <CheckCircle2 className="h-4 w-4 text-white" />
-                    ) : (
-                      <span className="text-xs font-bold text-white">
-                        {phase.progress}%
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <p className={`text-xs font-semibold ${phase.text}`}>
-                  {phase.label}
-                </p>
-                <p className="mt-0.5 text-[10px] text-muted-foreground/70">
-                  {phase.date}
-                </p>
-                <div className="timeline-phase-card mt-3 rounded-xl border border-border/30 bg-accent/25 px-3 py-3 text-left">
-                  <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-wide text-muted-foreground">
-                    <span>{phase.status}</span>
-                    <span>{phase.progress}%</span>
-                  </div>
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-accent/80">
-                    <div
-                      className={`timeline-phase-meter h-full rounded-full ${
-                        phase.progress === 100
-                          ? "bg-blue-500"
-                          : phase.progress > 0
-                            ? "bg-emerald-500"
-                            : "bg-muted-foreground/40"
-                      }`}
-                      style={
-                        {
-                          "--timeline-fill-width": `${phase.progress}%`,
-                          "--timeline-delay": `${index * 160 + 420}ms`,
-                        } as CSSProperties
-                      }
-                    />
-                  </div>
-                  <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-                    {phase.note}
-                  </p>
-                </div>
+                {new Date(project.projectStartDate).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit",
+                })}
               </div>
-            ))}
+
+              <div
+                className="absolute text-xs font-semibold text-muted-foreground"
+                style={{ right: "0px", top: "0px" }}
+              >
+                {new Date(project.projectEndDate).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit",
+                })}
+              </div>
+
+              <div className="absolute left-12 right-8 top-8 h-24">
+                {sortedMilestones.map((milestone) => {
+                  const milestoneDate = new Date(milestone.dueDate)
+                  const projectStart = new Date(project.projectStartDate)
+                  const projectEnd = new Date(project.projectEndDate)
+                  const totalDays =
+                    (projectEnd.getTime() - projectStart.getTime()) / (1000 * 60 * 60 * 24)
+                  const milestoneDays =
+                    (milestoneDate.getTime() - projectStart.getTime()) / (1000 * 60 * 60 * 24)
+                  const milestonePercent = (milestoneDays / totalDays) * 100
+
+                  const isCompleted = milestone.completed
+                  const lineColor = isCompleted ? "bg-green-500" : "bg-yellow-400"
+                  const badgeBg = isCompleted ? "bg-green-500/20" : "bg-yellow-500/20"
+                  const badgeBorder = isCompleted ? "border-green-500/40" : "border-yellow-500/40"
+                  const badgeText = isCompleted ? "text-green-300" : "text-yellow-300"
+
+                  return (
+                    <div
+                      key={milestone.id}
+                      className="absolute flex -translate-x-1/2 flex-col items-center"
+                      style={{ left: `${milestonePercent}%` }}
+                    >
+                      <div
+                        className={`${badgeBg} ${badgeBorder} ${badgeText} whitespace-nowrap rounded border px-2 py-1 text-[10px] font-semibold`}
+                      >
+                        {milestone.title}
+                      </div>
+                      <div className={`w-0.5 ${lineColor}`} style={{ height: "128px" }} />
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="absolute left-8 right-8 top-40 h-24">
+                <div className="absolute left-0 right-0 top-4 h-1 bg-slate-400/40" />
+
+                <div
+                  className="absolute left-0 top-4 h-1 bg-green-500 transition-all duration-500"
+                  style={{ width: `${progressPositionPercent}%` }}
+                />
+
+                <div className="absolute left-0 top-0 h-8 w-0.5 bg-slate-400/60" />
+
+                {project.sprints.map((sprint, index) => {
+                  const segmentPosition = index * 200
+                  const labelPosition = segmentPosition + 100
+
+                  return (
+                    <div key={sprint.id}>
+                      <div
+                        className="absolute top-0 h-8 w-0.5 bg-slate-400/60"
+                        style={{ left: `${segmentPosition}px` }}
+                      />
+                      <div
+                        className="absolute mt-9 text-[11px] font-semibold text-foreground"
+                        style={{ left: `${labelPosition}px`, transform: "translateX(-50%)" }}
+                      >
+                        Sprint {index + 1}
+                      </div>
+                    </div>
+                  )
+                })}
+
+                <div
+                  className="absolute top-0 h-8 w-0.5 bg-slate-400/60"
+                  style={{ left: `${project.sprints.length * 200}px` }}
+                />
+              </div>
+
+              <div className="absolute left-8 right-8 h-12" style={{ bottom: "0px" }}>
+                {phaseGroups.map((group) => {
+                  const startPos = group.startIndex * 200
+                  const width = (group.endIndex - group.startIndex + 1) * 200
+
+                  return (
+                    <div
+                      key={group.phase}
+                      className={`absolute flex h-full items-center justify-center rounded-sm border text-xs font-semibold ${PHASE_COLORS[group.phase as keyof typeof PHASE_COLORS]}`}
+                      style={{ left: `${startPos}px`, width: `${width}px` }}
+                    >
+                      {group.phase}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[1.2fr,0.8fr]">
-        <div className="glass-card-static p-7">
-          <h3 className="text-base font-semibold text-foreground">
-            Meeting highlights
-          </h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            The main talking points to keep the April 8 review focused.
-          </p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="glass-card p-7">
+          <h2 className="mb-4 text-base font-semibold text-foreground">Milestones</h2>
+          <div className="max-h-[400px] space-y-2 overflow-y-auto">
+            {sortedMilestones.map((milestone) => (
+              <div key={milestone.id} className="rounded-lg border border-border/40 bg-accent/20 p-3">
+                <div className="mb-2 flex items-start gap-3">
+                  <div className="flex-shrink-0 pt-0.5">
+                    {milestone.completed ? (
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full border border-green-500/40 bg-green-500/20">
+                        <CheckCircle2 className="h-3 w-3 text-green-400" />
+                      </div>
+                    ) : (
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full border border-amber-500/40 bg-amber-500/20">
+                        <div className="h-2 w-2 rounded-full bg-amber-400" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-foreground">{milestone.title}</h3>
+                      {milestone.isNew && (
+                        <div className="inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-500/20 px-2 py-0.5">
+                          <span className="text-[10px] font-semibold text-blue-400">NEW</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-0.5 text-xs text-muted-foreground">
+                      {new Date(milestone.dueDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </div>
+                  </div>
+                </div>
+                {milestone.relatedDocuments && milestone.relatedDocuments.length > 0 && (
+                  <div className="mt-2 space-y-1">
+                    {milestone.relatedDocuments.map((docId) => {
+                      const doc = project.documents.find((document) => document.id === docId)
 
-          <div className="mt-5 grid gap-3">
-            {progressHighlights.map((item) => (
-              <div
-                key={item.label}
-                className="rounded-2xl border border-border/40 bg-accent/20 px-4 py-4"
-              >
-                <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                  {item.label}
-                </p>
-                <p className="mt-2 text-sm font-semibold text-foreground">
-                  {item.value}
-                </p>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  {item.note}
-                </p>
+                      return doc ? (
+                        <a
+                          key={doc.id}
+                          href={doc.url}
+                          className="group flex items-center gap-2 rounded bg-background/40 px-2 py-1 text-xs hover:bg-background/60"
+                        >
+                          <FileText className="h-3 w-3 text-muted-foreground group-hover:text-foreground" />
+                          <span className="flex-1 truncate text-muted-foreground group-hover:text-foreground">
+                            {doc.title}
+                          </span>
+                        </a>
+                      ) : null
+                    })}
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        <div className="glass-card-static p-7">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <h3 className="text-base font-semibold text-foreground">
-                Recent delivery updates
-              </h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Small, high-signal updates that support the progress view.
-              </p>
-            </div>
-            <Link
-              href="/dashboard/updates"
-              prefetch={false}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              aria-label="Open updates page"
-            >
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
+        <div className="glass-card p-7">
+          <h2 className="mb-4 text-base font-semibold text-foreground">Contact Moments</h2>
+          <div className="max-h-[400px] space-y-2 overflow-y-auto">
+            {sortedContacts.map((contact) => {
+              const IconComponent = CONTACT_TYPE_ICONS[contact.type]
+              const alertStatus = getAlertStatus(contact.dateTime, contact.isUpcoming)
+              const contactDate = new Date(contact.dateTime)
 
-          <div className="mt-6 space-y-4">
-            {recentUpdates.map((item) => (
-              <div key={item.title} className="flex gap-3">
-                <div
-                  className={`mt-1.5 h-[10px] w-[10px] flex-shrink-0 rounded-full ${item.color}`}
-                />
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-foreground">
-                      {item.title}
-                    </p>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${item.badgeColor}`}
-                    >
-                      {item.badge}
-                    </span>
+              return (
+                <div key={contact.id} className="rounded-lg border border-border/40 bg-accent/20 p-3">
+                  <div className="mb-2 flex items-start gap-3">
+                    <div className={`mt-0.5 flex-shrink-0 rounded p-1 ${CONTACT_TYPE_COLORS[contact.type]}`}>
+                      <IconComponent className="h-3.5 w-3.5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-sm font-semibold text-foreground">{contact.title}</h3>
+                        {contact.isNew && (
+                          <div className="inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-500/20 px-1.5 py-0.5">
+                            <span className="text-[10px] font-semibold text-blue-400">NEW</span>
+                          </div>
+                        )}
+                        {(alertStatus.type === "coming-soon" ||
+                          alertStatus.type === "past" ||
+                          alertStatus.type === "upcoming") && (
+                          <div
+                            className={`rounded-full border px-1.5 py-0.5 text-[10px] font-semibold ${
+                              alertStatus.type === "coming-soon"
+                                ? "border-amber-500/30 bg-amber-500/20 text-amber-400"
+                                : alertStatus.type === "past"
+                                  ? "border-slate-500/30 bg-slate-500/20 text-slate-400"
+                                  : "border-green-500/30 bg-green-500/20 text-green-400"
+                            }`}
+                          >
+                            {alertStatus.label}
+                          </div>
+                        )}
+                      </div>
+                      <div className="mt-0.5 text-[10px] capitalize text-muted-foreground">
+                        {contact.type} |{" "}
+                        {contactDate.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </div>
+                      <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Clock className="h-2.5 w-2.5" />
+                        <span>
+                          {contactDate.toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}{" "}
+                          UTC
+                        </span>
+                      </div>
+                      {contact.description && (
+                        <div className="mt-1 line-clamp-1 text-xs text-muted-foreground">
+                          {contact.description}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <p className="mt-1 text-xs text-muted-foreground">{item.date}</p>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>
