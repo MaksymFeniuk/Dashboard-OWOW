@@ -4,17 +4,12 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  Home,
-  FolderKanban,
-  Bell,
-  DollarSign,
-  FileText,
-  Users,
   Settings,
   LogOut,
   ChevronRight,
 } from "lucide-react"
 
+import { dashboardNavItems } from "@/components/layout/dashboard-nav"
 import {
   Sidebar,
   SidebarContent,
@@ -25,15 +20,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-
-const navItems = [
-  { title: "Overview", url: "/dashboard", icon: Home },
-  { title: "Projects", url: "/dashboard/projects", icon: FolderKanban },
-  { title: "Updates", url: "/dashboard/updates", icon: Bell },
-  { title: "Budget", url: "/dashboard/budget", icon: DollarSign },
-  { title: "Documents", url: "/dashboard/documents", icon: FileText },
-  { title: "Team", url: "/dashboard/team", icon: Users },
-]
 
 export function AppSidebar() {
   const pathname = usePathname()
@@ -57,8 +43,10 @@ export function AppSidebar() {
           <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/80">Menu</span>
         </div>
         <SidebarMenu className="px-3 space-y-0.5">
-          {navItems.map((item) => {
-            const isActive = pathname === item.url || (item.url !== '/dashboard' && pathname.startsWith(item.url))
+          {dashboardNavItems.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/dashboard" && pathname.startsWith(item.href))
 
             return (
               <SidebarMenuItem key={item.title}>
@@ -76,7 +64,7 @@ export function AppSidebar() {
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-primary rounded-r-full" />
                   )}
                   <Link
-                    href={item.url}
+                    href={item.href}
                     prefetch={false}
                     className="flex w-full items-center gap-3 text-sm font-medium"
                   >
