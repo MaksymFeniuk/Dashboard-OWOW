@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { type FormEvent, useState, useTransition } from "react"
+import { type FormEvent, useState, useSyncExternalStore, useTransition } from "react"
 import {
   ArrowRight,
   Eye,
@@ -15,9 +15,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+function subscribe() {
+  return () => {}
+}
+
 export function LoginForm() {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
+  const isMounted = useSyncExternalStore(subscribe, () => true, () => false)
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
   const [username, setUsername] = useState("")
@@ -41,6 +46,20 @@ export function LoginForm() {
         </h2>
       </div>
 
+      {!isMounted ? (
+        <div className="space-y-5" aria-hidden="true">
+          <div className="space-y-2">
+            <div className="h-4 w-24 rounded bg-white/8" />
+            <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.04]" />
+          </div>
+          <div className="space-y-2">
+            <div className="h-4 w-24 rounded bg-white/8" />
+            <div className="h-14 rounded-2xl border border-white/10 bg-white/[0.04]" />
+          </div>
+          <div className="h-[92px] rounded-2xl border border-white/10 bg-white/[0.03]" />
+          <div className="h-14 rounded-2xl bg-white/10" />
+        </div>
+      ) : (
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label
@@ -130,6 +149,7 @@ export function LoginForm() {
 
         <div className="h-1" />
       </form>
+      )}
     </div>
   )
 }

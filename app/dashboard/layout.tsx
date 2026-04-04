@@ -4,9 +4,10 @@ import {
   Settings,
 } from "lucide-react"
 import { dashboardNavItems } from "@/components/layout/dashboard-nav"
-import { DashboardMobileNav } from "@/components/layout/dashboard-mobile-nav"
-import { NotificationDrawer } from "@/components/layout/notification-drawer"
-import { ModeToggle } from "@/components/mode-toggle"
+import {
+  DashboardHeaderActions,
+  DashboardHeaderMobileNav,
+} from "@/components/layout/dashboard-header-controls"
 import { PageTransition } from "@/components/ui/page-transition"
 
 export default function DashboardLayout({
@@ -98,7 +99,7 @@ export default function DashboardLayout({
         <header className="sticky top-0 z-30 border-b border-sidebar-border/90 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--sidebar)_94%,var(--bg-base)_6%),color-mix(in_srgb,var(--sidebar)_78%,var(--bg-base)_22%))] px-4 py-4 shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] backdrop-blur-xl md:px-6 lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="chrome-enter flex min-w-0 items-start gap-3">
-              <DashboardMobileNav />
+              <DashboardHeaderMobileNav />
               <div className="min-w-0">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-300/80">
                   Client Portal
@@ -116,13 +117,12 @@ export default function DashboardLayout({
               className="chrome-enter flex items-center gap-2"
               style={{ animationDelay: "120ms" }}
             >
-              <NotificationDrawer />
-              <ModeToggle />
+              <DashboardHeaderActions />
             </div>
           </div>
         </header>
 
-        <main className="relative z-10 flex-1 p-4 md:p-6 lg:p-8">
+        <main id="main-content" className="relative z-10 flex-1 p-4 md:p-6 lg:p-8">
           <PageTransition className="motion-cascade mx-auto w-full max-w-7xl">
             {children}
           </PageTransition>

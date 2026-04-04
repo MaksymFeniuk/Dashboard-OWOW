@@ -5,7 +5,10 @@ import { LoginForm } from "@/components/auth/login-form"
 
 export default function LoginPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
+    <main
+      id="main-content"
+      className="relative min-h-screen overflow-hidden bg-[#050816] text-white"
+    >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(58,123,213,0.18),transparent_28%),radial-gradient(circle_at_85%_18%,rgba(30,64,175,0.14),transparent_24%),linear-gradient(180deg,#070a14_0%,#04060d_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
 

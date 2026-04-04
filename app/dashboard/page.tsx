@@ -221,7 +221,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="glass-card relative min-h-[360px] p-7">
+        <div className="glass-card content-auto relative min-h-[360px] p-7">
           <div className="mb-7 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-emerald-500/10 p-2.5 ring-1 ring-emerald-500/20">
@@ -270,7 +270,7 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        <div className="glass-card relative min-h-[360px] p-7 lg:col-span-2">
+        <div className="glass-card content-auto relative min-h-[360px] p-7 lg:col-span-2">
           <div className="mb-7 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-amber-500/10 p-2.5 ring-1 ring-amber-500/20">
