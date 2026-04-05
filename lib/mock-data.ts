@@ -54,7 +54,7 @@ export const mockClients: Client[] = [
     projects: [
       {
         id: 'p1',
-        name: 'E-commerce Platform Redesign',
+        name: 'Webshop refresh',
         description: 'Overhauling the main e-commerce platform with a new modern Next.js stack, integrated with Shopify and a custom robust CMS.',
         status: 'On Track',
         currentSprint: 'Sprint 4',
@@ -83,7 +83,7 @@ export const mockClients: Client[] = [
       },
       {
         id: 'p2',
-        name: 'Acme Employee Portal App',
+        name: 'Employee portal app',
         description: 'Internal tool for managing employee leaves, expenses, and company announcements.',
         status: 'Delayed',
         currentSprint: 'Sprint 2',
@@ -106,7 +106,7 @@ export const mockClients: Client[] = [
       },
       {
         id: 'p3',
-        name: 'Marketing Site V2',
+        name: 'Landing page refresh',
         description: 'Public website redesign and CMS migration focused on faster publishing, stronger performance, and a cleaner visual system.',
         status: 'At Risk',
         currentSprint: 'Sprint 2',

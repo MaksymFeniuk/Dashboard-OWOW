@@ -81,13 +81,12 @@ export default function DashboardLayout({
 
           <div className="mt-3 flex items-center gap-3 rounded-2xl border border-sidebar-border/80 bg-sidebar-accent/60 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/15 text-xs font-semibold text-primary shadow-[0_10px_24px_rgba(37,99,235,0.16)]">
-              JB
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium text-sidebar-foreground">
-                Josh Butcher
+                Leo Claevens
               </p>
-              <p className="truncate text-[11px] text-muted-foreground">Acme Corp</p>
+              <p className="truncate text-[11px] text-muted-foreground">Banana Phone inc.</p>
             </div>
             <Link
               href="/login"
@@ -114,7 +113,7 @@ export default function DashboardLayout({
                 Client Portal
               </p>
               <h1 className="mt-1 text-lg font-semibold text-foreground">
-                OWOW dashboard workspace
+                Banana Phone inc.
               </h1>
             </div>
 

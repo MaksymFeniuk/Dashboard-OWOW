@@ -47,7 +47,7 @@ export default function SettingsPage() {
                   <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">First Name</label>
                   <input
                     type="text"
-                    defaultValue="Josh"
+                    defaultValue="Leo"
                     className="w-full bg-accent/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
                   />
                 </div>
@@ -55,7 +55,7 @@ export default function SettingsPage() {
                   <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Last Name</label>
                   <input
                     type="text"
-                    defaultValue="Butcher"
+                    defaultValue="Claevens"
                     className="w-full bg-accent/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
                   />
                 </div>
@@ -65,7 +65,7 @@ export default function SettingsPage() {
                 <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Email Address</label>
                 <input
                   type="email"
-                  defaultValue="josh@example.com"
+                  defaultValue="janklaasberendse@example.com"
                   className="w-full bg-accent/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
                 />
               </div>
@@ -74,7 +74,7 @@ export default function SettingsPage() {
                 <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Company</label>
                 <input
                   type="text"
-                  defaultValue="Acme Corp"
+                  defaultValue="Banana Phone inc."
                   disabled
                   className="w-full bg-accent/30 border border-border/30 rounded-xl px-4 py-3 text-sm text-muted-foreground/80 cursor-not-allowed"
                 />

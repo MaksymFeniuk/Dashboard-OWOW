@@ -81,21 +81,21 @@ const budgetTrend = [
 
 const recentUpdates = [
   {
-    title: "Beta Release Deployed",
-    date: "March 4, 2026",
+    title: "Beta Release v1.0",
+    date: "March 20, 2026",
     color: "bg-emerald-500",
     badge: "Release",
     badgeColor: "text-emerald-400 bg-emerald-500/10",
   },
   {
-    title: "Alpha V2 Deployed",
-    date: "Feb 28, 2026",
+    title: "Auth Redirect Bugfix",
+    date: "Feb 26, 2026",
     color: "bg-blue-500",
     badge: "Deploy",
     badgeColor: "text-blue-400 bg-blue-500/10",
   },
   {
-    title: "UI Redesign Approved",
+    title: "Alpha Release v1.0",
     date: "Feb 15, 2026",
     color: "bg-muted-foreground/40",
     badge: "Approved",
@@ -131,7 +131,7 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Good evening, Josh
+            Good evening, Leo!
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Here&apos;s your project overview for today
@@ -139,7 +139,7 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-accent/40 px-3.5 py-2 text-xs text-muted-foreground">
           <Clock className="h-3.5 w-3.5" />
-          <span>Last updated: March 28, 2026</span>
+          <span>Last updated: April 7th, 2026</span>
         </div>
       </div>
 
@@ -155,12 +155,12 @@ export default function DashboardPage() {
                   Project Timeline
                 </h2>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  E-commerce Redesign
+                  Webshop refresh
                 </p>
               </div>
             </div>
             <span className="rounded-full bg-blue-500/10 px-3 py-1.5 text-[10px] font-semibold text-blue-400 ring-1 ring-blue-500/20">
-              Sprint 3 / 5
+              Sprint 13 / 16
             </span>
           </div>
 
