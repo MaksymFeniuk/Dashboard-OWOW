@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   AlertCircle,
   CheckCircle2,
@@ -10,7 +10,11 @@ import {
   FileText,
   Zap,
 } from "lucide-react"
-import { mockClients } from "@/lib/mock-data"
+import { type Client, type Project } from "@/lib/mock-data"
+
+type DashboardSnapshot = {
+  clients: Client[]
+}
 
 const PHASE_COLORS = {
   Research: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -42,12 +46,55 @@ const getPrimaryPhase = (stages?: string[]) => {
 }
 
 export default function ProgressPage() {
-  const project = mockClients[0]?.projects[0]
+  const [project, setProject] = useState<Project | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
 
-  if (!project) return <div>Project not found</div>
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function loadProject() {
+      try {
+        setIsLoading(true)
+        const response = await fetch("/api/dashboard", {
+          signal: controller.signal,
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to load project")
+        }
+
+        const data = (await response.json()) as DashboardSnapshot
+        setProject(data.clients[0]?.projects[0] ?? null)
+        setError(null)
+      } catch (loadError) {
+        if ((loadError as DOMException).name === "AbortError") {
+          return
+        }
+
+        setError("Unable to load project progress right now.")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadProject()
+
+    return () => controller.abort()
+  }, [])
+
+  if (isLoading) {
+    return <div className="text-sm text-muted-foreground">Loading project progress...</div>
+  }
+
+  if (error) {
+    return <div className="text-sm text-muted-foreground">{error}</div>
+  }
+
+  if (!project) return <div className="text-sm text-muted-foreground">Project not found</div>
 
   const getPhaseGroups = () => {
     const groups: Array<{ phase: string; startIndex: number; endIndex: number }> = []

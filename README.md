@@ -3,6 +3,19 @@
 ## Overview
 This is a modern, enterprise-grade client dashboard tailored for digital agency OWOW. It communicates project phases, sprints, deadlines, and documentation clearly to clients.
 
+## MongoDB Setup
+The dashboard now reads from MongoDB when `MONGODB_URI` is defined. If the variable is missing, the app falls back to the existing mock data so local development still works.
+
+On first connection, the app seeds two collections automatically:
+- `clients` for project data
+- `dashboard_overviews` for the overview cards on the dashboard home page
+
+Use a local `.env.local` file with a value like:
+
+```bash
+MONGODB_URI=mongodb://127.0.0.1:27017/owow-dashboard
+```
+
 ---
 
 ## Team Task Distribution

@@ -1,8 +1,13 @@
-import { mockClients } from "@/lib/mock-data"
+import { getClients } from "@/lib/data-access"
 import { MonitorPlay, ExternalLink } from "lucide-react"
 
-export default function GlobalDemosPage() {
-  const client = mockClients[0]
+export default async function GlobalDemosPage() {
+  const clients = await getClients()
+  const client = clients[0]
+
+  if (!client) {
+    return <div className="text-sm text-muted-foreground">No projects found.</div>
+  }
 
   return (
     <div className="space-y-6 animate-fade-in">

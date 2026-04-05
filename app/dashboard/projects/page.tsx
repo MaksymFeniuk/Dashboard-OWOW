@@ -1,6 +1,6 @@
 "use client"
 
-import { type ElementType, useMemo, useState } from "react"
+import { type ElementType, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import {
   AlertTriangle,
@@ -19,7 +19,11 @@ import {
   TrendingUp,
 } from "lucide-react"
 
-import { mockClients, type Status } from "@/lib/mock-data"
+import { type Client, type Project, type Status } from "@/lib/mock-data"
+
+type DashboardSnapshot = {
+  clients: Client[]
+}
 
 type CardMeta = {
   insight: string
@@ -81,8 +85,6 @@ const FILTER_OPTIONS: Array<"All" | Status> = [
   "At Risk",
 ]
 
-const projects = mockClients[0]?.projects ?? []
-
 function formatDate(value: string) {
   return new Date(value).toLocaleDateString("en-US", {
     month: "short",
@@ -138,9 +140,45 @@ function CircularProgress({
 }
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<"All" | Status>("All")
   const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number]>("Default")
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function loadProjects() {
+      try {
+        setIsLoading(true)
+        const response = await fetch("/api/dashboard", {
+          signal: controller.signal,
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to load projects")
+        }
+
+        const data = (await response.json()) as DashboardSnapshot
+        setProjects(data.clients[0]?.projects ?? [])
+        setError(null)
+      } catch (loadError) {
+        if ((loadError as DOMException).name === "AbortError") {
+          return
+        }
+
+        setError("Unable to load projects right now.")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadProjects()
+
+    return () => controller.abort()
+  }, [])
 
   const filtered = useMemo(() => {
     let list =
@@ -164,6 +202,23 @@ export default function ProjectsPage() {
 
     return list
   }, [filter, sort])
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4 animate-fade-in">
+        <div className="h-8 w-48 rounded bg-accent/30" />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="glass-card h-64 animate-pulse rounded-2xl bg-accent/20" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return <div className="text-sm text-muted-foreground">{error}</div>
+  }
 
   return (
     <div className="space-y-7 animate-fade-in">

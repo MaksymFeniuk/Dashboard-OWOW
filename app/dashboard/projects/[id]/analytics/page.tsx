@@ -11,7 +11,7 @@ import {
 } from "lucide-react"
 
 import { ProjectViewSwitcher } from "@/components/projects/project-view-switcher"
-import { getProjectById } from "@/lib/mock-data"
+import { getProjectById } from "@/lib/data-access"
 
 function formatDate(value: string) {
   return new Date(value).toLocaleDateString("en-US", {
@@ -27,7 +27,7 @@ export default async function ProjectAnalyticsPage({
   params: Promise<{ id: string }>
 }) {
   const p = await params
-  const project = getProjectById(p.id)
+  const project = await getProjectById(p.id)
 
   if (!project) {
     notFound()

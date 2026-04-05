@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation"
-import { getProjectById } from "@/lib/mock-data"
+import { getProjectById } from "@/lib/data-access"
 import { FileText, ArrowLeft, Link2 } from "lucide-react"
 import Link from "next/link"
 
 export default async function DocumentationPage({ params }: { params: Promise<{ id: string }> }) {
   const p = await params
-  const project = getProjectById(p.id)
+  const project = await getProjectById(p.id)
 
   if (!project) {
     notFound()

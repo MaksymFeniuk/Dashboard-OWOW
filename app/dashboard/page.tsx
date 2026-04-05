@@ -10,15 +10,11 @@ import {
 import Link from "next/link"
 import type { CSSProperties } from "react"
 
-import {
-  overviewDocuments,
-  recentUpdates,
-  timelinePhases,
-  timelineStats,
-  totalBudget,
-} from "@/lib/dashboard-data"
+import { getDashboardData } from "@/lib/data-access"
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const dashboard = await getDashboardData()
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -71,7 +67,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="relative grid gap-4 sm:grid-cols-4">
-              {timelinePhases.map((phase, index) => (
+              {dashboard.timelinePhases.map((phase, index) => (
                 <div
                   key={phase.label}
                   className="timeline-phase pt-0 text-center sm:pt-0"
@@ -132,7 +128,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            {timelineStats.map((item, index) => (
+            {dashboard.timelineStats.map((item, index) => (
               <div
                 key={item.label}
                 title={item.tooltip}
@@ -173,7 +169,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <p className="mt-6 text-3xl font-bold tracking-tight text-foreground">
-                  ${totalBudget.toLocaleString()}
+                  ${dashboard.totalBudget.toLocaleString()}
                 </p>
                 <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
                   Detailed budget breakdowns and burn-rate charts were removed to
@@ -236,7 +232,7 @@ export default function DashboardPage() {
           <div className="relative space-y-5">
             <div className="pointer-events-none absolute bottom-2 left-[15px] top-2 w-px bg-gradient-to-b from-emerald-500/40 via-blue-500/20 to-transparent" />
 
-            {recentUpdates.map((item) => (
+            {dashboard.recentUpdates.map((item) => (
               <div key={item.title} className="relative z-10 flex gap-4">
                 <div
                   className={`mt-1.5 h-[10px] w-[10px] flex-shrink-0 rounded-full ${item.color} ring-4 ring-background`}
@@ -295,7 +291,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-1">
-              {overviewDocuments.map((doc) => (
+              {dashboard.overviewDocuments.map((doc) => (
                 <div
                   key={doc.name}
                   className="group/row -mx-3 grid grid-cols-12 items-center gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-accent/40"
