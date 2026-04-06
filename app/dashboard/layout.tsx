@@ -18,7 +18,12 @@ export default function DashboardLayout({
     <div className="flex min-h-screen bg-[var(--bg-shell)] text-foreground">
       <aside className="hidden w-72 shrink-0 self-start border-r border-sidebar-border bg-[linear-gradient(180deg,var(--sidebar),color-mix(in_srgb,var(--sidebar)_82%,var(--bg-base)_18%))] text-sidebar-foreground shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col">
         <div className="chrome-enter border-b border-sidebar-border px-6 py-7">
-          <Link href="/dashboard" prefetch={false} className="flex items-center gap-3">
+          <Link
+            href="/dashboard"
+            prefetch={false}
+            aria-label="Open dashboard home"
+            className="flex items-center gap-3"
+          >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-lg font-extrabold text-primary-foreground shadow-lg shadow-primary/20">
               O
             </div>
