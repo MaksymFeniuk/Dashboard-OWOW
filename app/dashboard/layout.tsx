@@ -1,13 +1,25 @@
 import Link from "next/link"
 import {
+  Bell,
+  DollarSign,
+  FileText,
+  FolderKanban,
+  Home,
   LogOut,
   Settings,
+  Users,
 } from "lucide-react"
-import { dashboardNavItems } from "@/components/layout/dashboard-nav"
-import { DashboardMobileNav } from "@/components/layout/dashboard-mobile-nav"
-import { NotificationDrawer } from "@/components/layout/notification-drawer"
 import { ModeToggle } from "@/components/mode-toggle"
 import { PageTransition } from "@/components/ui/page-transition"
+
+const primaryNav = [
+  { title: "Overview", href: "/dashboard", icon: Home },
+  { title: "Projects", href: "/dashboard/projects", icon: FolderKanban },
+  { title: "Updates", href: "/dashboard/updates", icon: Bell },
+  { title: "Budget", href: "/dashboard/budget", icon: DollarSign },
+  { title: "Documents", href: "/dashboard/documents", icon: FileText },
+  { title: "Team", href: "/dashboard/team", icon: Users },
+]
 
 export default function DashboardLayout({
   children,
@@ -38,7 +50,7 @@ export default function DashboardLayout({
             Navigation
           </p>
           <div className="chrome-stagger mt-3 space-y-1.5">
-            {dashboardNavItems.map((item, index) => {
+            {primaryNav.map((item, index) => {
               const Icon = item.icon
 
               return (
@@ -97,26 +109,16 @@ export default function DashboardLayout({
 
         <header className="sticky top-0 z-30 border-b border-sidebar-border/90 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--sidebar)_94%,var(--bg-base)_6%),color-mix(in_srgb,var(--sidebar)_78%,var(--bg-base)_22%))] px-4 py-4 shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] backdrop-blur-xl md:px-6 lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="chrome-enter flex min-w-0 items-start gap-3">
-              <DashboardMobileNav />
-              <div className="min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-300/80">
-                  Client Portal
-                </p>
-                <h1 className="text-lg font-semibold text-foreground">
-                  OWOW dashboard workspace
-                </h1>
-                <p className="mt-1 text-sm text-muted-foreground sm:hidden">
-                  Progress-first client reporting
-                </p>
-              </div>
+            <div className="chrome-enter min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-300/80">
+                Client Portal
+              </p>
+              <h1 className="mt-1 text-lg font-semibold text-foreground">
+                OWOW dashboard workspace
+              </h1>
             </div>
 
-            <div
-              className="chrome-enter flex items-center gap-2"
-              style={{ animationDelay: "120ms" }}
-            >
-              <NotificationDrawer />
+            <div className="chrome-enter flex items-center" style={{ animationDelay: "120ms" }}>
               <ModeToggle />
             </div>
           </div>
