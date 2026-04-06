@@ -2,14 +2,8 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { type FormEvent, useState, useTransition } from "react"
-import {
-  ArrowRight,
-  Eye,
-  EyeOff,
-  LockKeyhole,
-  UserRound,
-} from "lucide-react"
+import { type FormEvent, useState } from "react"
+import { ArrowRight, Eye, EyeOff, LockKeyhole, UserRound } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,20 +11,42 @@ import { Label } from "@/components/ui/label"
 
 export function LoginForm() {
   const router = useRouter()
-  const [isPending, startTransition] = useTransition()
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const isDisabled = isPending || username.trim().length === 0 || password.length === 0
+  const isDisabled = isLoading || username.trim().length === 0 || password.length === 0
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setError(null)
+    setIsLoading(true)
 
-    startTransition(() => {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ username, password, rememberMe }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data?.error ?? "Login failed")
+        setIsLoading(false)
+        return
+      }
+
       router.push("/dashboard")
-    })
+      router.refresh()
+    } catch {
+      setError("Network error. Please try again.")
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -118,13 +134,19 @@ export function LoginForm() {
           </p>
         </div>
 
+        {error ? (
+          <p className="rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">
+            {error}
+          </p>
+        ) : null}
+
         <Button
           type="submit"
           size="lg"
           disabled={isDisabled}
           className="h-14 w-full rounded-2xl bg-[linear-gradient(135deg,#2563eb_0%,#3b82f6_55%,#60a5fa_100%)] text-base font-semibold text-white shadow-[0_20px_50px_rgba(37,99,235,0.35)] transition hover:shadow-[0_24px_60px_rgba(37,99,235,0.42)] cursor-pointer"
         >
-          {isPending ? "Opening dashboard..." : "Enter dashboard"}
+          {isLoading ? "Opening dashboard..." : "Enter dashboard"}
           <ArrowRight className="h-4 w-4" />
         </Button>
 
