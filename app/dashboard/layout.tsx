@@ -1,25 +1,14 @@
 import Link from "next/link"
 import {
-  Bell,
-  DollarSign,
-  FileText,
-  FolderKanban,
-  Home,
   LogOut,
   Settings,
-  Users,
 } from "lucide-react"
-import { ModeToggle } from "@/components/mode-toggle"
+import { dashboardNavItems } from "@/components/layout/dashboard-nav"
+import {
+  DashboardHeaderActions,
+  DashboardHeaderMobileNav,
+} from "@/components/layout/dashboard-header-controls"
 import { PageTransition } from "@/components/ui/page-transition"
-
-const primaryNav = [
-  { title: "Overview", href: "/dashboard", icon: Home },
-  { title: "Projects", href: "/dashboard/projects", icon: FolderKanban },
-  { title: "Updates", href: "/dashboard/updates", icon: Bell },
-  { title: "Budget", href: "/dashboard/budget", icon: DollarSign },
-  { title: "Documents", href: "/dashboard/documents", icon: FileText },
-  { title: "Team", href: "/dashboard/team", icon: Users },
-]
 
 export default function DashboardLayout({
   children,
@@ -50,7 +39,7 @@ export default function DashboardLayout({
             Navigation
           </p>
           <div className="chrome-stagger mt-3 space-y-1.5">
-            {primaryNav.map((item, index) => {
+            {dashboardNavItems.map((item, index) => {
               const Icon = item.icon
 
               return (
@@ -117,13 +106,16 @@ export default function DashboardLayout({
               </h1>
             </div>
 
-            <div className="chrome-enter flex items-center" style={{ animationDelay: "120ms" }}>
-              <ModeToggle />
+            <div
+              className="chrome-enter flex items-center gap-2"
+              style={{ animationDelay: "120ms" }}
+            >
+              <DashboardHeaderActions />
             </div>
           </div>
         </header>
 
-        <main className="relative z-10 flex-1 p-4 md:p-6 lg:p-8">
+        <main id="main-content" className="relative z-10 flex-1 p-4 md:p-6 lg:p-8">
           <PageTransition className="motion-cascade mx-auto w-full max-w-7xl">
             {children}
           </PageTransition>

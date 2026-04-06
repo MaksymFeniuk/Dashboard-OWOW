@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { getProjectById } from "@/lib/mock-data"
-import { FileText, Download, ArrowLeft } from "lucide-react"
+import { FileText, ArrowLeft, Link2 } from "lucide-react"
 import Link from "next/link"
 
 export default async function DocumentationPage({ params }: { params: Promise<{ id: string }> }) {
@@ -51,12 +51,12 @@ export default async function DocumentationPage({ params }: { params: Promise<{ 
                 Last updated: {new Date(doc.lastUpdated).toLocaleDateString()}
               </div>
 
-              <Link
-                href={doc.url}
-                className="w-full flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground bg-accent/40 hover:bg-accent/80 py-2.5 rounded-xl transition-all border border-border/40 hover:border-border/80"
-              >
-                <Download className="h-3.5 w-3.5" /> Download
-              </Link>
+              <div className="w-full rounded-xl border border-border/40 bg-accent/30 px-3 py-2.5 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Link2 className="h-3.5 w-3.5" />
+                  Shared inside the dashboard
+                </div>
+              </div>
             </div>
           )
         })}

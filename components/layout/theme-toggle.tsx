@@ -1,38 +1,17 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useSyncExternalStore } from "react"
 import { Moon, Sun } from "lucide-react"
+import { useTheme } from "@/components/theme-provider"
 
-type Theme = "light" | "dark"
-
-function getPreferredTheme(): Theme {
-  if (typeof window === "undefined") return "dark"
-
-  const storedTheme = window.localStorage.getItem("theme")
-  if (storedTheme === "light" || storedTheme === "dark") {
-    return storedTheme
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light"
+function subscribe() {
+  return () => {}
 }
 
 export function ThemeToggle() {
-  const [mounted, setMounted] = useState(false)
-  const [theme, setTheme] = useState<Theme>(() => getPreferredTheme())
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    const root = document.documentElement
-    root.classList.toggle("dark", theme === "dark")
-    window.localStorage.setItem("theme", theme)
-  }, [theme])
-
-  const isDark = mounted ? theme === "dark" : true
+  const isMounted = useSyncExternalStore(subscribe, () => true, () => false)
+  const { resolvedTheme, setTheme } = useTheme()
+  const isDark = isMounted ? resolvedTheme === "dark" : true
 
   return (
     <button

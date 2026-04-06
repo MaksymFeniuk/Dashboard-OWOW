@@ -1,93 +1,139 @@
-import { Save } from "lucide-react"
+import { BellRing, KeyRound, Mail, Save, ShieldCheck } from "lucide-react"
 
 export default function SettingsPage() {
   return (
-    <div className="space-y-6 animate-fade-in max-w-4xl">
+    <div className="max-w-4xl space-y-6 animate-fade-in">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">Settings</h2>
-        <p className="text-sm text-muted-foreground mt-1">Manage your profile, preferences, and notifications.</p>
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">
+          Settings
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Manage notifications and security settings for the client dashboard.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Settings Navigation */}
-        <div className="md:col-span-3">
-          <nav className="flex flex-col space-y-1">
-            {[
-              { label: "Profile", active: true },
-              { label: "Notifications", active: false },
-              { label: "Appearance", active: false },
-              { label: "Security", active: false },
-            ].map((item) => (
-              <button
-                key={item.label}
-                className={`text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-all
-                  ${item.active
-                    ? 'bg-blue-500/10 text-blue-400 relative'
-                    : 'text-muted-foreground hover:bg-accent/50 hover:text-gray-300'
-                  }
-                `}
-              >
-                {item.active && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-blue-500 rounded-r-full" />
-                )}
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        {/* Content Area */}
-        <div className="md:col-span-9 space-y-6">
-          <div className="glass-card-static p-7">
-            <h3 className="text-base font-semibold text-foreground mb-6">Profile Details</h3>
-
-            <div className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="space-y-2">
-                  <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">First Name</label>
-                  <input
-                    type="text"
-                    defaultValue="Leo"
-                    className="w-full bg-accent/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Last Name</label>
-                  <input
-                    type="text"
-                    defaultValue="Claevens"
-                    className="w-full bg-accent/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Email Address</label>
-                <input
-                  type="email"
-                  defaultValue="janklaasberendse@example.com"
-                  className="w-full bg-accent/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/30 transition-all"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Company</label>
-                <input
-                  type="text"
-                  defaultValue="Banana Phone inc."
-                  disabled
-                  className="w-full bg-accent/30 border border-border/30 rounded-xl px-4 py-3 text-sm text-muted-foreground/80 cursor-not-allowed"
-                />
-              </div>
+      <div className="grid gap-6">
+        <section className="glass-card-static p-7">
+          <div className="mb-6 flex items-start gap-3">
+            <div className="rounded-xl bg-blue-500/10 p-2.5 ring-1 ring-blue-500/20">
+              <BellRing className="h-4 w-4 text-blue-400" />
             </div>
-
-            <div className="mt-8 pt-6 border-t border-border/60 flex justify-end">
-              <button className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-foreground font-semibold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 text-sm">
-                <Save className="w-3.5 h-3.5" /> Save Changes
-              </button>
+            <div>
+              <h3 className="text-base font-semibold text-foreground">
+                Notifications
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Keep the essential alerts visible in email and inside the dashboard.
+              </p>
             </div>
           </div>
-        </div>
+
+          <div className="grid gap-3">
+            {[
+              {
+                title: "Email updates",
+                description:
+                  "Receive milestone, release, and document-related updates by email.",
+                defaultChecked: true,
+              },
+              {
+                title: "Dashboard updates",
+                description:
+                  "Show release and project notifications in the header notification panel.",
+                defaultChecked: true,
+              },
+            ].map((item) => (
+              <label
+                key={item.title}
+                className="flex cursor-pointer items-start gap-4 rounded-2xl border border-border/50 bg-accent/20 px-4 py-4"
+              >
+                <input
+                  type="checkbox"
+                  defaultChecked={item.defaultChecked}
+                  className="mt-1 h-4 w-4 rounded border-border bg-background text-primary focus:ring-primary"
+                />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{item.title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {item.description}
+                  </p>
+                </div>
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <section className="glass-card-static p-7">
+          <div className="mb-6 flex items-start gap-3">
+            <div className="rounded-xl bg-emerald-500/10 p-2.5 ring-1 ring-emerald-500/20">
+              <ShieldCheck className="h-4 w-4 text-emerald-400" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-foreground">
+                Security
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Update the account email and password used to access the dashboard.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                <Mail className="h-3.5 w-3.5" />
+                Email address
+              </label>
+              <input
+                type="email"
+                defaultValue="josh@example.com"
+                className="w-full rounded-xl border border-border/60 bg-accent/40 px-4 py-3 text-sm text-foreground transition-all focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+              />
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                  <KeyRound className="h-3.5 w-3.5" />
+                  Current password
+                </label>
+                <input
+                  type="password"
+                  defaultValue="password123"
+                  className="w-full rounded-xl border border-border/60 bg-accent/40 px-4 py-3 text-sm text-foreground transition-all focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                  New password
+                </label>
+                <input
+                  type="password"
+                  placeholder="Enter a new password"
+                  className="w-full rounded-xl border border-border/60 bg-accent/40 px-4 py-3 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                Confirm new password
+              </label>
+              <input
+                type="password"
+                placeholder="Repeat the new password"
+                className="w-full rounded-xl border border-border/60 bg-accent/40 px-4 py-3 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+              />
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-end border-t border-border/60 pt-6">
+            <button className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-2.5 text-sm font-semibold text-foreground shadow-lg shadow-blue-500/20 transition-all hover:from-blue-500 hover:to-blue-400 hover:shadow-blue-500/30">
+              <Save className="h-3.5 w-3.5" /> Save Changes
+            </button>
+          </div>
+        </section>
       </div>
     </div>
   )

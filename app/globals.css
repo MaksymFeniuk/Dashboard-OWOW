@@ -169,8 +169,14 @@
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-  50% { box-shadow: 0 0 12px 4px rgba(59, 130, 246, 0.2); }
+  0%, 100% {
+    opacity: 1;
+    transform: translateZ(0) scale(1);
+  }
+  50% {
+    opacity: 0.88;
+    transform: translateZ(0) scale(1.03);
+  }
 }
 
 @keyframes shimmer {
@@ -307,6 +313,7 @@
 
 .animate-pulse-glow {
   animation: pulseGlow 2s ease-in-out infinite;
+  will-change: opacity, transform;
 }
 
 .animate-float {
@@ -373,6 +380,11 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-subtle);
+}
+
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 360px;
 }
 
 
