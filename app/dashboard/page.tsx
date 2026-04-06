@@ -4,126 +4,19 @@ import {
   Clock,
   FileText,
   MessageSquare,
-  TrendingUp,
+  Wallet,
   Zap,
 } from "lucide-react"
 import Link from "next/link"
 import type { CSSProperties } from "react"
 
-const timelineStats = [
-  {
-    label: "Current Phase",
-    value: "Building",
-    accent: "text-blue-400",
-    tooltip: "Engineering is the active phase for the current delivery window.",
-  },
-  {
-    label: "Progress",
-    value: "65%",
-    accent: "text-emerald-400",
-    tooltip: "Project progress reflects the current sprint completion rate.",
-  },
-  {
-    label: "Deadline",
-    value: "Jun 15, 2026",
-    accent: "text-amber-400",
-    tooltip: "Latest committed delivery date for the current project scope.",
-  },
-]
-
-const timelinePhases = [
-  {
-    label: "Design",
-    date: "Oct - Dec 2025",
-    status: "Complete",
-    progress: 100,
-    accent: "bg-blue-500",
-    text: "text-blue-400",
-    note: "Brand identity, wireframes, and design assets approved.",
-  },
-  {
-    label: "UX",
-    date: "Jan - Feb 2026",
-    status: "Complete",
-    progress: 100,
-    accent: "bg-blue-500",
-    text: "text-blue-400",
-    note: "Prototype testing and iteration rounds wrapped successfully.",
-  },
-  {
-    label: "Building",
-    date: "Mar - May 2026",
-    status: "In Progress",
-    progress: 65,
-    accent: "bg-emerald-500",
-    text: "text-foreground",
-    note: "Front-end and back-end delivery is moving through sprint 3 of 5.",
-  },
-  {
-    label: "Testing",
-    date: "Jun 2026",
-    status: "Upcoming",
-    progress: 0,
-    accent: "bg-accent",
-    text: "text-muted-foreground",
-    note: "QA, load testing, and final client acceptance are queued next.",
-  },
-]
-
-const budgetTrend = [
-  { month: "Oct", spent: 8000 },
-  { month: "Nov", spent: 22000 },
-  { month: "Dec", spent: 38000 },
-  { month: "Jan", spent: 52000 },
-  { month: "Feb", spent: 68000 },
-  { month: "Mar", spent: 75000 },
-]
-
-const recentUpdates = [
-  {
-    title: "Beta Release Deployed",
-    date: "March 4, 2026",
-    color: "bg-emerald-500",
-    badge: "Release",
-    badgeColor: "text-emerald-400 bg-emerald-500/10",
-  },
-  {
-    title: "Alpha V2 Deployed",
-    date: "Feb 28, 2026",
-    color: "bg-blue-500",
-    badge: "Deploy",
-    badgeColor: "text-blue-400 bg-blue-500/10",
-  },
-  {
-    title: "UI Redesign Approved",
-    date: "Feb 15, 2026",
-    color: "bg-muted-foreground/40",
-    badge: "Approved",
-    badgeColor: "text-muted-foreground bg-accent/60",
-  },
-]
-
-const documents = [
-  { name: "Master Services Agreement", type: "PDF", date: "Jan 10, 2026" },
-  { name: "Brand Guidelines v2", type: "PDF", date: "Feb 05, 2026" },
-  { name: "Sprint Review Deck", type: "PPTX", date: "Feb 20, 2026" },
-]
-
-const totalBudget = 150000
-const currentSpent = budgetTrend[budgetTrend.length - 1].spent
-const percentUsed = Math.round((currentSpent / totalBudget) * 100)
-const remainingBudget = totalBudget - currentSpent
-const chartHeight = 64
-const chartWidth = 100
-const maxSpent = Math.max(...budgetTrend.map((point) => point.spent))
-const budgetChartPoints = budgetTrend
-  .map((point, index) => {
-    const x = (index / (budgetTrend.length - 1)) * chartWidth
-    const y = chartHeight - (point.spent / maxSpent) * 52 - 6
-    return `${x},${y}`
-  })
-  .join(" ")
-const budgetAreaPoints = `0,${chartHeight} ${budgetChartPoints} ${chartWidth},${chartHeight}`
+import {
+  overviewDocuments,
+  recentUpdates,
+  timelinePhases,
+  timelineStats,
+  totalBudget,
+} from "@/lib/dashboard-data"
 
 export default function DashboardPage() {
   return (
@@ -134,12 +27,12 @@ export default function DashboardPage() {
             Good evening, Josh
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Here&apos;s your project overview for today
+            Here&apos;s your project overview for today.
           </p>
         </div>
         <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-accent/40 px-3.5 py-2 text-xs text-muted-foreground">
           <Clock className="h-3.5 w-3.5" />
-          <span>Last updated: March 28, 2026</span>
+          <span>Last updated: April 4, 2026</span>
         </div>
       </div>
 
@@ -152,7 +45,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <h2 className="text-base font-semibold text-foreground">
-                  Project Timeline
+                  Project timeline
                 </h2>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   E-commerce Redesign
@@ -190,7 +83,7 @@ export default function DashboardPage() {
                 >
                   <div className="timeline-phase-marker mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full ring-4 ring-background">
                     <div
-                      className={`h-9 w-9 rounded-full ${phase.accent} flex items-center justify-center`}
+                      className={`flex h-9 w-9 items-center justify-center rounded-full ${phase.accent}`}
                     >
                       {phase.progress === 100 ? (
                         <CheckCircle2 className="h-4 w-4 text-white" />
@@ -262,144 +155,40 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex flex-col gap-5">
-          <div className="glass-card relative flex min-h-[320px] flex-col overflow-hidden p-7">
-            <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-emerald-500/[0.05] blur-[50px]" />
-            <div className="relative mb-5 flex items-center gap-3">
-              <div className="rounded-xl bg-emerald-500/10 p-2.5 ring-1 ring-emerald-500/20">
-                <TrendingUp className="h-4 w-4 text-emerald-400" />
-              </div>
+          <div className="glass-card relative overflow-hidden p-7">
+            <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-violet-500/[0.08] blur-[50px]" />
+            <div className="relative flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-base font-semibold text-foreground">Budget</h2>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Burn rate over time
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl bg-violet-500/10 p-2.5 ring-1 ring-violet-500/20">
+                    <Wallet className="h-4 w-4 text-violet-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-base font-semibold text-foreground">
+                      Total budget
+                    </h2>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      Budget summary for the client meeting
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-6 text-3xl font-bold tracking-tight text-foreground">
+                  ${totalBudget.toLocaleString()}
+                </p>
+                <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
+                  Detailed budget breakdowns and burn-rate charts were removed to
+                  keep the overview focused.
                 </p>
               </div>
-            </div>
 
-            <div className="relative flex flex-1 flex-col">
-              <div className="mb-5 flex items-end justify-between">
-                <div>
-                  <p className="mb-1 text-[11px] uppercase tracking-wider text-muted-foreground">
-                    Total Budget
-                  </p>
-                  <p className="text-3xl font-bold tracking-tight text-foreground">
-                    ${totalBudget.toLocaleString()}
-                  </p>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
-                      {percentUsed}% used
-                    </span>
-                    <span className="text-xs text-muted-foreground">on track</span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="mb-1 text-[11px] text-muted-foreground">Remaining</p>
-                  <p className="text-lg font-semibold text-foreground">
-                    ${remainingBudget.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mb-5 h-1.5 w-full overflow-hidden rounded-full bg-accent/80">
-                <div
-                  className="budget-progress-fill h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400"
-                  style={
-                    {
-                      "--budget-fill-width": `${percentUsed}%`,
-                      "--budget-delay": "180ms",
-                    } as CSSProperties
-                  }
-                />
-              </div>
-
-              <div className="grid flex-1 grid-cols-[1fr_auto] gap-4">
-                <div className="min-h-[160px] rounded-2xl border border-border/30 bg-accent/20 p-4">
-                  <svg
-                    viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-                    className="h-full w-full"
-                    preserveAspectRatio="none"
-                    aria-label="Budget spending trend chart"
-                  >
-                    <defs>
-                      <linearGradient id="budget-area" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#10b981" stopOpacity="0.22" />
-                        <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    {[16, 32, 48].map((y) => (
-                      <line
-                        key={y}
-                        x1="0"
-                        x2={chartWidth}
-                        y1={y}
-                        y2={y}
-                        stroke="rgba(255,255,255,0.06)"
-                        strokeDasharray="2 3"
-                      />
-                    ))}
-                    <polygon
-                      points={budgetAreaPoints}
-                      fill="url(#budget-area)"
-                      className="budget-chart-area"
-                      style={
-                        {
-                          "--budget-delay": "260ms",
-                        } as CSSProperties
-                      }
-                    />
-                    <polyline
-                      points={budgetChartPoints}
-                      fill="none"
-                      stroke="#10b981"
-                      strokeWidth="1.8"
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      pathLength="100"
-                      className="budget-chart-line"
-                      style={
-                        {
-                          "--budget-delay": "340ms",
-                        } as CSSProperties
-                      }
-                    />
-                    {budgetTrend.map((point, index) => {
-                      const x = (index / (budgetTrend.length - 1)) * chartWidth
-                      const y = chartHeight - (point.spent / maxSpent) * 52 - 6
-
-                      return (
-                        <circle
-                          key={point.month}
-                          cx={x}
-                          cy={y}
-                          r="1.9"
-                          fill="#10b981"
-                          stroke="var(--background)"
-                          strokeWidth="0.9"
-                          className="budget-chart-point"
-                          style={
-                            {
-                              "--budget-delay": `${index * 110 + 520}ms`,
-                            } as CSSProperties
-                          }
-                        />
-                      )
-                    })}
-                  </svg>
-
-                  <div className="mt-3 grid grid-cols-6 text-[10px] text-muted-foreground">
-                    {budgetTrend.map((point) => (
-                      <span key={point.month}>{point.month}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid gap-2 text-right text-[10px] text-muted-foreground">
-                  <span>$75k</span>
-                  <span>$50k</span>
-                  <span>$25k</span>
-                  <span>$0</span>
-                </div>
-              </div>
+              <Link
+                href="/dashboard/progress"
+                prefetch={false}
+                className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                aria-label="Open the progress page"
+              >
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
 
@@ -439,7 +228,7 @@ export default function DashboardPage() {
                 <Clock className="h-4 w-4 text-emerald-400" />
               </div>
               <h2 className="text-base font-semibold text-foreground">
-                Recent Updates
+                Recent updates
               </h2>
             </div>
           </div>
@@ -506,7 +295,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-1">
-              {documents.map((doc) => (
+              {overviewDocuments.map((doc) => (
                 <div
                   key={doc.name}
                   className="group/row -mx-3 grid grid-cols-12 items-center gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-accent/40"
