@@ -24,7 +24,7 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Good evening, Josh
+            Good evening, Leo
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Here&apos;s your project overview for today.
@@ -32,7 +32,7 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-accent/40 px-3.5 py-2 text-xs text-muted-foreground">
           <Clock className="h-3.5 w-3.5" />
-          <span>Last updated: April 4, 2026</span>
+          <span>Last updated: April 7, 2026</span>
         </div>
       </div>
 
@@ -53,7 +53,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <span className="rounded-full bg-blue-500/10 px-3 py-1.5 text-[10px] font-semibold text-blue-400 ring-1 ring-blue-500/20">
-              Sprint 3 / 5
+              Sprint 13 / 17
             </span>
           </div>
 

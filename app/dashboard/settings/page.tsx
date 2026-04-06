@@ -86,7 +86,7 @@ export default function SettingsPage() {
               </label>
               <input
                 type="email"
-                defaultValue="josh@example.com"
+                defaultValue="adres@domain.com"
                 className="w-full rounded-xl border border-border/60 bg-accent/40 px-4 py-3 text-sm text-foreground transition-all focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/50"
               />
             </div>

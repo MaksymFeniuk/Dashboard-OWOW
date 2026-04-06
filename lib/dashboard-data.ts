@@ -62,22 +62,22 @@ export const timelinePhases = [
 
 export const recentUpdates = [
   {
-    title: "Beta Release Deployed",
-    date: "March 4, 2026",
+    title: "Beta Release v1.0",
+    date: "March 20, 2026",
     color: "bg-emerald-500",
     badge: "Release",
     badgeColor: "text-emerald-400 bg-emerald-500/10",
   },
   {
-    title: "Alpha V2 Deployed",
-    date: "Feb 28, 2026",
+    title: "Auth Redirect Bugfix",
+    date: "Febuary 26, 2026",
     color: "bg-blue-500",
     badge: "Deploy",
     badgeColor: "text-blue-400 bg-blue-500/10",
   },
   {
-    title: "UI Redesign Approved",
-    date: "Feb 15, 2026",
+    title: "Alpha Release v1.0",
+    date: "February 15, 2026",
     color: "bg-muted-foreground/40",
     badge: "Approved",
     badgeColor: "text-muted-foreground bg-accent/60",
