@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ElementType } from "react"
+import { useMemo, useState, type ElementType } from "react"
 import Link from "next/link"
 import {
   Bell,
@@ -72,7 +72,10 @@ const initialNotifications: NotificationItem[] = [
 
 export function NotificationDrawer() {
   const [notifications, setNotifications] = useState(initialNotifications)
-  const unreadCount = notifications.filter((item) => item.unread).length
+  const unreadCount = useMemo(
+    () => notifications.filter((item) => item.unread).length,
+    [notifications]
+  )
 
   function markAllAsRead() {
     setNotifications((current) =>
@@ -84,14 +87,14 @@ export function NotificationDrawer() {
     <Sheet>
       <SheetTrigger
         render={
-          <button className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border/60 bg-background/70 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" />
+          <button className="group relative rounded-xl p-2.5 text-gray-400 transition-colors hover:bg-white/[0.06] hover:text-white dark:text-muted-foreground dark:hover:bg-accent dark:hover:text-foreground" />
         }
       >
-        <Bell className="h-[18px] w-[18px]" />
+        <Bell className="h-[18px] w-[18px] group-hover:animate-[bellShake_360ms_ease-in-out]" />
         {unreadCount > 0 && (
           <>
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-blue-500 ring-2 ring-background" />
-            <span className="absolute -bottom-1 -right-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">
+            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-blue-500 ring-2 ring-[#0a0a0f] dark:bg-primary dark:ring-background" />
+            <span className="absolute -right-1 -bottom-1 inline-flex min-w-5 items-center justify-center rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-white dark:bg-accent dark:text-foreground">
               {unreadCount}
             </span>
           </>
@@ -100,20 +103,20 @@ export function NotificationDrawer() {
 
       <SheetContent
         side="right"
-        className="w-full border-l border-border/70 bg-[var(--bg-elevated)] p-0 text-popover-foreground sm:max-w-md"
+        className="w-full border-l border-white/[0.08] bg-[#11131b] p-0 text-white sm:max-w-md dark:border-border/70 dark:bg-[var(--bg-elevated)] dark:text-popover-foreground"
       >
-        <SheetHeader className="border-b border-border/60 px-6 py-5">
+        <SheetHeader className="border-b border-white/[0.08] px-6 py-5 dark:border-border/60">
           <div className="flex items-start justify-between gap-4 pr-10">
             <div>
               <SheetTitle className="text-lg">Notifications</SheetTitle>
-              <SheetDescription className="mt-1">
+              <SheetDescription className="mt-1 text-gray-400 dark:text-muted-foreground">
                 Updates and alerts in a side menu, without leaving the page.
               </SheetDescription>
             </div>
             <button
               type="button"
               onClick={markAllAsRead}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-accent/40 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-gray-300 transition-colors hover:text-white dark:border-border/60 dark:bg-accent/40 dark:text-muted-foreground dark:hover:text-foreground"
             >
               <CheckCheck className="h-3.5 w-3.5" />
               Mark all read
@@ -129,7 +132,7 @@ export function NotificationDrawer() {
               return (
                 <div
                   key={item.id}
-                  className="rounded-2xl border border-border/50 bg-accent/20 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-border/80 hover:bg-accent/35"
+                  className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/[0.05] dark:border-border/50 dark:bg-accent/20 dark:hover:border-border/80 dark:hover:bg-accent/35"
                 >
                   <div className="flex items-start gap-3">
                     <div className={`mt-0.5 rounded-xl border p-2.5 ${item.tone}`}>
@@ -138,15 +141,19 @@ export function NotificationDrawer() {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-3">
-                        <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                        <p className="text-sm font-semibold text-white dark:text-foreground">
+                          {item.title}
+                        </p>
                         {item.unread && (
-                          <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full bg-blue-500" />
+                          <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full bg-blue-500 dark:bg-primary" />
                         )}
                       </div>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      <p className="mt-1 text-sm leading-relaxed text-gray-400 dark:text-muted-foreground">
                         {item.message}
                       </p>
-                      <p className="mt-3 text-xs text-muted-foreground">{item.time}</p>
+                      <p className="mt-3 text-xs text-gray-500 dark:text-muted-foreground">
+                        {item.time}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -155,7 +162,7 @@ export function NotificationDrawer() {
           </div>
         </div>
 
-        <div className="border-t border-border/60 px-6 py-4">
+        <div className="border-t border-white/[0.08] px-6 py-4 dark:border-border/60">
           <Link
             href="/dashboard/updates"
             className="inline-flex items-center gap-2 text-sm font-medium text-blue-400 transition-colors hover:text-blue-300"
