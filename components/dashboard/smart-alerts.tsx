@@ -1,6 +1,6 @@
 "use client"
 
-import { X, AlertTriangle, Clock, TrendingUp, CheckCircle2 } from "lucide-react"
+import { X, AlertTriangle, Clock, TrendingUp } from "lucide-react"
 import { useState } from "react"
 
 const alerts = [

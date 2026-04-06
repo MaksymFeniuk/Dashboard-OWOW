@@ -1,25 +1,14 @@
 import Link from "next/link"
 import {
-  Bell,
-  DollarSign,
-  FileText,
-  FolderKanban,
-  Home,
   LogOut,
   Settings,
-  Users,
 } from "lucide-react"
-import { ModeToggle } from "@/components/mode-toggle"
+import { dashboardNavItems } from "@/components/layout/dashboard-nav"
+import {
+  DashboardHeaderActions,
+  DashboardHeaderMobileNav,
+} from "@/components/layout/dashboard-header-controls"
 import { PageTransition } from "@/components/ui/page-transition"
-
-const primaryNav = [
-  { title: "Overview", href: "/dashboard", icon: Home },
-  { title: "Projects", href: "/dashboard/projects", icon: FolderKanban },
-  { title: "Updates", href: "/dashboard/updates", icon: Bell },
-  { title: "Budget", href: "/dashboard/budget", icon: DollarSign },
-  { title: "Documents", href: "/dashboard/documents", icon: FileText },
-  { title: "Team", href: "/dashboard/team", icon: Users },
-]
 
 export default function DashboardLayout({
   children,
@@ -30,12 +19,7 @@ export default function DashboardLayout({
     <div className="flex min-h-screen bg-[var(--bg-shell)] text-foreground">
       <aside className="hidden w-72 shrink-0 self-start border-r border-sidebar-border bg-[linear-gradient(180deg,var(--sidebar),color-mix(in_srgb,var(--sidebar)_82%,var(--bg-base)_18%))] text-sidebar-foreground shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col">
         <div className="chrome-enter border-b border-sidebar-border px-6 py-7">
-          <Link
-            href="/dashboard"
-            prefetch={false}
-            aria-label="Open dashboard home"
-            className="flex items-center gap-3"
-          >
+          <Link href="/dashboard" prefetch={false} className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-lg font-extrabold text-primary-foreground shadow-lg shadow-primary/20">
               O
             </div>
@@ -55,7 +39,7 @@ export default function DashboardLayout({
             Navigation
           </p>
           <div className="chrome-stagger mt-3 space-y-1.5">
-            {primaryNav.map((item, index) => {
+            {dashboardNavItems.map((item, index) => {
               const Icon = item.icon
 
               return (
@@ -114,22 +98,31 @@ export default function DashboardLayout({
 
         <header className="sticky top-0 z-30 border-b border-sidebar-border/90 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--sidebar)_94%,var(--bg-base)_6%),color-mix(in_srgb,var(--sidebar)_78%,var(--bg-base)_22%))] px-4 py-4 shadow-[inset_0_-1px_0_rgba(255,255,255,0.03)] backdrop-blur-xl md:px-6 lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="chrome-enter min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-300/80">
-                Client Portal
-              </p>
-              <h1 className="mt-1 text-lg font-semibold text-foreground">
-                OWOW dashboard workspace
-              </h1>
+            <div className="chrome-enter flex min-w-0 items-start gap-3">
+              <DashboardHeaderMobileNav />
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-300/80">
+                  Client Portal
+                </p>
+                <h1 className="text-lg font-semibold text-foreground">
+                  OWOW dashboard workspace
+                </h1>
+                <p className="mt-1 text-sm text-muted-foreground sm:hidden">
+                  Progress-first client reporting
+                </p>
+              </div>
             </div>
 
-            <div className="chrome-enter flex items-center" style={{ animationDelay: "120ms" }}>
-              <ModeToggle />
+            <div
+              className="chrome-enter flex items-center gap-2"
+              style={{ animationDelay: "120ms" }}
+            >
+              <DashboardHeaderActions />
             </div>
           </div>
         </header>
 
-        <main className="relative z-10 flex-1 p-4 md:p-6 lg:p-8">
+        <main id="main-content" className="relative z-10 flex-1 p-4 md:p-6 lg:p-8">
           <PageTransition className="motion-cascade mx-auto w-full max-w-7xl">
             {children}
           </PageTransition>

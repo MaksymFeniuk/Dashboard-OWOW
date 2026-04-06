@@ -5,7 +5,7 @@ import { useState, useMemo } from "react"
 import {
   Search, Rocket, FlaskConical, Palette, Flag,
   Bug, Wrench, ChevronDown, ChevronUp, Star,
-  Clock, CheckCircle2, AlertTriangle, Zap, Filter
+  Clock, Zap, Filter
 } from "lucide-react"
 
 type Category = "Release" | "Testing" | "Design" | "Milestone" | "Bugfix" | "Infrastructure"
