@@ -1,37 +1,91 @@
-# Dashboard-OWOW
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Dashboard-OWOW (Simplified Overview)
 
-## Getting Started
+Dashboard-OWOW is a client-facing dashboard built with Next.js that lets clients track project progress, view updates, access documents, and explore demo environments in one place.
 
-First, run the development server:
+It currently runs on mock data, so no backend is required.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Core Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Authentication
+- Simple login page (/login)
+- No real authentication yet
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Main Dashboard (/dashboard)
+- Project overview (status, progress, deadline)
+- Timeline with phases (Design, UX, Building, Testing)
+- Budget summary
+- Recent updates and documents
+- Quick communication link (Slack)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Projects
+- View all projects (/dashboard/projects)
+- Each project shows:
+  - Status, progress, deadline
+  - Sprint info and priority
+- Individual project pages include:
+  - Milestones
+  - Budget usage
+  - Timeline
+  - Links to Analytics, Demo, Docs
 
-## Learn More
+### Analytics
+- Project performance insights:
+  - Progress
+  - Budget usage
+  - Sprint velocity
+  - Delivery outlook
 
-To learn more about Next.js, take a look at the following resources:
+### Demo Environments
+- View and open staging/demo builds per project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Documents
+- Central document library
+- Search, filter, upload, delete (saved in localStorage)
+- No real backend storage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Progress Timeline
+- Visual timeline with:
+  - Sprints
+  - Milestones
+  - Phases
+  - Client contact moments
 
-## Deploy on Vercel
+### Updates
+- Activity feed with:
+  - Categories (Release, Bugfix, Design, etc.)
+  - Search and filters
+  - Expandable update cards
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Team Page
+- Shows team members and responsibilities
+- Includes roles, contact info (placeholders)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Settings
+- UI for account settings
+- No real data saving yet
+
+### Notifications
+- Notification drawer in header
+- Shows updates like releases, QA, etc.
+
+## Tech Stack
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- shadcn UI components
+- Recharts
+- Mongoose (optional)
+
+## Key Notes
+- Works fully with mock data
+- No real backend or authentication
+- MongoDB setup exists but is optional
+- Designed to demonstrate a complete client dashboard experience
+
+## Purpose
+To provide a professional workspace where clients can:
+- Track project progress
+- Stay updated
+- Access documents and demos
+- Understand team responsibilities
